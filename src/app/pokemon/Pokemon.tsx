@@ -1,7 +1,7 @@
 'use client'
 
 import { Key, useEffect, useState } from 'react'
-import { Autocomplete, AutocompleteItem, Button } from '@heroui/react'
+import { Autocomplete, AutocompleteItem, Button, Divider } from '@heroui/react'
 import poke from '@/libs/DataElement'
 import iconElements, { icon2TagSvg } from '@/components/icons'
 import { Minus, Plus } from 'lucide-react'
@@ -35,20 +35,22 @@ const Pokemon = () => {
         }
     }
 
+    const selectedTypes = poke.filter((type) => dataInput.includes(type.name))
+
     // useEffect(() => {
     //     console.log('dataInput:', dataInput)
     // }, [dataInput])
 
     return (
-        <div className="flex flex-col items-center justify-center gap-2 p-4">
-            <header>
-                <div className="flex flex-col items-center gap-4 p-2">
+        <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gradient-to-b from-white to-zinc-50 p-4 md:p-8">
+            <header className="w-full max-w-md">
+                <div className="flex flex-col items-center gap-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-md">
                     {count.map((_, index) => (
                         <Autocomplete
                             key={index}
-                            label={`Select type of Pokémon ${index + 1}`}
+                            label={`Select Pokémon Type ${index + 1}`}
                             size="sm"
-                            className="w-60"
+                            className="w-full"
                             selectedKey={dataInput[index] || ''}
                             onSelectionChange={(key) =>
                                 handleSelectChange(key, index)
@@ -65,13 +67,14 @@ const Pokemon = () => {
                         </Autocomplete>
                     ))}
 
-                    <div className="flex gap-3">
+                    <div className="mt-2 flex gap-3">
                         <Button
                             isIconOnly
                             isDisabled={count.length >= 2}
                             color="default"
                             disableRipple
                             onPress={handleAdd}
+                            className="rounded-full shadow-sm transition-transform hover:scale-105"
                         >
                             <Plus />
                         </Button>
@@ -81,6 +84,7 @@ const Pokemon = () => {
                             color="danger"
                             disableRipple
                             onPress={handleRemove}
+                            className="rounded-full shadow-sm transition-transform hover:scale-105"
                         >
                             <Minus />
                         </Button>
@@ -88,48 +92,83 @@ const Pokemon = () => {
                 </div>
             </header>
 
-            <section>
-                <div className="mt-4 text-sm">
+            <section className="mt-6 w-full max-w-5xl">
+                <div className="overflow-x-auto rounded-xl bg-white shadow-md">
                     {dataInput[0].length > 1 && (
-                        <table className="border [&_th,td]:border [&_th,td]:px-2 [&_th,td]:py-1">
-                            <thead>
+                        <table className="w-full min-w-[600px] border-collapse text-sm text-zinc-800 md:text-base">
+                            <thead className="bg-gradient-to-r from-zinc-100 to-zinc-200 text-zinc-700">
                                 <tr>
-                                    <th colSpan={2}>Element</th>
-                                    <th>Strong</th>
-                                    <th>Weak</th>
-                                    <th>NoEffectFrom</th>
+                                    <th
+                                        colSpan={2}
+                                        className="border-b border-zinc-300 p-3 text-left font-semibold"
+                                    >
+                                        Element
+                                    </th>
+                                    <th className="border-b border-zinc-300 p-3 text-left font-semibold">
+                                        Strong
+                                    </th>
+                                    <th className="border-b border-zinc-300 p-3 text-left font-semibold">
+                                        Weak
+                                    </th>
+                                    <th className="border-b border-zinc-300 p-3 text-left font-semibold">
+                                        No Effect From
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {poke
-                                    .filter((type) =>
-                                        dataInput.includes(type.name),
-                                    )
-                                    .map((e) => (
-                                        <tr key={e.name}>
-                                            <td className="border-r-transparent">
-                                                <div className="w-10">
-                                                    <Image
-                                                        src={iconElements(
-                                                            e.name,
-                                                        )}
-                                                        alt="image"
-                                                        width={30}
-                                                        height={30}
-                                                        className={`icon ${e.name.toLowerCase()}`}
-                                                    />
+                                <tr className="align-top transition-colors hover:bg-zinc-50">
+                                    <td className="border-b border-zinc-200 border-r-transparent p-3">
+                                        <div className="flex flex-col items-center gap-2">
+                                            {selectedTypes.map((e) => (
+                                                <Image
+                                                    key={e.name}
+                                                    src={iconElements(e.name)}
+                                                    alt={e.name}
+                                                    width={30}
+                                                    height={30}
+                                                    className={`icon rounded-md ${e.name.toLocaleLowerCase()}`}
+                                                />
+                                            ))}
+                                        </div>
+                                    </td>
+
+                                    <td className="border-b border-zinc-200 p-3">
+                                        <div className="flex flex-col gap-4">
+                                            {selectedTypes.map((e) => (
+                                                <div
+                                                    key={e.name}
+                                                    className="font-medium"
+                                                >
+                                                    {e.name}
                                                 </div>
-                                            </td>
-                                            <td>
-                                                <div>{e.name}</div>
-                                            </td>
-                                            <td>
+                                            ))}
+                                        </div>
+                                    </td>
+
+                                    <td className="border-b border-zinc-200 p-3">
+                                        {selectedTypes.map((e) => (
+                                            <div key={`${e.name}-strong`}>
                                                 {e.strongAgainst.join(', ')}
-                                            </td>
-                                            <td>{e.weakAgainst.join(', ')}</td>
-                                            <td>{e.noEffectFrom.join(', ')}</td>
-                                        </tr>
-                                    ))}
+                                            </div>
+                                        ))}
+                                    </td>
+
+                                    <td className="border-b border-zinc-200 p-3">
+                                        {selectedTypes.map((e) => (
+                                            <div key={`${e.name}-weak`}>
+                                                {e.weakAgainst.join(', ')}
+                                            </div>
+                                        ))}
+                                    </td>
+
+                                    <td className="border-b border-zinc-200 p-3">
+                                        {selectedTypes.map((e) => (
+                                            <div key={`${e.name}-noeffect`}>
+                                                {e.noEffectFrom.join(', ')}
+                                            </div>
+                                        ))}
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     )}
