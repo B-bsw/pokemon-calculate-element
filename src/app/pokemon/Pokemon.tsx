@@ -4,7 +4,7 @@ import { Key, useEffect, useState } from 'react'
 import { Autocomplete, AutocompleteItem, Button, Divider } from '@heroui/react'
 import poke from '@/libs/DataElement'
 import iconElements, { icon2TagSvg } from '@/components/icons'
-import { Minus, Plus } from 'lucide-react'
+import { Minus, Plus, RefreshCcw } from 'lucide-react'
 import Image from 'next/image'
 
 const Pokemon = () => {
@@ -35,7 +35,18 @@ const Pokemon = () => {
         }
     }
 
+    const handleReset = () => {
+        setDataInput([''])
+        setCount([0])
+    }
+
     const selectedTypes = poke.filter((type) => dataInput.includes(type.name))
+
+    const mergeUnique = (
+        key: 'strongAgainst' | 'weakAgainst' | 'noEffectFrom',
+    ) => {
+        return [...new Set(selectedTypes.flatMap((t) => t[key]))]
+    }
 
     // useEffect(() => {
     //     console.log('dataInput:', dataInput)
@@ -88,6 +99,15 @@ const Pokemon = () => {
                         >
                             <Minus />
                         </Button>
+                        <Button
+                            isIconOnly
+                            color="primary"
+                            disableRipple
+                            onPress={handleReset}
+                            className="rounded-full shadow-sm transition-transform hover:scale-105"
+                        >
+                            <RefreshCcw />
+                        </Button>
                     </div>
                 </div>
             </header>
@@ -95,7 +115,7 @@ const Pokemon = () => {
             <section className="mt-6 w-full max-w-5xl">
                 <div className="overflow-x-auto rounded-xl bg-white shadow-md">
                     {dataInput[0].length > 1 && (
-                        <table className="w-full min-w-[600px] border-collapse text-sm text-zinc-800 md:text-base">
+                        <table className="w-full min-w-[600px] border-collapse text-sm text-zinc-800 md:text-base [&_td]:p-3 [&_td,th]:text-center [&_td]:align-middle">
                             <thead className="bg-gradient-to-r from-zinc-100 to-zinc-200 text-zinc-700">
                                 <tr>
                                     <th
@@ -117,7 +137,7 @@ const Pokemon = () => {
                             </thead>
                             <tbody>
                                 <tr className="align-top transition-colors hover:bg-zinc-50">
-                                    <td className="border-b border-zinc-200 border-r-transparent p-3">
+                                    <td className="border-b border-zinc-200 border-r-transparent">
                                         <div className="flex flex-col items-center gap-2">
                                             {selectedTypes.map((e) => (
                                                 <Image
@@ -132,8 +152,8 @@ const Pokemon = () => {
                                         </div>
                                     </td>
 
-                                    <td className="border-b border-zinc-200 p-3">
-                                        <div className="flex flex-col gap-4">
+                                    <td>
+                                        <div className="flex flex-col gap-4 text-start">
                                             {selectedTypes.map((e) => (
                                                 <div
                                                     key={e.name}
@@ -145,28 +165,18 @@ const Pokemon = () => {
                                         </div>
                                     </td>
 
-                                    <td className="border-b border-zinc-200 p-3">
-                                        {selectedTypes.map((e) => (
-                                            <div key={`${e.name}-strong`}>
-                                                {e.strongAgainst.join(', ')}
-                                            </div>
-                                        ))}
+                                    <td>
+                                        {mergeUnique('strongAgainst').join(
+                                            ', ',
+                                        )}
                                     </td>
 
-                                    <td className="border-b border-zinc-200 p-3">
-                                        {selectedTypes.map((e) => (
-                                            <div key={`${e.name}-weak`}>
-                                                {e.weakAgainst.join(', ')}
-                                            </div>
-                                        ))}
+                                    <td>
+                                        {mergeUnique('weakAgainst').join(', ')}
                                     </td>
 
-                                    <td className="border-b border-zinc-200 p-3">
-                                        {selectedTypes.map((e) => (
-                                            <div key={`${e.name}-noeffect`}>
-                                                {e.noEffectFrom.join(', ')}
-                                            </div>
-                                        ))}
+                                    <td>
+                                        {mergeUnique('noEffectFrom').join(', ')}
                                     </td>
                                 </tr>
                             </tbody>

@@ -10,7 +10,7 @@ export default function Home() {
                 <div className="flex flex-col items-center gap-5">
                     <h1>Please Select</h1>
                     <div className="flex gap-5">
-                        <Link href={'/pokemon/table'} className='border rounded-sm p-1 hover:bg-gray-200'>Table</Link>
+                        <Link href={'/pokemon/type'} className='border rounded-sm p-1 hover:bg-gray-200'>Type</Link>
                         <Link href={'/pokemon'} className='border rounded-sm p-1 hover:bg-gray-200'>Pokemon</Link>
                     </div>
                 </div>

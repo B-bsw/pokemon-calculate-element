@@ -8,10 +8,12 @@ const TablePokemon = () => {
         <div className="max-h-screen overflow-auto overflow-x-auto">
             <table className="border [&_th,td]:border [&_th,td]:px-2 [&_th,td]:py-1">
                 <thead>
-                    <th colSpan={2}>Element</th>
-                    <th>Strong</th>
-                    <th>Weak</th>
-                    <th>NoEffectFrom</th>
+                    <tr>
+                        <th colSpan={2}>Element</th>
+                        <th>Strong</th>
+                        <th>Weak</th>
+                        <th>NoEffectFrom</th>
+                    </tr>
                 </thead>
 
                 <tbody>
