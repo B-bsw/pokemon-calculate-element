@@ -19,19 +19,22 @@ type Pokemon = {
 
 export default function Pokemon() {
     const [dataPokemon, setDataPokemon] = useState<Pokemon>([])
-    const [page, setPage] = useState<number>(1)
-    const pages = Math.ceil(dataPokemon.length / 10)
+    const [page, setPage] = useState<number>(0)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     const loading = async () => {
         try {
             const res = await axios.get(
-                `https://pokeapi.co/api/v2/pokemon?limit=${1328}&offset=${page}`,
+                `https://pokeapi.co/api/v2/pokemon?limit=1328&offset=0`,
             )
             const data = res.data.results
             // console.log(data)
             setDataPokemon(data)
+            setPage(1)
         } catch (err) {
             console.log(err)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -46,6 +49,8 @@ export default function Pokemon() {
         },
     ]
 
+    const pages = Math.ceil(dataPokemon.length / 10)
+
     const items = useMemo(() => {
         const start = (page - 1) * 10
         const end = start + 10
@@ -55,22 +60,24 @@ export default function Pokemon() {
     return (
         <>
             <div className="flex h-screen w-full items-center justify-center p-4">
-                <section className="max-w-lg w-full overflow-auto">
+                <section className="w-full max-w-lg overflow-auto">
                     <Table
                         aria-label="table-of-pokemon"
                         bottomContent={
-                            <div className="flex w-full justify-center">
-                                <Pagination
-                                    isCompact
-                                    variant='light'
-                                    showControls
-                                    showShadow
-                                    color="default"
-                                    page={page}
-                                    total={pages}
-                                    onChange={(page) => setPage(page)}
-                                />
-                            </div>
+                            page > 0 ? (
+                                <div className="flex w-full justify-center">
+                                    <Pagination
+                                        isCompact
+                                        variant="flat"
+                                        showControls
+                                        showShadow
+                                        color="primary"
+                                        page={page}
+                                        total={pages}
+                                        onChange={(page) => setPage(page)}
+                                    />
+                                </div>
+                            ) : null
                         }
                     >
                         <TableHeader columns={columns}>
@@ -80,7 +87,12 @@ export default function Pokemon() {
                                 </TableColumn>
                             )}
                         </TableHeader>
-                        <TableBody items={items} emptyContent={'No Pokemon.'}>
+                        <TableBody
+                            items={items}
+                            emptyContent={'No Pokemon.'}
+                            isLoading={isLoading}
+                            loadingContent={<div>Loading</div>}
+                        >
                             {(item) => (
                                 <TableRow key={item.name}>
                                     {(pokemon) => (
