@@ -14,7 +14,9 @@ import axios from 'axios'
 import { useEffect, useMemo, useState } from 'react'
 
 type Pokemon = {
+    id: number
     name: string
+    numberOfPokemon: string
 }[]
 
 export default function Pokemon() {
@@ -27,9 +29,20 @@ export default function Pokemon() {
             const res = await axios.get(
                 `https://pokeapi.co/api/v2/pokemon?limit=1328&offset=0`,
             )
-            const data = res.data.results
-            // console.log(data)
-            setDataPokemon(data)
+            const data: Pokemon = res.data.results
+            const dataWithIndex = data.map((e, index) => ({
+                id: index + 1,
+                name: e.name,
+                numberOfPokemon:
+                    (index + 1).toString().length === 1
+                        ? `000${index + 1}`
+                        : (index + 1).toString().length === 2
+                          ? `00${index + 1}`
+                          : (index + 1).toString().length === 3
+                            ? `0${index + 1}`
+                            : index.toString(),
+            }))
+            setDataPokemon(dataWithIndex)
             setPage(1)
         } catch (err) {
             console.log(err)
@@ -44,9 +57,14 @@ export default function Pokemon() {
 
     const columns = [
         {
+            key: 'id',
+            label: 'index',
+        },
+        {
             key: 'name',
             label: 'name',
         },
+        { key: 'numberOfPokemon', label: 'No.' },
     ]
 
     const pages = Math.ceil(dataPokemon.length / 10)
@@ -60,7 +78,7 @@ export default function Pokemon() {
     return (
         <>
             <div className="flex h-screen w-full items-center justify-center p-4">
-                <section className="w-full max-w-lg overflow-auto">
+                <section className="w-full max-w-xl overflow-auto">
                     <Table
                         aria-label="table-of-pokemon"
                         bottomContent={
@@ -94,11 +112,13 @@ export default function Pokemon() {
                             loadingContent={<div>Loading</div>}
                         >
                             {(item) => (
-                                <TableRow key={item.name}>
+                                <TableRow key={item?.name}>
                                     {(pokemon) => (
-                                        <TableCell>
-                                            {getKeyValue(item, pokemon)}
-                                        </TableCell>
+                                        <>
+                                            <TableCell>
+                                                {getKeyValue(item, pokemon)}
+                                            </TableCell>
+                                        </>
                                     )}
                                 </TableRow>
                             )}
