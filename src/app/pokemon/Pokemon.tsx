@@ -10,6 +10,7 @@ import {
     TableColumn,
     TableHeader,
     TableRow,
+    Input,
 } from '@heroui/react'
 import axios from 'axios'
 import Image from 'next/image'
@@ -26,6 +27,7 @@ export default function Pokemon() {
     const [dataPokemon, setDataPokemon] = useState<Pokemon>([])
     const [page, setPage] = useState<number>(0)
     const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [search, setSearch] = useState<string>('')
 
     const loading = async () => {
         try {
@@ -43,7 +45,7 @@ export default function Pokemon() {
                           ? `00${index + 1}`
                           : (index + 1).toString().length === 3
                             ? `0${index + 1}`
-                            : index.toString(),
+                            : (index + 1).toString(),
                 img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index >= 1025 ? index + 8976 : index + 1}.png`,
             }))
             setDataPokemon(dataWithIndex)
@@ -59,37 +61,47 @@ export default function Pokemon() {
     }, [])
 
     const columns = [
-        {
-            key: 'id',
-            label: 'index',
-        },
-        {
-            key: 'name',
-            label: 'name',
-        },
-        {
-            key: 'numberOfPokemon',
-            label: 'No.',
-        },
+        { key: 'id', label: 'index' },
+        { key: 'name', label: 'name' },
+        { key: 'numberOfPokemon', label: 'No.' },
     ]
 
-    const pages = Math.ceil(dataPokemon.length / 10)
+    const filtered = useMemo(() => {
+        return dataPokemon.filter((p) => {
+            const s = search.toLowerCase()
+            return (
+                p.name.toLowerCase().includes(s) ||
+                p.numberOfPokemon.includes(s)
+            )
+        })
+    }, [search, dataPokemon])
+
+    const pages = Math.ceil(filtered.length / 10)
 
     const items = useMemo(() => {
         const start = (page - 1) * 10
         const end = start + 10
+        return filtered.slice(start, end)
+    }, [page, filtered])
 
-        return dataPokemon.slice(start, end)
-    }, [page, dataPokemon])
     return (
         <>
             <div className="flex h-screen w-full items-center justify-center p-4">
-                <section className="w-full max-w-xl overflow-auto">
-                    <Table
-                        classNames={{
-                            th: 'text-center',
-                            td: 'text-center',
+                <section className="flex w-full max-w-xl flex-col gap-4">
+                    <Input
+                        type="text"
+                        placeholder="Search name or number..."
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value)
+                            setPage(1)
                         }}
+                        variant='underlined'
+                        color='primary'
+                    />
+
+                    <Table
+                        classNames={{ th: 'text-center', td: 'text-center' }}
                         aria-label="table-of-pokemon"
                         bottomContent={
                             page > 0 ? (
@@ -110,14 +122,12 @@ export default function Pokemon() {
                     >
                         <TableHeader columns={columns}>
                             {(column) => (
-                                <TableColumn
-                                    key={column.key}
-                                    // colSpan={column.label === 'name' ? 2 : 1}
-                                >
+                                <TableColumn key={column.key}>
                                     {column.label}
                                 </TableColumn>
                             )}
                         </TableHeader>
+
                         <TableBody
                             items={items}
                             emptyContent={'No Pokemon.'}
@@ -125,14 +135,14 @@ export default function Pokemon() {
                             loadingContent={<Spinner />}
                         >
                             {(item) => (
-                                <TableRow key={item?.name}>
+                                <TableRow key={item.name}>
                                     {(key) => (
                                         <TableCell>
                                             {key === 'name' ? (
                                                 <div className="flex items-center justify-center gap-2">
                                                     <Image
                                                         src={item.img}
-                                                        alt="pokemon"
+                                                        alt="img"
                                                         width={32}
                                                         height={32}
                                                     />

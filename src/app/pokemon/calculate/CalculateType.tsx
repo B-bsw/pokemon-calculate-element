@@ -65,6 +65,9 @@ const Pokemon = () => {
                             label={`Select Pokémon Type ${index + 1}`}
                             size="sm"
                             className="w-full"
+                            variant='underlined'
+                            labelPlacement='outside'
+                            color='primary'
                             selectedKey={dataInput[index] || ''}
                             onSelectionChange={(key) =>
                                 handleSelectChange(key, index)
