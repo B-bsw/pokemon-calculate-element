@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
+import MainHeader from '@/components/headers/MainHeader'
+import { I18nProvider } from '@/i18n/i18nContext'
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -19,26 +21,29 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  minimumScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-  themeColor: 'white',
-  viewportFit: 'cover',
-};
+    width: 'device-width',
+    initialScale: 1,
+    minimumScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+    themeColor: 'white',
+    viewportFit: 'cover',
+}
 
 export default function RootLayout({
     children,
-}: Readonly<{
-    children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="en">
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <Providers>{children}</Providers>
+                <I18nProvider>
+                    <Providers>
+                        <MainHeader />
+                        <div className="pt-6">{children}</div>
+                    </Providers>
+                </I18nProvider>
             </body>
         </html>
     )
