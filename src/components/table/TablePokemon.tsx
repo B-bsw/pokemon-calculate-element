@@ -7,11 +7,11 @@ import { useTranslate } from '@/i18n/i18nContext'
 const TablePokemon = () => {
     const { t } = useTranslate()
     return (
-        <div className="mx-10 max-h-screen overflow-auto overflow-x-auto pb-10">
+        <div className="mx-10 mt-20 max-h-screen overflow-auto overflow-x-auto">
             <table className="border [&_th,td]:border [&_th,td]:px-2 [&_th,td]:py-1">
                 <thead>
                     <tr>
-                        <th colSpan={2}>{ t("element")}</th>
+                        <th colSpan={2}>{t('element')}</th>
                         <th>{t('strong')}</th>
                         <th>{t('weak')}</th>
                         <th>{t('noEffectFrom')}</th>
@@ -35,9 +35,15 @@ const TablePokemon = () => {
                             <td>
                                 <div>{t(e.name)}</div>
                             </td>
-                            <td>{e.strongAgainst.map(st => t(st)).join(', ')}</td>
-                            <td>{e.weakAgainst.map(wk => t(wk)).join(', ')}</td>
-                            <td>{e.noEffectFrom.map(no => t(no)).join(', ')}</td>
+                            <td>
+                                {e.strongAgainst.map((st) => t(st)).join(', ')}
+                            </td>
+                            <td>
+                                {e.weakAgainst.map((wk) => t(wk)).join(', ')}
+                            </td>
+                            <td>
+                                {e.noEffectFrom.map((no) => t(no)).join(', ')}
+                            </td>
                         </tr>
                     ))}
                 </tbody>

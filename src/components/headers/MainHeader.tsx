@@ -16,9 +16,9 @@ const MainHeader = () => {
 
     return (
         <>
-            <header className="fixed h-10 w-full overflow-hidden bg-zinc-200 max-[533]:h-20">
-                <div className="flex h-full flex-wrap items-center justify-between px-6">
-                    <div>
+            <header className="fixed h-20 w-full overflow-hidden bg-zinc-200">
+                <div className="flex h-full flex-wrap items-center justify-center max-xl:flex-col max-xl:items-center">
+                    <div className="flex-1">
                         <Tabs
                             variant="light"
                             color="primary"

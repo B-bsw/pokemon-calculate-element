@@ -26,7 +26,7 @@ export const viewport: Viewport = {
     minimumScale: 1,
     maximumScale: 1,
     userScalable: false,
-    themeColor: 'white',
+    themeColor: 'gray',
     viewportFit: 'cover',
 }
 
@@ -41,7 +41,7 @@ export default function RootLayout({
                 <I18nProvider>
                     <Providers>
                         <MainHeader />
-                        <div className="pt-6">{children}</div>
+                        <div>{children}</div>
                     </Providers>
                 </I18nProvider>
             </body>
