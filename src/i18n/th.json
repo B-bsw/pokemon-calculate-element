@@ -25,5 +25,13 @@
     "language.english": "อังกฤษ",
     "language.thai": "ไทย",
     "strong": "ชนะทาง",
-    "element": "ธาตุ"
+    "element": "ธาตุ",
+    "Select Pokémon Element":"เลือกธาตุของโปเกม่อน",
+    "searchNameOrNumber":"ค้นหาชื่อหรือเลขของโปรเกม่อน...",
+    "index":"อันดับ",
+    "name":"ชื่อ",
+    "no.":"เลขประจำตัว",
+    "pokelist":"รายชื่อโปเกม่อน",
+    "calem":"คำนวณธาตุ",
+    "tableem":"ตารางธาตุ"
 }

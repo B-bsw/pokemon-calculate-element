@@ -12,10 +12,13 @@ import poke from '@/libs/DataElement'
 import iconElements, { icon2TagSvg } from '@/components/icons'
 import { Minus, Plus, RefreshCcw } from 'lucide-react'
 import Image from 'next/image'
+import { useTranslate } from '@/i18n/i18nContext'
 
 const Pokemon = () => {
     const [count, setCount] = useState<number[]>([0])
     const [dataInput, setDataInput] = useState<string[]>([''])
+
+    const { t } = useTranslate()
 
     const handleAdd = () => {
         if (count.length < 2) {
@@ -62,12 +65,12 @@ const Pokemon = () => {
                     {count.map((_, index) => (
                         <Autocomplete
                             key={index}
-                            label={`Select Pokémon Type ${index + 1}`}
+                            label={t('Select Pokémon Element')}
                             size="sm"
                             className="w-full"
-                            variant='underlined'
-                            labelPlacement='outside'
-                            color='primary'
+                            variant="underlined"
+                            labelPlacement="outside"
+                            color="primary"
                             selectedKey={dataInput[index] || ''}
                             onSelectionChange={(key) =>
                                 handleSelectChange(key, index)
@@ -78,14 +81,19 @@ const Pokemon = () => {
                                     key={e.name}
                                     startContent={icon2TagSvg(e.name, 20)}
                                 >
-                                    {e.name}
+                                    {t(e.name)}
                                 </AutocompleteItem>
                             ))}
                         </Autocomplete>
                     ))}
 
                     <div className="mt-2 flex gap-3">
-                        <Tooltip content="add" color="default" delay={1000} closeDelay={0}>
+                        <Tooltip
+                            content="add"
+                            color="default"
+                            delay={1000}
+                            closeDelay={0}
+                        >
                             <Button
                                 isIconOnly
                                 isDisabled={count.length >= 2}
@@ -97,7 +105,12 @@ const Pokemon = () => {
                                 <Plus />
                             </Button>
                         </Tooltip>
-                        <Tooltip content="delete" color="danger" delay={1000} closeDelay={0}>
+                        <Tooltip
+                            content="delete"
+                            color="danger"
+                            delay={1000}
+                            closeDelay={0}
+                        >
                             <Button
                                 isIconOnly
                                 isDisabled={count.length <= 1}
@@ -109,7 +122,12 @@ const Pokemon = () => {
                                 <Minus />
                             </Button>
                         </Tooltip>
-                        <Tooltip content="reset" color="primary" delay={1000} closeDelay={0}>
+                        <Tooltip
+                            content="reset"
+                            color="primary"
+                            delay={1000}
+                            closeDelay={0}
+                        >
                             <Button
                                 isIconOnly
                                 color="primary"
@@ -134,16 +152,16 @@ const Pokemon = () => {
                                         colSpan={2}
                                         className="border-b border-zinc-300 p-3 text-left font-semibold"
                                     >
-                                        Element
+                                        {t('element')}
                                     </th>
                                     <th className="border-b border-zinc-300 p-3 text-left font-semibold">
-                                        Strong
+                                        {t('strong')}
                                     </th>
                                     <th className="border-b border-zinc-300 p-3 text-left font-semibold">
-                                        Weak
+                                        {t('weak')}
                                     </th>
                                     <th className="border-b border-zinc-300 p-3 text-left font-semibold">
-                                        No Effect From
+                                        {t('noEffectFrom')}
                                     </th>
                                 </tr>
                             </thead>
@@ -171,26 +189,28 @@ const Pokemon = () => {
                                                     key={e.name}
                                                     className="font-medium"
                                                 >
-                                                    {e.name}
+                                                    {t(e.name)}
                                                 </div>
                                             ))}
                                         </div>
                                     </td>
 
                                     <td>
-                                        {mergeUnique('strongAgainst').join(
-                                            ' - ',
-                                        )}
+                                        {mergeUnique('strongAgainst')
+                                            .map((e) => t(e))
+                                            .join(' - ')}
                                     </td>
 
                                     <td>
-                                        {mergeUnique('weakAgainst').join(' - ')}
+                                        {mergeUnique('weakAgainst')
+                                            .map((e) => t(e))
+                                            .join(' - ')}
                                     </td>
 
                                     <td>
-                                        {mergeUnique('noEffectFrom').join(
-                                            ' - ',
-                                        )}
+                                        {mergeUnique('noEffectFrom')
+                                            .map((e) => t(e))
+                                            .join(' - ')}
                                     </td>
                                 </tr>
                             </tbody>

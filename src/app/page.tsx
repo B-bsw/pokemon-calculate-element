@@ -1,32 +1,33 @@
 'use client'
 import TablePokemon from '@/components/table/TablePokemon'
+import { useTranslate } from '@/i18n/i18nContext'
 import Image from 'next/image'
 import Link from 'next/link'
 
 export default function Home() {
+    const { t } = useTranslate()
     return (
         <>
             <div className="flex h-screen items-center justify-center p-4">
                 <div className="w-full max-w-md text-center">
-                    <h1>Please Select</h1>
                     <div className="my-2 flex flex-col gap-5">
                         <Link
                             href={'/pokemon'}
-                            className="rounded-sm border p-1 hover:bg-gray-200 transition-all"
+                            className="rounded-sm border p-1 transition-all hover:bg-gray-200"
                         >
-                            Pokemon List
+                            {t('pokelist')}
                         </Link>
                         <Link
                             href={'/pokemon/calculate'}
-                            className="rounded-sm border p-1 hover:bg-gray-200 transition-all"
+                            className="rounded-sm border p-1 transition-all hover:bg-gray-200"
                         >
-                         Calculate Type
+                            {t('calem')}
                         </Link>
                         <Link
                             href={'/pokemon/elements'}
-                            className="rounded-sm border p-1 hover:bg-gray-200 transition-all"
+                            className="rounded-sm border p-1 transition-all hover:bg-gray-200"
                         >
-                            Table Elements of Pokemon
+                            {t('tableem')}
                         </Link>
                     </div>
                 </div>

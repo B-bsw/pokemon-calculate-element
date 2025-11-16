@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslate } from '@/i18n/i18nContext'
 import {
     getKeyValue,
     Pagination,
@@ -28,6 +29,8 @@ export default function Pokemon() {
     const [page, setPage] = useState<number>(0)
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [search, setSearch] = useState<string>('')
+
+    const { t } = useTranslate()
 
     const loading = async () => {
         try {
@@ -61,9 +64,9 @@ export default function Pokemon() {
     }, [])
 
     const columns = [
-        { key: 'id', label: 'index' },
-        { key: 'name', label: 'name' },
-        { key: 'numberOfPokemon', label: 'No.' },
+        { key: 'id', label: t('index') },
+        { key: 'name', label: t('name') },
+        { key: 'numberOfPokemon', label: t('no.') },
     ]
 
     const filtered = useMemo(() => {
@@ -90,14 +93,14 @@ export default function Pokemon() {
                 <section className="flex w-full max-w-xl flex-col gap-4">
                     <Input
                         type="text"
-                        placeholder="Search name or number..."
+                        placeholder={t('searchNameOrNumber')}
                         value={search}
                         onChange={(e) => {
                             setSearch(e.target.value)
                             setPage(1)
                         }}
-                        variant='underlined'
-                        color='primary'
+                        variant="underlined"
+                        color="primary"
                     />
 
                     <Table
