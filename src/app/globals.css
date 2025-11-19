@@ -15,7 +15,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
@@ -54,7 +54,13 @@
     box-shadow: 0 0 20px #92BC2C;
 }
 
-.dark {
+:root{
+    &.dark{
+        background-color: var(--color-zinc-800);
+    }
+}
+
+img.dark {
     background: #595761;
     box-shadow: 0 0 20px #595761;
 }

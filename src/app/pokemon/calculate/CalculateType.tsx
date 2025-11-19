@@ -61,14 +61,14 @@ const Pokemon = () => {
     return (
         <div className="flex h-full flex-col items-center justify-center gap-4 p-4 md:p-8">
             <header className="w-full max-w-md">
-                <div className="flex flex-col items-center gap-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-md">
+                <div className="flex flex-col items-center gap-4 rounded-xl border not-dark:border-stone-900 dark:border-white bg-white p-4 shadow-md not-dark:bg-zinc-900">
                     {count.map((_, index) => (
                         <Autocomplete
                             key={index}
                             label={t('Select Pokémon Element')}
                             size="sm"
                             className="w-full"
-                            variant="underlined"
+                            variant='bordered'
                             labelPlacement="outside"
                             color="primary"
                             selectedKey={dataInput[index] || ''}

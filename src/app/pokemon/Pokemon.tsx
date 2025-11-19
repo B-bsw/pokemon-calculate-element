@@ -99,8 +99,8 @@ export default function Pokemon() {
                             setSearch(e.target.value)
                             setPage(1)
                         }}
-                        variant="underlined"
-                        color="primary"
+                        variant='faded'
+                        color='primary'
                     />
 
                     <Table
