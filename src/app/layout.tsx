@@ -41,7 +41,7 @@ export default function RootLayout({
                 <I18nProvider>
                     <Providers>
                         <MainHeader />
-                        <div className="pt-30">{children}</div>
+                        <div className="pt-35">{children}</div>
                     </Providers>
                 </I18nProvider>
             </body>
