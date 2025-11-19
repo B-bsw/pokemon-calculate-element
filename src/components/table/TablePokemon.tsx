@@ -3,51 +3,59 @@ import typeChart from '@/libs/DataElement'
 import Image from 'next/image'
 import iconElements from '@/components/icons'
 import { useTranslate } from '@/i18n/i18nContext'
+import {
+    Table,
+    TableHeader,
+    TableColumn,
+    TableBody,
+    TableRow,
+    TableCell,
+} from '@heroui/react'
 
 const TablePokemon = () => {
     const { t } = useTranslate()
-    return (
-        <div className="mx-10 h-full w-full">
-            <table className="border [&_th,td]:border [&_th,td]:px-2 [&_th,td]:py-1">
-                <thead>
-                    <tr>
-                        <th colSpan={2}>{t('element')}</th>
-                        <th>{t('strong')}</th>
-                        <th>{t('weak')}</th>
-                        <th>{t('noEffectFrom')}</th>
-                    </tr>
-                </thead>
 
-                <tbody>
+    return (
+        <div className="mx-auto my-2 max-w-3xl">
+            <Table removeWrapper aria-label="Pokemon element table">
+                <TableHeader>
+                    <TableColumn>{t('element')}</TableColumn>
+                    <TableColumn>{t('strong')}</TableColumn>
+                    <TableColumn>{t('weak')}</TableColumn>
+                    <TableColumn>{t('noEffectFrom')}</TableColumn>
+                </TableHeader>
+
+                <TableBody>
                     {typeChart.map((e) => (
-                        <tr key={e.name}>
-                            <td className="border-r-transparent">
-                                <div className="w-10">
+                        <TableRow key={e.name}>
+                            <TableCell className="flex w-full items-center gap-3">
+                                <div className="flex-shrink-0">
                                     <Image
                                         src={iconElements(e.name)}
-                                        alt="image"
+                                        alt={e.name}
                                         width={30}
                                         height={30}
                                         className={`icon ${e.name.toLowerCase()}`}
                                     />
                                 </div>
-                            </td>
-                            <td>
                                 <div>{t(e.name)}</div>
-                            </td>
-                            <td>
+                            </TableCell>
+
+                            <TableCell>
                                 {e.strongAgainst.map((st) => t(st)).join(', ')}
-                            </td>
-                            <td>
+                            </TableCell>
+
+                            <TableCell>
                                 {e.weakAgainst.map((wk) => t(wk)).join(', ')}
-                            </td>
-                            <td>
+                            </TableCell>
+
+                            <TableCell>
                                 {e.noEffectFrom.map((no) => t(no)).join(', ')}
-                            </td>
-                        </tr>
+                            </TableCell>
+                        </TableRow>
                     ))}
-                </tbody>
-            </table>
+                </TableBody>
+            </Table>
         </div>
     )
 }
