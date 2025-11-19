@@ -7,7 +7,7 @@ import { useTranslate } from '@/i18n/i18nContext'
 const TablePokemon = () => {
     const { t } = useTranslate()
     return (
-        <div className="mx-10 mt-20 max-h-screen overflow-auto overflow-x-auto">
+        <div className="mx-10 h-full w-full">
             <table className="border [&_th,td]:border [&_th,td]:px-2 [&_th,td]:py-1">
                 <thead>
                     <tr>

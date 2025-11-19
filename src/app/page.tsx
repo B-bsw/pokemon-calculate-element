@@ -8,7 +8,7 @@ export default function Home() {
     const { t } = useTranslate()
     return (
         <>
-            <div className="flex h-screen items-center justify-center p-4">
+            <div className="flex h-[50vh] items-center justify-center p-4">
                 <div className="w-full max-w-md text-center">
                     <div className="my-2 flex flex-col gap-5">
                         <Link
