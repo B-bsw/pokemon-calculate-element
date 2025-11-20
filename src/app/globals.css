@@ -1,43 +1,43 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin './hero.ts';
 @source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 @custom-variant dark (&:is(.light *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --background: #ffffff;
+    --foreground: #171717;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    :root {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+    }
 }
 
 /*body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    &:not(*:is(.light *)) {
+        background-color: var(--color-zinc-800)
+    }
 }*/
 
 .icon {
     border-radius: 100%;
-    padding:3px;
+    padding: 3px;
     /*height: 100px;
     width: 100px;*/
-    margin:auto;
+    margin: auto;
     transition: 200ms all;
 }
 
-.icon:hover{
+.icon:hover {
     filter: saturate(200%);
     transform: scale(1.1);
     cursor: pointer;
@@ -50,13 +50,17 @@
 }
 
 .bug {
-    background: #92BC2C;
-    box-shadow: 0 0 15px #92BC2C;
+    background: #92bc2c;
+    box-shadow: 0 0 15px #92bc2c;
 }
 
-:root{
-    &.dark{
-        background-color: var(--color-zinc-800);
+:root {
+    height: 100vh;
+    .dark {
+        background-color: white;
+    }
+    &:not(.dark) {
+        background-color: var(--color-white);
     }
 }
 
@@ -66,81 +70,81 @@ img.dark {
 }
 
 .dragon {
-    background: #0C69C8;
-    box-shadow: 0 0 15px #0C69C8;
+    background: #0c69c8;
+    box-shadow: 0 0 15px #0c69c8;
 }
 
 .electric {
-    background: #F2D94E;
-    box-shadow: 0 0 15px #F2D94E;
+    background: #f2d94e;
+    box-shadow: 0 0 15px #f2d94e;
 }
 
 .fire {
-    background: #FBA54C;
-    box-shadow: 0 0 15px #FBA54C;
+    background: #fba54c;
+    box-shadow: 0 0 15px #fba54c;
 }
 
 .fairy {
-    background: #EE90E6;
-    box-shadow: 0 0 15px #EE90E6;
+    background: #ee90e6;
+    box-shadow: 0 0 15px #ee90e6;
 }
 
 .fighting {
-    background: #D3425F;
-    box-shadow: 0 0 15px #D3425F;
+    background: #d3425f;
+    box-shadow: 0 0 15px #d3425f;
 }
 
 .flying {
-    background: #A1BBEC;
-    box-shadow: 0 0 15px #A1BBEC;
+    background: #a1bbec;
+    box-shadow: 0 0 15px #a1bbec;
 }
 
 .ghost {
-    background: #5F6DBC;
-    box-shadow: 0 0 15px #5F6DBC;
+    background: #5f6dbc;
+    box-shadow: 0 0 15px #5f6dbc;
 }
 
 .grass {
-    background: #5FBD58;
-    box-shadow: 0 0 15px #5FBD58;
+    background: #5fbd58;
+    box-shadow: 0 0 15px #5fbd58;
 }
 
 .ground {
-    background: #DA7C4D;
-    box-shadow: 0 0 15px #DA7C4D;
+    background: #da7c4d;
+    box-shadow: 0 0 15px #da7c4d;
 }
 
 .ice {
-    background: #75D0C1;
-    box-shadow: 0 0 15px #75D0C1;
+    background: #75d0c1;
+    box-shadow: 0 0 15px #75d0c1;
 }
 
 .normal {
-    background: #A0A29F;
-    box-shadow: 0 0 15px #A0A29F;
+    background: #a0a29f;
+    box-shadow: 0 0 15px #a0a29f;
 }
 
 .poison {
-    background: #B763CF;
-    box-shadow: 0 0 15px #B763CF;
+    background: #b763cf;
+    box-shadow: 0 0 15px #b763cf;
 }
 
 .psychic {
-    background: #FA8581;
-    box-shadow: 0 0 15px #FA8581;
+    background: #fa8581;
+    box-shadow: 0 0 15px #fa8581;
 }
 
 .rock {
-    background: #C9BB8A;
-    box-shadow: 0 0 15px #C9BB8A;
+    background: #c9bb8a;
+    box-shadow: 0 0 15px #c9bb8a;
 }
 
 .steel {
-    background: #5695A3;
-    box-shadow: 0 0 15px #5695A3;
+    background: #5695a3;
+    box-shadow: 0 0 15px #5695a3;
 }
 
 .water {
-    background: #539DDF;
-    box-shadow: 0 0 15px #539DDF;
+    background: #539ddf;
+    box-shadow: 0 0 15px #539ddf;
 }

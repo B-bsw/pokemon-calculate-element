@@ -41,7 +41,9 @@ export default function RootLayout({
                 <I18nProvider>
                     <Providers>
                         <MainHeader />
-                        <div className="pt-25 max-md:pt-35">{children}</div>
+                        <div className="pt-25 max-md:pt-35 not-dark:bg-zinc-800">
+                            {children}
+                        </div>
                     </Providers>
                 </I18nProvider>
             </body>

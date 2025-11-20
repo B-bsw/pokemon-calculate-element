@@ -89,7 +89,7 @@ export default function Pokemon() {
 
     return (
         <>
-            <div className="flex h-full w-full items-center justify-center p-4">
+            <div className="flex h-screen sm:-mt-25 w-full items-center justify-center p-4">
                 <section className="flex w-full max-w-xl flex-col gap-4">
                     <Input
                         type="text"
