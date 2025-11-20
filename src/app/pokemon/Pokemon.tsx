@@ -12,6 +12,7 @@ import {
     TableHeader,
     TableRow,
     Input,
+    Skeleton,
 } from '@heroui/react'
 import axios from 'axios'
 import Image from 'next/image'
@@ -22,6 +23,7 @@ type Pokemon = {
     name: string
     numberOfPokemon: string
     img: string
+    isLoaded: boolean
 }[]
 
 export default function Pokemon() {
@@ -35,7 +37,7 @@ export default function Pokemon() {
     const loading = async () => {
         try {
             const res = await axios.get(
-                `https://pokeapi.co/api/v2/pokemon?limit=1328&offset=0`,
+                `https://pokeapi.co/api/v2/pokemon?limit=1328&offset=0`
             )
             const data: Pokemon = res.data.results
             const dataWithIndex = data.map((e, index) => ({
@@ -50,6 +52,7 @@ export default function Pokemon() {
                             ? `0${index + 1}`
                             : (index + 1).toString(),
                 img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index >= 1025 ? index + 8976 : index + 1}.png`,
+                isLoaded: false,
             }))
             setDataPokemon(dataWithIndex)
             setPage(1)
@@ -89,7 +92,7 @@ export default function Pokemon() {
 
     return (
         <>
-            <div className="flex h-screen sm:-mt-25 w-full items-center justify-center p-4">
+            <div className="flex h-screen w-full items-center justify-center p-4 sm:-mt-25">
                 <section className="flex w-full max-w-xl flex-col gap-4">
                     <Input
                         type="text"
@@ -99,8 +102,8 @@ export default function Pokemon() {
                             setSearch(e.target.value)
                             setPage(1)
                         }}
-                        variant='faded'
-                        color='primary'
+                        variant="faded"
+                        color="primary"
                     />
 
                     <Table
@@ -143,12 +146,40 @@ export default function Pokemon() {
                                         <TableCell>
                                             {key === 'name' ? (
                                                 <div className="flex items-center justify-center gap-2">
-                                                    <Image
-                                                        src={item.img}
-                                                        alt="img"
-                                                        width={32}
-                                                        height={32}
-                                                    />
+                                                    <div className="relative h-[32px] w-[32px]">
+                                                        {!item.isLoaded && (
+                                                            <Skeleton className="h-5 w-5 rounded-md" />
+                                                        )}
+
+                                                        <Image
+                                                            src={item.img}
+                                                            alt="img"
+                                                            width={32}
+                                                            height={32}
+                                                            className={
+                                                                !item.isLoaded
+                                                                    ? 'invisible'
+                                                                    : ''
+                                                            }
+                                                            onLoad={() => {
+                                                                setDataPokemon(
+                                                                    (prev) =>
+                                                                        prev.map(
+                                                                            (
+                                                                                p
+                                                                            ) =>
+                                                                                p.id ===
+                                                                                item.id
+                                                                                    ? {
+                                                                                          ...p,
+                                                                                          isLoaded: true,
+                                                                                      }
+                                                                                    : p
+                                                                        )
+                                                                )
+                                                            }}
+                                                        />
+                                                    </div>
                                                     <span className="capitalize">
                                                         {item.name}
                                                     </span>

@@ -16,7 +16,7 @@ const TablePokemon = () => {
     const { t } = useTranslate()
 
     return (
-        <div className="mx-auto mb-5 pb-10 max-w-3xl">
+        <div className="mx-auto mb-5 max-w-3xl pb-10">
             <Table aria-label="Pokemon element table">
                 <TableHeader>
                     <TableColumn>{t('element')}</TableColumn>

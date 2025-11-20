@@ -58,14 +58,14 @@ const Pokemon = () => {
     const selectedTypes = poke.filter((type) => dataInput.includes(type.name))
 
     const mergeUnique = (
-        key: 'strongAgainst' | 'weakAgainst' | 'noEffectFrom',
+        key: 'strongAgainst' | 'weakAgainst' | 'noEffectFrom'
     ) => {
         const merge = [...new Set(selectedTypes.flatMap((t) => t[key]))]
         return merge.length === 0 ? [...new Set('-')] : merge
     }
 
     return (
-        <div className="flex h-screen -mt-25 flex-col items-center justify-center gap-4 p-4 md:p-8">
+        <div className="-mt-25 flex h-screen flex-col items-center justify-center gap-4 p-4 md:p-8">
             <header className="w-full max-w-md">
                 <div className="flex flex-col items-center gap-4 rounded-xl border bg-white p-4 shadow-md not-dark:border-stone-900 not-dark:bg-zinc-900 dark:border-white">
                     {count.map((_, index) => (
@@ -170,7 +170,7 @@ const Pokemon = () => {
                                                 >
                                                     <Image
                                                         src={iconElements(
-                                                            e.name,
+                                                            e.name
                                                         )}
                                                         alt={e.name}
                                                         width={30}
