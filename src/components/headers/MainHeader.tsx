@@ -3,22 +3,24 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useTranslate } from '@/i18n/i18nContext'
 import { Switch, Tab, Tabs } from '@heroui/react'
 import { useRouter, usePathname } from 'next/navigation'
-import { useTheme } from 'next-themes'
+import useDarkMode from '@/hooks/useDarkMode'
 import { MoonIcon } from '@/components/icons/MoonIcon'
 import { SunIcon } from '@/components/icons/SunIcon'
 
 const MainHeader = () => {
-    const path = usePathname()
-    const { t, lang, setLang } = useTranslate()
-    const [routeOfTabs, setRouteOfTabs] = useState<string>(path)
     const router = useRouter()
-    const { resolvedTheme, setTheme } = useTheme()
-    const [vertical, setVertical] = useState(false)
-    const headerRef = useRef<HTMLDivElement | null>(null)
-    const [mounted, setMounted] = useState(false)
+    const path = usePathname()
 
-    useEffect(() => setMounted(true), [])
-    useEffect(() => setRouteOfTabs(path), [path])
+    const [vertical, setVertical] = useState<boolean>(false)
+    const headerRef = useRef<HTMLDivElement | null>(null)
+    const [routeOfTabs, setRouteOfTabs] = useState<string>(path)
+
+    const { theme, setTheme } = useDarkMode()
+    const { t, lang, setLang } = useTranslate()
+
+    useEffect(() => {
+        setRouteOfTabs(path)
+    }, [path])
     useEffect(() => {
         const checkSize = () => setVertical(window.innerWidth < 768)
         checkSize()
@@ -26,14 +28,12 @@ const MainHeader = () => {
         return () => window.removeEventListener('resize', checkSize)
     }, [])
 
-    if (!mounted) return null
-
-    const isDarkMode = resolvedTheme === 'dark'
+    const isDarkMode: boolean = theme === 'dark'
 
     return (
         <header
             ref={headerRef}
-            className="fixed top-0 left-0 z-50 h-20 w-full bg-white shadow not-dark:bg-black not-dark:shadow-zinc-700/30 max-md:h-30"
+            className="fixed top-0 left-0 z-50 h-22 w-full bg-white shadow not-dark:bg-black not-dark:shadow-zinc-700/30 max-md:h-32"
         >
             <div className="flex h-full items-center justify-between px-4 md:px-6">
                 <Tabs
@@ -58,7 +58,7 @@ const MainHeader = () => {
                         onClick={() => router.push('/pokemon/elements')}
                     />
                 </Tabs>
-                <div className="flex flex-col items-center justify-evenly h-full">
+                <div className="flex h-full flex-col items-center justify-evenly">
                     <div>
                         <Switch
                             thumbIcon={({ className }) =>

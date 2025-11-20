@@ -7,6 +7,12 @@ import {
     Button,
     Divider,
     Tooltip,
+    Table,
+    TableHeader,
+    TableColumn,
+    TableBody,
+    TableRow,
+    TableCell,
 } from '@heroui/react'
 import poke from '@/libs/DataElement'
 import iconElements, { icon2TagSvg } from '@/components/icons'
@@ -145,76 +151,60 @@ const Pokemon = () => {
             <section className="mt-6 w-full max-w-5xl">
                 <div className="overflow-x-auto rounded-xl bg-white shadow-md not-dark:bg-zinc-900">
                     {dataInput[0].length > 1 && (
-                        <table className="w-full min-w-[600px] text-sm text-zinc-800 md:text-base [&_td]:p-3 [&_td]:align-middle [&_td,th]:text-center">
-                            <thead className="text-zinc-500 not-dark:bg-zinc-900 not-dark:text-white">
-                                <tr>
-                                    <th
-                                        colSpan={2}
-                                        className="border-b border-zinc-300 not-dark:border-zinc-700 p-3 text-left font-semibold"
-                                    >
-                                        {t('element')}
-                                    </th>
-                                    <th className="border-b border-zinc-300 not-dark:border-zinc-700 p-3 text-left font-semibold">
-                                        {t('strong')}
-                                    </th>
-                                    <th className="border-b border-zinc-300 not-dark:border-zinc-700 p-3 text-left font-semibold">
-                                        {t('weak')}
-                                    </th>
-                                    <th className="border-b border-zinc-300 not-dark:border-zinc-700 p-3 text-left font-semibold">
-                                        {t('noEffectFrom')}
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr className="bg-white align-top transition-colors not-dark:bg-zinc-700 not-dark:text-white hover:bg-zinc-50 not-dark:hover:bg-zinc-400/50">
-                                    <td className="">
-                                        <div className="flex flex-col items-center gap-2">
-                                            {selectedTypes.map((e) => (
-                                                <Image
-                                                    key={e.name}
-                                                    src={iconElements(e.name)}
-                                                    alt={e.name}
-                                                    width={30}
-                                                    height={30}
-                                                    className={`icon rounded-md ${e.name.toLocaleLowerCase()}`}
-                                                />
-                                            ))}
-                                        </div>
-                                    </td>
+                        <Table aria-label="Selected Pokémon element table">
+                            <TableHeader>
+                                <TableColumn>{t('element')}</TableColumn>
+                                <TableColumn>{t('strong')}</TableColumn>
+                                <TableColumn>{t('weak')}</TableColumn>
+                                <TableColumn>{t('noEffectFrom')}</TableColumn>
+                            </TableHeader>
 
-                                    <td>
-                                        <div className="flex flex-col gap-4 text-start">
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>
+                                        <div className="flex flex-col items-start gap-4">
                                             {selectedTypes.map((e) => (
                                                 <div
                                                     key={e.name}
-                                                    className="font-medium"
+                                                    className="flex items-center gap-3"
                                                 >
-                                                    {t(e.name)}
+                                                    <Image
+                                                        src={iconElements(
+                                                            e.name,
+                                                        )}
+                                                        alt={e.name}
+                                                        width={30}
+                                                        height={30}
+                                                        className={`icon rounded-md ${e.name.toLowerCase()}`}
+                                                    />
+                                                    <span className="font-medium">
+                                                        {t(e.name)}
+                                                    </span>
                                                 </div>
                                             ))}
                                         </div>
-                                    </td>
+                                    </TableCell>
 
-                                    <td>
+                                    <TableCell>
                                         {mergeUnique('strongAgainst')
                                             .map((e) => t(e))
-                                            .join(' - ')}
-                                    </td>
+                                            .join(', ')}
+                                    </TableCell>
 
-                                    <td>
+                                    <TableCell>
                                         {mergeUnique('weakAgainst')
                                             .map((e) => t(e))
-                                            .join(' - ')}
-                                    </td>
+                                            .join(', ')}
+                                    </TableCell>
 
-                                    <td>
+                                    <TableCell>
                                         {mergeUnique('noEffectFrom')
                                             .map((e) => t(e))
-                                            .join(' - ')}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                            .join(', ')}
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
                     )}
                 </div>
             </section>
