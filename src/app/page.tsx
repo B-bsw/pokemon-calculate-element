@@ -13,19 +13,19 @@ export default function Home() {
                     <div className="my-2 flex flex-col gap-5">
                         <Link
                             href={'/pokemon'}
-                            className="rounded-sm border p-1 transition-all hover:bg-gray-200"
+                            className="rounded-sm border p-1 transition-all hover:bg-gray-200 not-dark:hover:bg-zinc-700"
                         >
                             {t('pokelist')}
                         </Link>
                         <Link
                             href={'/pokemon/calculate'}
-                            className="rounded-sm border p-1 transition-all hover:bg-gray-200"
+                            className="rounded-sm border p-1 transition-all hover:bg-gray-200 not-dark:hover:bg-zinc-700"
                         >
                             {t('calem')}
                         </Link>
                         <Link
                             href={'/pokemon/elements'}
-                            className="rounded-sm border p-1 transition-all hover:bg-gray-200"
+                            className="rounded-sm border p-1 transition-all hover:bg-gray-200 not-dark:hover:bg-zinc-700"
                         >
                             {t('tableem')}
                         </Link>

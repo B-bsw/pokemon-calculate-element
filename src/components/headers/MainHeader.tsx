@@ -58,7 +58,7 @@ const MainHeader = () => {
                         onClick={() => router.push('/pokemon/elements')}
                     />
                 </Tabs>
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center justify-evenly h-full">
                     <div>
                         <Switch
                             thumbIcon={({ className }) =>

@@ -61,14 +61,14 @@ const Pokemon = () => {
     return (
         <div className="flex h-full flex-col items-center justify-center gap-4 p-4 md:p-8">
             <header className="w-full max-w-md">
-                <div className="flex flex-col items-center gap-4 rounded-xl border not-dark:border-stone-900 dark:border-white bg-white p-4 shadow-md not-dark:bg-zinc-900">
+                <div className="flex flex-col items-center gap-4 rounded-xl border bg-white p-4 shadow-md not-dark:border-stone-900 not-dark:bg-zinc-900 dark:border-white">
                     {count.map((_, index) => (
                         <Autocomplete
                             key={index}
                             label={t('Select Pokémon Element')}
                             size="sm"
                             className="w-full"
-                            variant='bordered'
+                            variant="bordered"
                             labelPlacement="outside"
                             color="primary"
                             selectedKey={dataInput[index] || ''}
@@ -143,31 +143,31 @@ const Pokemon = () => {
             </header>
 
             <section className="mt-6 w-full max-w-5xl">
-                <div className="overflow-x-auto rounded-xl bg-white shadow-md">
+                <div className="overflow-x-auto rounded-xl bg-white shadow-md not-dark:bg-zinc-900">
                     {dataInput[0].length > 1 && (
-                        <table className="w-full min-w-[600px] border-collapse text-sm text-zinc-800 md:text-base [&_td]:p-3 [&_td]:align-middle [&_td,th]:text-center">
-                            <thead className="bg-gradient-to-r from-zinc-100 to-zinc-200 text-zinc-700">
+                        <table className="w-full min-w-[600px] text-sm text-zinc-800 md:text-base [&_td]:p-3 [&_td]:align-middle [&_td,th]:text-center">
+                            <thead className="text-zinc-500 not-dark:bg-zinc-900 not-dark:text-white">
                                 <tr>
                                     <th
                                         colSpan={2}
-                                        className="border-b border-zinc-300 p-3 text-left font-semibold"
+                                        className="border-b border-zinc-300 not-dark:border-zinc-700 p-3 text-left font-semibold"
                                     >
                                         {t('element')}
                                     </th>
-                                    <th className="border-b border-zinc-300 p-3 text-left font-semibold">
+                                    <th className="border-b border-zinc-300 not-dark:border-zinc-700 p-3 text-left font-semibold">
                                         {t('strong')}
                                     </th>
-                                    <th className="border-b border-zinc-300 p-3 text-left font-semibold">
+                                    <th className="border-b border-zinc-300 not-dark:border-zinc-700 p-3 text-left font-semibold">
                                         {t('weak')}
                                     </th>
-                                    <th className="border-b border-zinc-300 p-3 text-left font-semibold">
+                                    <th className="border-b border-zinc-300 not-dark:border-zinc-700 p-3 text-left font-semibold">
                                         {t('noEffectFrom')}
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="align-top transition-colors hover:bg-zinc-50">
-                                    <td className="border-b border-zinc-200 border-r-transparent">
+                                <tr className="bg-white align-top transition-colors not-dark:bg-zinc-700 not-dark:text-white hover:bg-zinc-50 not-dark:hover:bg-zinc-400/50">
+                                    <td className="">
                                         <div className="flex flex-col items-center gap-2">
                                             {selectedTypes.map((e) => (
                                                 <Image
