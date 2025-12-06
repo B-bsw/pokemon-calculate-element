@@ -25,13 +25,13 @@
     "language.english": "English",
     "language.thai": "Thai",
     "strong": "Strong",
-    "element": "Element",
-    "Select Pokémon Element":"Select Pokémon Elemen",
-    "searchNameOrNumber":"Search name or number of Pokemon...",
-    "index":"index",
-    "name":"name",
-    "no.":"No.",
-    "pokelist":"Pokemon List",
-    "calem":"Calculate Elements",
-    "tableem":"Table Elements"
+    "elemental": "Elemental",
+    "SelectPokeElemental": "Select Elemental of Pokemon",
+    "searchNameOrNumber": "Search name or number of Pokemon...",
+    "index": "index",
+    "name": "name",
+    "no.": "No.",
+    "pokelist": "Pokemon List",
+    "calem": "Calculate Elementals",
+    "tableem": "Table Elementals"
 }

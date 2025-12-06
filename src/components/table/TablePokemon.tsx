@@ -19,7 +19,7 @@ const TablePokemon = () => {
         <div className="mx-auto mb-5 max-w-3xl pb-10">
             <Table aria-label="Pokemon element table">
                 <TableHeader>
-                    <TableColumn>{t('element')}</TableColumn>
+                    <TableColumn>{t('elemental')}</TableColumn>
                     <TableColumn>{t('strong')}</TableColumn>
                     <TableColumn>{t('weak')}</TableColumn>
                     <TableColumn>{t('noEffectFrom')}</TableColumn>
@@ -29,7 +29,7 @@ const TablePokemon = () => {
                     {typeChart.map((e) => (
                         <TableRow key={e.name}>
                             <TableCell className="flex w-full items-center gap-3">
-                                <div className="flex-shrink-0">
+                                <div className="shrink-0">
                                     <Image
                                         src={iconElements(e.name)}
                                         alt={e.name}

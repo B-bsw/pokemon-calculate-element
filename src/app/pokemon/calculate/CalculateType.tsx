@@ -71,7 +71,7 @@ const Pokemon = () => {
                     {count.map((_, index) => (
                         <Autocomplete
                             key={index}
-                            label={t('Select Pokémon Element')}
+                            label={t('SelectPokeElemental')}
                             size="sm"
                             className="w-full"
                             variant="bordered"

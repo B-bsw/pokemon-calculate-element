@@ -4,7 +4,13 @@ const nextConfig: NextConfig = {
     /* config options here */
     reactCompiler: true,
     images: {
-        remotePatterns: [new URL('https://raw.githubusercontent.com/**')],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'raw.githubusercontent.com',
+                pathname: '/**',
+            },
+        ],
     },
 }
 

@@ -1,22 +1,22 @@
-import en from './en.json';
-import th from './th.json';
+import en from './en.json'
+import th from './th.json'
 
-export type Locale = 'en' | 'th';
+export type Locale = 'en' | 'th'
 
-type Dictionary = Record<string, any>;
+type Dictionary = Record<string, any>
 
 const resources: Record<Locale, Dictionary> = {
     en,
-    th
-};
+    th,
+}
 
-let currentLocale: Locale = 'en';
+let currentLocale: Locale = 'en'
 
 export function setLocale(locale: Locale) {
-    currentLocale = locale;
+    currentLocale = locale
     console.log(currentLocale)
 }
 
 export function t(key: string): string {
-    return resources[currentLocale][key] ?? key;
+    return resources[currentLocale][key] ?? key
 }

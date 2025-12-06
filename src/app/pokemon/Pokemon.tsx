@@ -146,7 +146,7 @@ export default function Pokemon() {
                                         <TableCell>
                                             {key === 'name' ? (
                                                 <div className="flex items-center justify-center gap-2">
-                                                    <div className="relative h-[32px] w-[32px]">
+                                                    <div className="relative h-8 w-8">
                                                         {!item.isLoaded && (
                                                             <Skeleton className="h-5 w-5 rounded-md" />
                                                         )}
