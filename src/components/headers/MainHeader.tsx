@@ -59,25 +59,24 @@ const MainHeader = () => {
         >
             <NavbarMenuToggle
                 aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-                className="md:hidden"
+                className="sm:hidden"
             />
-            <NavbarContent justify="start" className="max-md:hidden">
-                <Tabs selectedKey={routeOfTabs} variant="light" color="primary">
-                    <Tab
-                        key="/pokemon"
-                        title={t('pokelist')}
-                        onClick={() => router.push('/pokemon')}
-                    />
-                    <Tab
-                        key="/pokemon/calculate"
-                        title={t('calem')}
-                        onClick={() => router.push('/pokemon/calculate')}
-                    />
-                    <Tab
-                        key="/pokemon/elements"
-                        title={t('tableem')}
-                        onClick={() => router.push('/pokemon/elements')}
-                    />
+            <NavbarContent justify="start" className="max-sm:hidden">
+                <Tabs
+                    selectedKey={routeOfTabs}
+                    variant="light"
+                    color="primary"
+                    classNames={{
+                        tabContent: 'dark:text-black',
+                    }}
+                >
+                    {itemNavbar.map((item) => (
+                        <Tab
+                            key={item.path}
+                            title={t(item.nameTrans)}
+                            onClick={() => router.push(item.path)}
+                        />
+                    ))}
                 </Tabs>
             </NavbarContent>
 
@@ -96,9 +95,9 @@ const MainHeader = () => {
                             setTheme(value ? 'dark' : 'light')
                         }
                     >
-                        <span className="font-medium not-dark:text-white">
+                        {/* <span className="font-medium not-dark:text-white">
                             Dark mode
-                        </span>
+                        </span> */}
                     </Switch>
                 </div>
                 <Tabs
@@ -107,6 +106,9 @@ const MainHeader = () => {
                     selectedKey={lang}
                     size="sm"
                     onSelectionChange={(key) => setLang(key as 'en' | 'th')}
+                    classNames={{
+                        tabContent: 'dark:text-black',
+                    }}
                 >
                     <Tab title="TH" key="th" />
                     <Tab title="EN" key="en" />

@@ -33,5 +33,8 @@
     "no.": "No.",
     "pokelist": "Pokemon List",
     "calem": "Calculate Elementals",
-    "tableem": "Table Elementals"
+    "tableem": "Table Elementals",
+    "add": "add",
+    "delete": "delete",
+    "reset": "reset"
 }

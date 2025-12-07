@@ -95,7 +95,7 @@ const Pokemon = () => {
 
                     <div className="mt-2 flex gap-3">
                         <Tooltip
-                            content="add"
+                            content={t('add')}
                             color="default"
                             delay={1000}
                             closeDelay={0}
@@ -112,7 +112,7 @@ const Pokemon = () => {
                             </Button>
                         </Tooltip>
                         <Tooltip
-                            content="delete"
+                            content={t('delete')}
                             color="danger"
                             delay={1000}
                             closeDelay={0}
@@ -129,7 +129,7 @@ const Pokemon = () => {
                             </Button>
                         </Tooltip>
                         <Tooltip
-                            content="reset"
+                            content={t('reset')}
                             color="primary"
                             delay={1000}
                             closeDelay={0}
