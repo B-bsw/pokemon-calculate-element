@@ -39,9 +39,11 @@ export default function RootLayout({
             >
                 <I18nProvider>
                     <Providers>
-                        <MainHeader />
-                        <div className=" not-dark:bg-zinc-800">
-                            {children}
+                        <div>
+                            <MainHeader />
+                            <div className=" not-dark:bg-zinc-800">
+                                {children}
+                            </div>
                         </div>
                     </Providers>
                 </I18nProvider>

@@ -54,7 +54,7 @@ const MainHeader = () => {
     return (
         <Navbar
             classNames={{
-                base: 'bg-black dark:bg-zinc-400/80',
+                base: 'bg-black dark:bg-zinc-400/80 fixed',
             }}
         >
             <NavbarMenuToggle
