@@ -27,7 +27,7 @@ export default function Home() {
     return (
         <>
             <div className="flex h-screen items-center justify-center">
-                <div className="w-full max-w-md text-center">
+                <div className="w-full max-w-md text-center px-5">
                     <div className="my-2 flex flex-col gap-5">
                         {itemList.map((item) => (
                             <Link href={item.path} key={item.id}>

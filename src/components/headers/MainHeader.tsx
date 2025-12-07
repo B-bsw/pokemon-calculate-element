@@ -64,7 +64,7 @@ const MainHeader = () => {
             <NavbarContent justify="start" className="max-sm:hidden">
                 <Tabs
                     selectedKey={routeOfTabs}
-                    variant="light"
+                    variant="underlined"
                     color="primary"
                     classNames={{
                         tabContent: 'dark:text-black',
