@@ -20,7 +20,7 @@ import { SunIcon } from '@/components/icons/SunIcon'
 const MainHeader = () => {
     const router = useRouter()
     const path = usePathname()
-    
+
     const [routeOfTabs, setRouteOfTabs] = useState<string>(path)
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
 
@@ -31,14 +31,30 @@ const MainHeader = () => {
         setRouteOfTabs(path)
     }, [path])
 
-
     const isDarkMode: boolean = theme === 'dark'
+
+    const itemNavbar = [
+        {
+            id: 1,
+            nameTrans: 'pokelist',
+            path: '/pokemon',
+        },
+        {
+            id: 2,
+            nameTrans: 'calem',
+            path: '/pokemon/calculate',
+        },
+        {
+            id: 3,
+            nameTrans: 'tableem',
+            path: '/pokemon/elements',
+        },
+    ]
 
     return (
         <Navbar
-            isBordered
             classNames={{
-                base: 'bg-black',
+                base: 'bg-black dark:bg-zinc-400/80',
             }}
         >
             <NavbarMenuToggle
@@ -46,12 +62,7 @@ const MainHeader = () => {
                 className="md:hidden"
             />
             <NavbarContent justify="start" className="max-md:hidden">
-                <Tabs
-                    selectedKey={routeOfTabs}
-                    variant="light"
-                    color="primary"
-                    // isVertical={vertical}
-                >
+                <Tabs selectedKey={routeOfTabs} variant="light" color="primary">
                     <Tab
                         key="/pokemon"
                         title={t('pokelist')}
@@ -102,87 +113,20 @@ const MainHeader = () => {
                 </Tabs>
             </NavbarContent>
 
-            <NavbarMenu className='bg-zinc-800'>
-                <NavbarItem>
-                     <Link size='lg' href={'/pokemon'} className='w-full'>
-                        {t('pokelist')}
-                    </Link>
-                </NavbarItem>
-
-                <NavbarItem>
-                    <Link size='lg' href={'/pokemon/calculate'} className='w-full'>
-                        {t('calem')}
-                    </Link>
-                </NavbarItem>
-
-                <NavbarItem>
-                    <Link size='lg' href={'/pokemon/elements'} className='w-full'>
-                        {t('tableem')}
-                    </Link>
-                </NavbarItem>
+            <NavbarMenu className="bg-zinc-900 dark:bg-zinc-200">
+                {itemNavbar.map((item) => (
+                    <NavbarItem key={item.id}>
+                        <Link
+                            size="lg"
+                            href={item.path}
+                            className={`my-2 w-full text-white hover:text-zinc-300 dark:text-black dark:hover:text-zinc-700 ${routeOfTabs === item.path && 'text-primary dark:text-primary hover:text-primary-300 dark:hover:text-primary-400'}`}
+                        >
+                            {t(item.nameTrans)}
+                        </Link>
+                    </NavbarItem>
+                ))}
             </NavbarMenu>
         </Navbar>
-
-        // <header
-        //     ref={headerRef}
-        //     className="fixed top-0 left-0 z-50 h-22 w-full bg-white shadow not-dark:bg-black not-dark:shadow-zinc-700/30 max-md:h-32"
-        // >
-        //     <div className="flex h-full items-center justify-between px-4 md:px-6">
-        //         <Tabs
-        //             selectedKey={routeOfTabs}
-        //             variant="light"
-        //             color="primary"
-        //             isVertical={vertical}
-        //         >
-        //             <Tab
-        //                 key="/pokemon"
-        //                 title={t('pokelist')}
-        //                 onClick={() => router.push('/pokemon')}
-        //             />
-        //             <Tab
-        //                 key="/pokemon/calculate"
-        //                 title={t('calem')}
-        //                 onClick={() => router.push('/pokemon/calculate')}
-        //             />
-        //             <Tab
-        //                 key="/pokemon/elements"
-        //                 title={t('tableem')}
-        //                 onClick={() => router.push('/pokemon/elements')}
-        //             />
-        //         </Tabs>
-        //         <div className="flex h-full flex-col items-center justify-evenly">
-        //             <div>
-        //                 <Switch
-        //                     thumbIcon={({ className }) =>
-        //                         !isDarkMode ? (
-        //                             <SunIcon className={className} />
-        //                         ) : (
-        //                             <MoonIcon className={className} />
-        //                         )
-        //                     }
-        //                     isSelected={isDarkMode}
-        //                     onValueChange={(value) =>
-        //                         setTheme(value ? 'dark' : 'light')
-        //                     }
-        //                 >
-        //                     <span className="font-medium not-dark:text-white">
-        //                         Dark mode
-        //                     </span>
-        //                 </Switch>
-        //             </div>
-        //             <Tabs
-        //                 variant="underlined"
-        //                 color="primary"
-        //                 selectedKey={lang}
-        //                 size="sm"
-        //                 onSelectionChange={(key) => setLang(key as 'en' | 'th')}
-        //             >
-        //                 <Tab title="TH" key="th" />
-        //                 <Tab title="EN" key="en" />
-        //             </Tabs>
-        //         </div>
-        //     </div>
-        // </header>
     )
 }
 

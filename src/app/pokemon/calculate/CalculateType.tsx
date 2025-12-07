@@ -65,7 +65,7 @@ const Pokemon = () => {
     }
 
     return (
-        <div className="-mt-25 flex h-screen flex-col items-center justify-center gap-4 p-4 md:p-8">
+        <div className="flex h-screen flex-col items-center justify-center gap-4 p-4 md:p-8">
             <header className="w-full max-w-md">
                 <div className="flex flex-col items-center gap-4 rounded-xl border bg-white p-4 shadow-md not-dark:border-stone-900 not-dark:bg-zinc-900 dark:border-white">
                     {count.map((_, index) => (

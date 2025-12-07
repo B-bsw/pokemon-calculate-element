@@ -40,7 +40,7 @@ export default function RootLayout({
                 <I18nProvider>
                     <Providers>
                         <MainHeader />
-                        <div className="pt-25 not-dark:bg-zinc-800 max-md:pt-35">
+                        <div className=" not-dark:bg-zinc-800">
                             {children}
                         </div>
                     </Providers>
