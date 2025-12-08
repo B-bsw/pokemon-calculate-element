@@ -4,6 +4,7 @@ import { useTranslate } from '@/i18n/i18nContext'
 import {
     Link,
     Navbar,
+    NavbarBrand,
     NavbarContent,
     NavbarItem,
     NavbarMenu,
@@ -16,6 +17,8 @@ import { useRouter, usePathname } from 'next/navigation'
 import useDarkMode from '@/hooks/useDarkMode'
 import { MoonIcon } from '@/components/icons/MoonIcon'
 import { SunIcon } from '@/components/icons/SunIcon'
+import logo from '@/app/favicon.ico'
+import Image from 'next/image'
 
 const MainHeader = () => {
     const router = useRouter()
@@ -61,6 +64,9 @@ const MainHeader = () => {
                 aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
                 className="sm:hidden"
             />
+            <NavbarBrand onClick={() => router.push('/')} className='cursor-pointer'>
+                <Image src={logo} alt="img" />
+            </NavbarBrand>
             <NavbarContent justify="start" className="max-sm:hidden">
                 <Tabs
                     selectedKey={routeOfTabs}
