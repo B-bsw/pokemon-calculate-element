@@ -59,15 +59,19 @@ const MainHeader = () => {
             classNames={{
                 base: 'bg-black dark:bg-zinc-400/80 fixed',
             }}
+            maxWidth="full"
         >
             <NavbarMenuToggle
                 aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-                className="sm:hidden"
+                className="md:hidden"
             />
-            <NavbarBrand onClick={() => router.push('/')} className='cursor-pointer'>
+            <NavbarBrand
+                onClick={() => router.push('/')}
+                className="cursor-pointer"
+            >
                 <Image src={logo} alt="img" />
             </NavbarBrand>
-            <NavbarContent justify="start" className="max-sm:hidden">
+            <NavbarContent justify="start" className="max-md:hidden">
                 <Tabs
                     selectedKey={routeOfTabs}
                     variant="underlined"
