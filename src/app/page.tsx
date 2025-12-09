@@ -31,7 +31,7 @@ export default function Home() {
                     <div className="my-2 flex flex-col gap-5">
                         {itemList.map((item) => (
                             <Link href={item.path} key={item.id}>
-                                <Button className='w-full' variant='solid'>{t(item.nameTrans)}</Button>
+                                <Button className='w-full' variant="ghost" disableRipple>{t(item.nameTrans)}</Button>
                             </Link>
                         ))}
                     </div>

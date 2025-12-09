@@ -105,13 +105,10 @@ const MainHeader = () => {
                             setTheme(value ? 'dark' : 'light')
                         }
                     >
-                        {/* <span className="font-medium not-dark:text-white">
-                            Dark mode
-                        </span> */}
                     </Switch>
                 </div>
                 <Tabs
-                    variant="underlined"
+                    variant='solid'
                     color="primary"
                     selectedKey={lang}
                     size="sm"
