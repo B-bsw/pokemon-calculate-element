@@ -56,9 +56,9 @@
 
 :root {
     height: 100vh;
-    .dark {
+    /*.dark {
         background-color: white;
-    }
+    }*/
     &:not(.dark) {
         background-color: var(--color-white);
     }
@@ -67,6 +67,7 @@
 img.dark {
     background: #595761;
     box-shadow: 0 0 15px #595761;
+
 }
 
 .dragon {
