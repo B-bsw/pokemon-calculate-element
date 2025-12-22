@@ -28,6 +28,24 @@
     }
 }*/
 
+.scll::-webkit-scrollbar {
+  width: 6px;
+  display: none;
+}
+
+.scll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scll::-webkit-scrollbar-thumb {
+  background: rgba(120, 120, 120, 0.5);
+  border-radius: 10px;
+}
+
+.scll::-webkit-scrollbar-thumb:hover {
+  background: rgba(80, 80, 80, 0.8);
+}
+
 .icon {
     border-radius: 100%;
     padding: 3px;
