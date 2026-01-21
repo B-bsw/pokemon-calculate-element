@@ -202,14 +202,14 @@ export default function PokemonDetail({
     const [selectedMove, setSelectedMove] = useState<MoveDetail | null>(null)
     const [isLoadingMoveDetail, setIsLoadingMoveDetail] = useState(false)
     const [selectedTab, setSelectedTab] = useState<string>('level-up')
-    
+
     // Ability modal state
     const [selectedAbility, setSelectedAbility] = useState<AbilityDetail | null>(null)
     const [isLoadingAbility, setIsLoadingAbility] = useState(false)
 
     const { t } = useTranslate()
     const router = useRouter()
-    
+
     // Move modal disclosure
     const { isOpen: isMoveModalOpen, onOpen: onMoveModalOpen, onOpenChange: onMoveModalOpenChange } = useDisclosure()
     // Ability modal disclosure
@@ -505,9 +505,9 @@ export default function PokemonDetail({
                         {/* Header with gradient background based on type colors */}
                         <div
                             className="relative overflow-hidden rounded-t-xl p-6"
-                            style={{ 
+                            style={{
                                 minHeight: '200px',
-                                background: validTypes.length > 1 
+                                background: validTypes.length > 1
                                     ? `linear-gradient(135deg, ${TYPE_COLORS[validTypes[0]?.type.name] || TYPE_COLORS.normal} 0%, ${TYPE_COLORS[validTypes[1]?.type.name] || TYPE_COLORS.normal} 100%)`
                                     : TYPE_COLORS[mainType] || TYPE_COLORS.normal,
                                 boxShadow: `0 0 30px ${TYPE_COLORS[mainType] || TYPE_COLORS.normal}50`
@@ -914,9 +914,9 @@ export default function PokemonDetail({
                                 <>
                                     <ModalHeader className="flex flex-col gap-1">
                                         <div className="flex items-center gap-3">
-                                            <div 
+                                            <div
                                                 className="p-2 rounded-lg"
-                                                style={{ 
+                                                style={{
                                                     background: TYPE_COLORS[mainType] || TYPE_COLORS.normal,
                                                     boxShadow: `0 0 10px ${TYPE_COLORS[mainType] || TYPE_COLORS.normal}50`
                                                 }}
@@ -935,8 +935,8 @@ export default function PokemonDetail({
                                                 <span className="text-sm text-zinc-500 not-dark:text-zinc-400">
                                                     {t('generation') || 'Generation'}
                                                 </span>
-                                                <Chip 
-                                                    size="sm" 
+                                                <Chip
+                                                    size="sm"
                                                     variant="flat"
                                                     color="primary"
                                                     className="capitalize"

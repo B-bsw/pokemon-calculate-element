@@ -10,7 +10,7 @@ export default async function Page({
 
     return (
         <Suspense fallback={<>loading</>}>
-            <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center">
+            <div className="flex min-h-screen w-full items-center justify-center">
                 <PokemonDetail pokeName={name} />
             </div>
         </Suspense>
