@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import PokemonName from './pokemonName'
+import PokemonDetail from './pokemonDetail'
 
 export default async function Page({
     params,
@@ -11,7 +11,7 @@ export default async function Page({
     return (
         <Suspense fallback={<>loading</>}>
             <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center">
-                <PokemonName pokeName={name} />
+                <PokemonDetail pokeName={name} />
             </div>
         </Suspense>
     )

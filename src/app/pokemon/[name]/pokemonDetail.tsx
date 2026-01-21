@@ -58,6 +58,36 @@ type MoveDetail = {
     flavor_text_entries: { flavor_text: string; language: { name: string } }[]
 }
 
+type AbilityDetail = {
+    name: string
+    effect_entries: { effect: string; short_effect: string; language: { name: string } }[]
+    flavor_text_entries: { flavor_text: string; language: { name: string }; version_group: { name: string } }[]
+    generation: { name: string }
+    pokemon: { is_hidden: boolean; pokemon: { name: string } }[]
+}
+
+// Type colors for the banner gradient
+const TYPE_COLORS: Record<string, string> = {
+    normal: '#a0a29f',
+    fire: '#fba54c',
+    water: '#539ddf',
+    electric: '#f2d94e',
+    grass: '#5fbd58',
+    ice: '#75d0c1',
+    fighting: '#d3425f',
+    poison: '#b763cf',
+    ground: '#da7c4d',
+    flying: '#a1bbec',
+    psychic: '#fa8581',
+    bug: '#92bc2c',
+    rock: '#c9bb8a',
+    ghost: '#5f6dbc',
+    dragon: '#0c69c8',
+    dark: '#595761',
+    steel: '#5695a3',
+    fairy: '#ee90e6',
+}
+
 type VersionGroupDetail = {
     level_learned_at: number
     move_learn_method: {
@@ -159,7 +189,7 @@ const damageClassColors: Record<string, string> = {
     status: 'bg-gray-100 text-gray-700 not-dark:bg-gray-700 not-dark:text-gray-300',
 }
 
-export default function PokemonName({
+export default function PokemonDetail({
     pokeName = 'none',
 }: {
     pokeName: string
@@ -172,10 +202,18 @@ export default function PokemonName({
     const [selectedMove, setSelectedMove] = useState<MoveDetail | null>(null)
     const [isLoadingMoveDetail, setIsLoadingMoveDetail] = useState(false)
     const [selectedTab, setSelectedTab] = useState<string>('level-up')
+    
+    // Ability modal state
+    const [selectedAbility, setSelectedAbility] = useState<AbilityDetail | null>(null)
+    const [isLoadingAbility, setIsLoadingAbility] = useState(false)
 
     const { t } = useTranslate()
     const router = useRouter()
-    const { isOpen, onOpen, onOpenChange } = useDisclosure()
+    
+    // Move modal disclosure
+    const { isOpen: isMoveModalOpen, onOpen: onMoveModalOpen, onOpenChange: onMoveModalOpenChange } = useDisclosure()
+    // Ability modal disclosure
+    const { isOpen: isAbilityModalOpen, onOpen: onAbilityModalOpen, onOpenChange: onAbilityModalOpenChange } = useDisclosure()
 
     const fetchPokeData = async () => {
         try {
@@ -266,12 +304,38 @@ export default function PokemonName({
         try {
             const response = await axios.get(url)
             setSelectedMove(response.data)
-            onOpen()
+            onMoveModalOpen()
         } catch (err) {
             console.error('Error fetching move detail:', err)
         } finally {
             setIsLoadingMoveDetail(false)
         }
+    }
+
+    // Fetch ability detail for modal
+    const fetchAbilityDetail = async (url: string) => {
+        setIsLoadingAbility(true)
+        try {
+            const response = await axios.get(url)
+            setSelectedAbility(response.data)
+            onAbilityModalOpen()
+        } catch (err) {
+            console.error('Error fetching ability detail:', err)
+        } finally {
+            setIsLoadingAbility(false)
+        }
+    }
+
+    // Get English effect text for ability
+    const getAbilityEnglishEffect = (ability: AbilityDetail) => {
+        const entry = ability.effect_entries?.find((e) => e.language.name === 'en')
+        return entry?.short_effect || entry?.effect || 'No description available.'
+    }
+
+    // Get English flavor text for ability
+    const getAbilityFlavorText = (ability: AbilityDetail) => {
+        const entry = ability.flavor_text_entries?.find((e) => e.language.name === 'en')
+        return entry?.flavor_text?.replace(/\n/g, ' ') || ''
     }
 
     useEffect(() => {
@@ -438,10 +502,16 @@ export default function PokemonName({
                 {/* Main Card */}
                 <Card className="bg-white shadow-xl not-dark:bg-zinc-800 not-dark:border not-dark:border-zinc-700">
                     <CardBody className="p-0">
-                        {/* Header with gradient background */}
+                        {/* Header with gradient background based on type colors */}
                         <div
-                            className={`relative overflow-hidden rounded-t-xl p-6 ${mainType}`}
-                            style={{ minHeight: '200px' }}
+                            className="relative overflow-hidden rounded-t-xl p-6"
+                            style={{ 
+                                minHeight: '200px',
+                                background: validTypes.length > 1 
+                                    ? `linear-gradient(135deg, ${TYPE_COLORS[validTypes[0]?.type.name] || TYPE_COLORS.normal} 0%, ${TYPE_COLORS[validTypes[1]?.type.name] || TYPE_COLORS.normal} 100%)`
+                                    : TYPE_COLORS[mainType] || TYPE_COLORS.normal,
+                                boxShadow: `0 0 30px ${TYPE_COLORS[mainType] || TYPE_COLORS.normal}50`
+                            }}
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" />
 
@@ -513,13 +583,20 @@ export default function PokemonName({
                                                     : 'solid'
                                             }
                                             color="primary"
-                                            className="capitalize"
+                                            className="capitalize cursor-pointer hover:scale-105 transition-transform"
+                                            onClick={() => fetchAbilityDetail(abilityInfo.ability.url)}
                                         >
-                                            {abilityInfo.ability.name.replace(
-                                                '-',
-                                                ' '
+                                            {isLoadingAbility ? (
+                                                <Spinner size="sm" color="current" />
+                                            ) : (
+                                                <>
+                                                    {abilityInfo.ability.name.replace(
+                                                        /-/g,
+                                                        ' '
+                                                    )}
+                                                    {abilityInfo.is_hidden && ' (Hidden)'}
+                                                </>
                                             )}
-                                            {abilityInfo.is_hidden && ' (Hidden)'}
                                         </Chip>
                                     ))}
                                 </div>
@@ -670,8 +747,8 @@ export default function PokemonName({
 
             {/* Move Detail Modal */}
             <Modal
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
+                isOpen={isMoveModalOpen}
+                onOpenChange={onMoveModalOpenChange}
                 scrollBehavior="inside"
                 size="lg"
                 classNames={{
@@ -792,6 +869,133 @@ export default function PokemonName({
                                                 </h3>
                                                 <p className="text-sm text-zinc-500 not-dark:text-zinc-400 italic">
                                                     "{getEnglishFlavorText(selectedMove)}"
+                                                </p>
+                                            </div>
+                                        )}
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button
+                                            color="primary"
+                                            variant="light"
+                                            onPress={onClose}
+                                        >
+                                            {t('close') || 'Close'}
+                                        </Button>
+                                    </ModalFooter>
+                                </>
+                            )}
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+
+            {/* Ability Detail Modal */}
+            <Modal
+                isOpen={isAbilityModalOpen}
+                onOpenChange={onAbilityModalOpenChange}
+                scrollBehavior="inside"
+                size="lg"
+                classNames={{
+                    base: 'bg-white not-dark:bg-zinc-800 not-dark:border not-dark:border-zinc-700',
+                    header: 'border-b border-zinc-200 not-dark:border-zinc-700',
+                    footer: 'border-t border-zinc-200 not-dark:border-zinc-700',
+                }}
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            {isLoadingAbility || !selectedAbility ? (
+                                <ModalBody className="py-10">
+                                    <div className="flex justify-center">
+                                        <Spinner size="lg" color="primary" />
+                                    </div>
+                                </ModalBody>
+                            ) : (
+                                <>
+                                    <ModalHeader className="flex flex-col gap-1">
+                                        <div className="flex items-center gap-3">
+                                            <div 
+                                                className="p-2 rounded-lg"
+                                                style={{ 
+                                                    background: TYPE_COLORS[mainType] || TYPE_COLORS.normal,
+                                                    boxShadow: `0 0 10px ${TYPE_COLORS[mainType] || TYPE_COLORS.normal}50`
+                                                }}
+                                            >
+                                                <Zap size={24} className="text-white" />
+                                            </div>
+                                            <span className="text-xl font-bold text-zinc-800 not-dark:text-white capitalize">
+                                                {selectedAbility.name.replace(/-/g, ' ')}
+                                            </span>
+                                        </div>
+                                    </ModalHeader>
+                                    <ModalBody>
+                                        {/* Generation Info */}
+                                        <div className="rounded-lg bg-zinc-100 p-3 mb-4 not-dark:bg-zinc-700">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-sm text-zinc-500 not-dark:text-zinc-400">
+                                                    {t('generation') || 'Generation'}
+                                                </span>
+                                                <Chip 
+                                                    size="sm" 
+                                                    variant="flat"
+                                                    color="primary"
+                                                    className="capitalize"
+                                                >
+                                                    {selectedAbility.generation?.name?.replace(/-/g, ' ') || 'Unknown'}
+                                                </Chip>
+                                            </div>
+                                        </div>
+
+                                        <Divider className="my-4" />
+
+                                        {/* Effect Description */}
+                                        <div>
+                                            <h3 className="font-semibold text-zinc-800 not-dark:text-white mb-2">
+                                                {t('effect') || 'Effect'}
+                                            </h3>
+                                            <p className="text-sm text-zinc-600 not-dark:text-zinc-300">
+                                                {getAbilityEnglishEffect(selectedAbility)}
+                                            </p>
+                                        </div>
+
+                                        {/* Flavor Text */}
+                                        {getAbilityFlavorText(selectedAbility) && (
+                                            <div className="mt-4">
+                                                <h3 className="font-semibold text-zinc-800 not-dark:text-white mb-2">
+                                                    {t('description') || 'Description'}
+                                                </h3>
+                                                <p className="text-sm text-zinc-500 not-dark:text-zinc-400 italic">
+                                                    "{getAbilityFlavorText(selectedAbility)}"
+                                                </p>
+                                            </div>
+                                        )}
+
+                                        {/* Pokemon with this ability */}
+                                        {selectedAbility.pokemon && selectedAbility.pokemon.length > 0 && (
+                                            <div className="mt-4">
+                                                <h3 className="font-semibold text-zinc-800 not-dark:text-white mb-2">
+                                                    {t('pokemonWithAbility') || 'Pokémon with this ability'} ({selectedAbility.pokemon.length})
+                                                </h3>
+                                                <div className="flex flex-wrap gap-1 max-h-32 overflow-y-auto scll">
+                                                    {selectedAbility.pokemon.slice(0, 20).map((p) => (
+                                                        <Chip
+                                                            key={p.pokemon.name}
+                                                            size="sm"
+                                                            variant={p.is_hidden ? 'bordered' : 'flat'}
+                                                            className="capitalize text-xs"
+                                                        >
+                                                            {p.pokemon.name.replace(/-/g, ' ')}
+                                                            {p.is_hidden && ' ★'}
+                                                        </Chip>
+                                                    ))}
+                                                    {selectedAbility.pokemon.length > 20 && (
+                                                        <Chip size="sm" variant="flat" className="text-xs">
+                                                            +{selectedAbility.pokemon.length - 20} more
+                                                        </Chip>
+                                                    )}
+                                                </div>
+                                                <p className="text-xs text-zinc-400 mt-1">
+                                                    ★ = Hidden Ability
                                                 </p>
                                             </div>
                                         )}
