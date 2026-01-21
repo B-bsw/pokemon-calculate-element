@@ -16,6 +16,7 @@ import {
 } from '@heroui/react'
 import axios from 'axios'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 
 type Pokemon = {
@@ -180,9 +181,15 @@ export default function Pokemon() {
                                                             }}
                                                         />
                                                     </div>
-                                                    <span className="capitalize">
+                                                    {/*<span className="capitalize">
                                                         {item.name}
-                                                    </span>
+                                                    </span>*/}
+                                                    <Link
+                                                        href={`/pokemon/${item.name}`}
+                                                        className="capitalize"
+                                                    >
+                                                        {item.name}
+                                                    </Link>
                                                 </div>
                                             ) : (
                                                 getKeyValue(item, key)

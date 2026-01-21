@@ -1,53 +1,162 @@
 'use client'
 
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
+import { useTranslate } from '@/i18n/i18nContext'
+import {
+    Card,
+    CardBody,
+    Spinner,
+    Progress,
+    Chip,
+    Button,
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    useDisclosure,
+    Divider,
+    Tabs,
+    Tab,
+} from '@heroui/react'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import iconElements from '@/components/icons'
+import { ArrowLeft, Swords, Target, Zap } from 'lucide-react'
+
+// Valid Pokemon types that exist in the project
+const VALID_TYPES = [
+    'normal',
+    'fire',
+    'water',
+    'electric',
+    'grass',
+    'ice',
+    'fighting',
+    'poison',
+    'ground',
+    'flying',
+    'psychic',
+    'bug',
+    'rock',
+    'ghost',
+    'dragon',
+    'dark',
+    'steel',
+    'fairy',
+]
+
+type MoveDetail = {
+    name: string
+    type: { name: string }
+    damage_class: { name: string }
+    power: number | null
+    accuracy: number | null
+    pp: number
+    effect_entries: { effect: string; short_effect: string; language: { name: string } }[]
+    flavor_text_entries: { flavor_text: string; language: { name: string } }[]
+}
+
+type VersionGroupDetail = {
+    level_learned_at: number
+    move_learn_method: {
+        name: string
+        url: string
+    }
+    version_group: {
+        name: string
+        url: string
+    }
+}
+
+type PokemonMove = {
+    move: {
+        name: string
+        url: string
+    }
+    version_group_details: VersionGroupDetail[]
+}
 
 type PokemonData = {
-    abilities: [
-        {
-            ability: {
-                name: string
-                url: string
-            }
-            is_hidden: boolean
-            slot: number
-        },
-    ]
+    abilities: {
+        ability: {
+            name: string
+            url: string
+        }
+        is_hidden: boolean
+        slot: number
+    }[]
     id: number
-    moves: [
-        {
-            move: {
-                name: string
-                url: string
-            }
-        },
-    ]
+    name: string
+    moves: PokemonMove[]
     sprites: {
         front_default: string
-        dream_world: {
-            front_default: string
+        other: {
+            'official-artwork': {
+                front_default: string
+            }
+            dream_world: {
+                front_default: string
+            }
         }
     }
-    stats: [
-        {
-            base_stat: number
-            effort: number
-            stat: {
-                name: string
-                url: string
-            }
-        },
-    ]
-    types: [
-        {
-            slot: number
-            type: {
-                name: string
-                url: string
-            }
-        },
-    ]
+    stats: {
+        base_stat: number
+        effort: number
+        stat: {
+            name: string
+            url: string
+        }
+    }[]
+    types: {
+        slot: number
+        type: {
+            name: string
+            url: string
+        }
+    }[]
+}
+
+type MoveWithDetails = {
+    name: string
+    url: string
+    type: string
+    damageClass: string
+    power: number | null
+    accuracy: number | null
+    learnMethod: string
+    levelLearnedAt: number
+}
+
+const statColors: Record<string, string> = {
+    hp: 'danger',
+    attack: 'warning',
+    defense: 'primary',
+    'special-attack': 'secondary',
+    'special-defense': 'success',
+    speed: 'default',
+}
+
+const statNames: Record<string, string> = {
+    hp: 'HP',
+    attack: 'ATK',
+    defense: 'DEF',
+    'special-attack': 'SP.ATK',
+    'special-defense': 'SP.DEF',
+    speed: 'SPD',
+}
+
+const damageClassIcons: Record<string, React.ReactNode> = {
+    physical: <Swords size={14} className="text-orange-500" />,
+    special: <Zap size={14} className="text-purple-500" />,
+    status: <Target size={14} className="text-gray-500" />,
+}
+
+const damageClassColors: Record<string, string> = {
+    physical: 'bg-orange-100 text-orange-700 not-dark:bg-orange-900/50 not-dark:text-orange-300',
+    special: 'bg-purple-100 text-purple-700 not-dark:bg-purple-900/50 not-dark:text-purple-300',
+    status: 'bg-gray-100 text-gray-700 not-dark:bg-gray-700 not-dark:text-gray-300',
 }
 
 export default function PokemonName({
@@ -55,24 +164,653 @@ export default function PokemonName({
 }: {
     pokeName: string
 }) {
-    const [pokemonName, setPokemonName] = useState('')
+    const [pokemonData, setPokemonData] = useState<PokemonData | null>(null)
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+    const [movesWithDetails, setMovesWithDetails] = useState<MoveWithDetails[]>([])
+    const [isLoadingMoves, setIsLoadingMoves] = useState(false)
+    const [selectedMove, setSelectedMove] = useState<MoveDetail | null>(null)
+    const [isLoadingMoveDetail, setIsLoadingMoveDetail] = useState(false)
+    const [selectedTab, setSelectedTab] = useState<string>('level-up')
+
+    const { t } = useTranslate()
+    const router = useRouter()
+    const { isOpen, onOpen, onOpenChange } = useDisclosure()
+
     const fetchPokeData = async () => {
         try {
-            const dataPokemon = (
-                await axios.get('https://pokeapi.co/api/v2/pokemon/ditto')
-            ).data
-            console.log(dataPokemon)
+            setIsLoading(true)
+            setError(null)
+            const response = await axios.get(
+                `https://pokeapi.co/api/v2/pokemon/${pokeName.toLowerCase()}`
+            )
+            setPokemonData(response.data)
         } catch (err) {
-            console.log(err)
+            console.error(err)
+            setError('Pokemon not found')
+        } finally {
+            setIsLoading(false)
         }
     }
+
+    // Get learn method info from version_group_details (prefer latest version)
+    const getLearnMethodInfo = (details: VersionGroupDetail[]) => {
+        // Find level-up method first
+        const levelUp = details.find(d => d.move_learn_method.name === 'level-up')
+        if (levelUp) {
+            return {
+                method: 'level-up',
+                level: levelUp.level_learned_at
+            }
+        }
+        // Then machine/TM
+        const machine = details.find(d => d.move_learn_method.name === 'machine')
+        if (machine) {
+            return {
+                method: 'machine',
+                level: 0
+            }
+        }
+        // Other methods (egg, tutor, etc.)
+        const other = details[0]
+        return {
+            method: other?.move_learn_method.name || 'other',
+            level: other?.level_learned_at || 0
+        }
+    }
+
+    // Fetch move details for all moves
+    const fetchMovesDetails = async (moves: PokemonMove[]) => {
+        setIsLoadingMoves(true)
+        try {
+            const moveDetailsPromises = moves.map(async (move) => {
+                try {
+                    const response = await axios.get(move.move.url)
+                    const learnInfo = getLearnMethodInfo(move.version_group_details)
+                    return {
+                        name: move.move.name,
+                        url: move.move.url,
+                        type: response.data.type?.name || 'normal',
+                        damageClass: response.data.damage_class?.name || 'status',
+                        power: response.data.power,
+                        accuracy: response.data.accuracy,
+                        learnMethod: learnInfo.method,
+                        levelLearnedAt: learnInfo.level,
+                    }
+                } catch {
+                    const learnInfo = getLearnMethodInfo(move.version_group_details)
+                    return {
+                        name: move.move.name,
+                        url: move.move.url,
+                        type: 'normal',
+                        damageClass: 'status',
+                        power: null,
+                        accuracy: null,
+                        learnMethod: learnInfo.method,
+                        levelLearnedAt: learnInfo.level,
+                    }
+                }
+            })
+            const details = await Promise.all(moveDetailsPromises)
+            setMovesWithDetails(details)
+        } catch (err) {
+            console.error('Error fetching move details:', err)
+        } finally {
+            setIsLoadingMoves(false)
+        }
+    }
+
+    // Fetch single move detail for modal
+    const fetchMoveDetail = async (url: string) => {
+        setIsLoadingMoveDetail(true)
+        try {
+            const response = await axios.get(url)
+            setSelectedMove(response.data)
+            onOpen()
+        } catch (err) {
+            console.error('Error fetching move detail:', err)
+        } finally {
+            setIsLoadingMoveDetail(false)
+        }
+    }
+
     useEffect(() => {
-        fetchPokeData()
-    }, [])
+        if (pokeName !== 'none') {
+            fetchPokeData()
+        }
+    }, [pokeName])
+
+    useEffect(() => {
+        if (pokemonData?.moves) {
+            fetchMovesDetails(pokemonData.moves)
+        }
+    }, [pokemonData])
+
+    const formatPokemonId = (id: number) => {
+        return `#${id.toString().padStart(4, '0')}`
+    }
+
+    // Filter types to only include valid ones
+    const getValidTypes = (types: PokemonData['types']) => {
+        return types.filter((typeInfo) =>
+            VALID_TYPES.includes(typeInfo.type.name.toLowerCase())
+        )
+    }
+
+    // Group moves by learn method
+    const { levelUpMoves, tmMoves, otherMoves } = useMemo(() => {
+        const levelUp: MoveWithDetails[] = []
+        const tm: MoveWithDetails[] = []
+        const other: MoveWithDetails[] = []
+
+        movesWithDetails.forEach((move) => {
+            if (move.learnMethod === 'level-up') {
+                levelUp.push(move)
+            } else if (move.learnMethod === 'machine') {
+                tm.push(move)
+            } else {
+                other.push(move)
+            }
+        })
+
+        // Sort level-up by level
+        levelUp.sort((a, b) => a.levelLearnedAt - b.levelLearnedAt)
+
+        // Sort TM by name
+        tm.sort((a, b) => a.name.localeCompare(b.name))
+
+        // Sort other by name
+        other.sort((a, b) => a.name.localeCompare(b.name))
+
+        return { levelUpMoves: levelUp, tmMoves: tm, otherMoves: other }
+    }, [movesWithDetails])
+
+    // Get English effect text
+    const getEnglishEffect = (move: MoveDetail) => {
+        const entry = move.effect_entries?.find((e) => e.language.name === 'en')
+        return entry?.short_effect || entry?.effect || 'No description available.'
+    }
+
+    // Get English flavor text
+    const getEnglishFlavorText = (move: MoveDetail) => {
+        const entry = move.flavor_text_entries?.find((e) => e.language.name === 'en')
+        return entry?.flavor_text?.replace(/\n/g, ' ') || ''
+    }
+
+    // Render move item
+    const renderMoveItem = (move: MoveWithDetails, showLevel: boolean = false) => (
+        <button
+            key={move.name}
+            onClick={() => fetchMoveDetail(move.url)}
+            className="flex items-center gap-2 p-3 rounded-lg bg-zinc-50 hover:bg-zinc-100 not-dark:bg-zinc-700 not-dark:hover:bg-zinc-600 transition-colors cursor-pointer text-left w-full"
+        >
+            {/* Level (for level-up moves) */}
+            {showLevel && (
+                <div className="w-12 text-center shrink-0">
+                    <span className="text-xs text-zinc-500 not-dark:text-zinc-400 block">Lv.</span>
+                    <span className="font-bold text-zinc-800 not-dark:text-white">
+                        {move.levelLearnedAt || '-'}
+                    </span>
+                </div>
+            )}
+
+            {/* Type Icon */}
+            <div className={`p-1.5 rounded-lg shrink-0 ${move.type}`}>
+                {VALID_TYPES.includes(move.type.toLowerCase()) && (
+                    <Image
+                        src={iconElements(move.type)}
+                        alt={move.type}
+                        width={18}
+                        height={18}
+                    />
+                )}
+            </div>
+
+            {/* Move Name */}
+            <span className="flex-1 font-medium text-zinc-800 not-dark:text-white capitalize min-w-0 truncate">
+                {move.name.replace(/-/g, ' ')}
+            </span>
+
+            {/* Damage Class */}
+            <Chip
+                size="sm"
+                variant="flat"
+                className={`${damageClassColors[move.damageClass]} capitalize shrink-0`}
+                startContent={damageClassIcons[move.damageClass]}
+            >
+                <span className="hidden sm:inline">{move.damageClass}</span>
+            </Chip>
+
+            {/* Power */}
+            <div className="w-12 text-center shrink-0">
+                <span className="text-xs text-zinc-500 not-dark:text-zinc-400 block">PWR</span>
+                <span className="font-bold text-zinc-800 not-dark:text-white text-sm">
+                    {move.power ?? '-'}
+                </span>
+            </div>
+
+            {/* Accuracy */}
+            <div className="w-12 text-center shrink-0">
+                <span className="text-xs text-zinc-500 not-dark:text-zinc-400 block">ACC</span>
+                <span className="font-bold text-zinc-800 not-dark:text-white text-sm">
+                    {move.accuracy ? `${move.accuracy}` : '-'}
+                </span>
+            </div>
+        </button>
+    )
+
+    if (isLoading) {
+        return (
+            <div className="flex h-full w-full items-center justify-center">
+                <Spinner size="lg" color="primary" />
+            </div>
+        )
+    }
+
+    if (error || !pokemonData) {
+        return (
+            <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+                <p className="text-xl text-zinc-500 dark:text-zinc-400">
+                    {error || 'Pokemon not found'}
+                </p>
+                <Button
+                    color="primary"
+                    variant="ghost"
+                    onPress={() => router.back()}
+                    startContent={<ArrowLeft size={18} />}
+                >
+                    {t('back') || 'Go Back'}
+                </Button>
+            </div>
+        )
+    }
+
+    const validTypes = getValidTypes(pokemonData.types)
+    const mainType = validTypes[0]?.type.name || 'normal'
+    const pokemonImage =
+        pokemonData.sprites.other?.['official-artwork']?.front_default ||
+        pokemonData.sprites.other?.dream_world?.front_default ||
+        pokemonData.sprites.front_default
+
     return (
         <>
-            <div className="">{pokeName}</div>
-            <div></div>
+            <div className="w-full max-w-4xl px-4 py-6 pt-20">
+                {/* Main Card */}
+                <Card className="bg-white shadow-xl not-dark:bg-zinc-800 not-dark:border not-dark:border-zinc-700">
+                    <CardBody className="p-0">
+                        {/* Header with gradient background */}
+                        <div
+                            className={`relative overflow-hidden rounded-t-xl p-6 ${mainType}`}
+                            style={{ minHeight: '200px' }}
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" />
+
+                            {/* Pokemon ID and Name */}
+                            <div className="relative z-10 flex flex-col items-center text-center md:flex-row md:items-start md:text-left">
+                                <div className="flex-1">
+                                    <p className="text-lg font-bold text-white/80">
+                                        {formatPokemonId(pokemonData.id)}
+                                    </p>
+                                    <h1 className="text-3xl font-bold capitalize text-white md:text-4xl">
+                                        {pokemonData.name}
+                                    </h1>
+
+                                    {/* Types - Only show valid types */}
+                                    <div className="mt-3 flex flex-wrap justify-center gap-2 md:justify-start">
+                                        {validTypes.map((typeInfo) => (
+                                            <Chip
+                                                key={typeInfo.type.name}
+                                                variant="flat"
+                                                className="bg-white/30 text-white backdrop-blur-sm"
+                                                startContent={
+                                                    <Image
+                                                        src={iconElements(
+                                                            typeInfo.type.name
+                                                        )}
+                                                        alt={typeInfo.type.name}
+                                                        width={16}
+                                                        height={16}
+                                                    />
+                                                }
+                                            >
+                                                {t(typeInfo.type.name) ||
+                                                    typeInfo.type.name}
+                                            </Chip>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Pokemon Image */}
+                                <div className="relative mt-4 h-40 w-40 md:mt-0 md:h-48 md:w-48">
+                                    {pokemonImage && (
+                                        <Image
+                                            src={pokemonImage}
+                                            alt={pokemonData.name}
+                                            fill
+                                            className="object-contain drop-shadow-2xl"
+                                            priority
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Content Section */}
+                        <div className="p-6">
+                            {/* Abilities */}
+                            <div className="mb-6 rounded-xl bg-zinc-100 p-4 not-dark:bg-zinc-700">
+                                <p className="mb-2 text-sm text-zinc-500 not-dark:text-zinc-400">
+                                    {t('abilities') || 'Abilities'}
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                    {pokemonData.abilities.map((abilityInfo) => (
+                                        <Chip
+                                            key={abilityInfo.ability.name}
+                                            size="sm"
+                                            variant={
+                                                abilityInfo.is_hidden
+                                                    ? 'bordered'
+                                                    : 'solid'
+                                            }
+                                            color="primary"
+                                            className="capitalize"
+                                        >
+                                            {abilityInfo.ability.name.replace(
+                                                '-',
+                                                ' '
+                                            )}
+                                            {abilityInfo.is_hidden && ' (Hidden)'}
+                                        </Chip>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Stats Section */}
+                            <div className="mb-6">
+                                <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
+                                    {t('baseStats') || 'Base Stats'}
+                                </h2>
+                                <div className="space-y-3">
+                                    {pokemonData.stats.map((statInfo) => (
+                                        <div
+                                            key={statInfo.stat.name}
+                                            className="flex items-center gap-3"
+                                        >
+                                            <span className="w-16 text-sm font-medium text-zinc-600 not-dark:text-zinc-300">
+                                                {statNames[statInfo.stat.name] ||
+                                                    statInfo.stat.name}
+                                            </span>
+                                            <span className="w-10 text-right text-sm font-bold text-zinc-800 not-dark:text-white">
+                                                {statInfo.base_stat}
+                                            </span>
+                                            <Progress
+                                                value={statInfo.base_stat}
+                                                maxValue={255}
+                                                color={
+                                                    (statColors[
+                                                        statInfo.stat.name
+                                                    ] as any) || 'default'
+                                                }
+                                                className="flex-1"
+                                                size="sm"
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="mt-4 flex justify-between border-t border-zinc-200 pt-4 not-dark:border-zinc-600">
+                                    <span className="font-medium text-zinc-600 not-dark:text-zinc-300">
+                                        {t('total') || 'Total'}
+                                    </span>
+                                    <span className="font-bold text-zinc-800 not-dark:text-white">
+                                        {pokemonData.stats.reduce(
+                                            (sum, s) => sum + s.base_stat,
+                                            0
+                                        )}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Moves Section */}
+                            <div>
+                                <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
+                                    {t('moves') || 'Moves'} ({pokemonData.moves.length})
+                                </h2>
+
+                                {isLoadingMoves ? (
+                                    <div className="flex justify-center py-8">
+                                        <Spinner size="md" color="primary" />
+                                    </div>
+                                ) : (
+                                    <Tabs
+                                        selectedKey={selectedTab}
+                                        onSelectionChange={(key) => setSelectedTab(key as string)}
+                                        variant="underlined"
+                                        color="primary"
+                                        classNames={{
+                                            tabList: 'gap-4',
+                                            tab: 'px-0',
+                                        }}
+                                    >
+                                        <Tab
+                                            key="level-up"
+                                            title={
+                                                <div className="flex items-center gap-2">
+                                                    <span>Level Up</span>
+                                                    <Chip size="sm" variant="flat">
+                                                        {levelUpMoves.length}
+                                                    </Chip>
+                                                </div>
+                                            }
+                                        >
+                                            <div className="space-y-2 max-h-[400px] overflow-y-auto scll pr-2 mt-4">
+                                                {levelUpMoves.length > 0 ? (
+                                                    levelUpMoves.map((move) =>
+                                                        renderMoveItem(move, true)
+                                                    )
+                                                ) : (
+                                                    <p className="text-center text-zinc-500 py-4">
+                                                        No level-up moves
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </Tab>
+                                        <Tab
+                                            key="tm"
+                                            title={
+                                                <div className="flex items-center gap-2">
+                                                    <span>TM/HM</span>
+                                                    <Chip size="sm" variant="flat">
+                                                        {tmMoves.length}
+                                                    </Chip>
+                                                </div>
+                                            }
+                                        >
+                                            <div className="space-y-2 max-h-[400px] overflow-y-auto scll pr-2 mt-4">
+                                                {tmMoves.length > 0 ? (
+                                                    tmMoves.map((move) =>
+                                                        renderMoveItem(move, false)
+                                                    )
+                                                ) : (
+                                                    <p className="text-center text-zinc-500 py-4">
+                                                        No TM/HM moves
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </Tab>
+                                        <Tab
+                                            key="other"
+                                            title={
+                                                <div className="flex items-center gap-2">
+                                                    <span>{t('other') || 'Other'}</span>
+                                                    <Chip size="sm" variant="flat">
+                                                        {otherMoves.length}
+                                                    </Chip>
+                                                </div>
+                                            }
+                                        >
+                                            <div className="space-y-2 max-h-[400px] overflow-y-auto scll pr-2 mt-4">
+                                                {otherMoves.length > 0 ? (
+                                                    otherMoves.map((move) =>
+                                                        renderMoveItem(move, false)
+                                                    )
+                                                ) : (
+                                                    <p className="text-center text-zinc-500 py-4">
+                                                        No other moves
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </Tab>
+                                    </Tabs>
+                                )}
+                            </div>
+                        </div>
+                    </CardBody>
+                </Card>
+            </div>
+
+            {/* Move Detail Modal */}
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                scrollBehavior="inside"
+                size="lg"
+                classNames={{
+                    base: 'bg-white not-dark:bg-zinc-800 not-dark:border not-dark:border-zinc-700',
+                    header: 'border-b border-zinc-200 not-dark:border-zinc-700',
+                    footer: 'border-t border-zinc-200 not-dark:border-zinc-700',
+                }}
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            {isLoadingMoveDetail || !selectedMove ? (
+                                <ModalBody className="py-10">
+                                    <div className="flex justify-center">
+                                        <Spinner size="lg" color="primary" />
+                                    </div>
+                                </ModalBody>
+                            ) : (
+                                <>
+                                    <ModalHeader className="flex flex-col gap-1">
+                                        <div className="flex items-center gap-3">
+                                            <div className={`p-2 rounded-lg ${selectedMove.type.name}`}>
+                                                {VALID_TYPES.includes(selectedMove.type.name) && (
+                                                    <Image
+                                                        src={iconElements(selectedMove.type.name)}
+                                                        alt={selectedMove.type.name}
+                                                        width={24}
+                                                        height={24}
+                                                    />
+                                                )}
+                                            </div>
+                                            <span className="text-xl font-bold text-zinc-800 not-dark:text-white capitalize">
+                                                {selectedMove.name.replace(/-/g, ' ')}
+                                            </span>
+                                        </div>
+                                    </ModalHeader>
+                                    <ModalBody>
+                                        {/* Move Info Grid */}
+                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                                            {/* Type */}
+                                            <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
+                                                <p className="text-xs text-zinc-500 not-dark:text-zinc-400 mb-1">
+                                                    {t('type') || 'Type'}
+                                                </p>
+                                                <Chip
+                                                    size="sm"
+                                                    className={`${selectedMove.type.name} text-white capitalize`}
+                                                >
+                                                    {t(selectedMove.type.name) || selectedMove.type.name}
+                                                </Chip>
+                                            </div>
+
+                                            {/* Category */}
+                                            <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
+                                                <p className="text-xs text-zinc-500 not-dark:text-zinc-400 mb-1">
+                                                    {t('category') || 'Category'}
+                                                </p>
+                                                <Chip
+                                                    size="sm"
+                                                    variant="flat"
+                                                    className={`${damageClassColors[selectedMove.damage_class.name]} capitalize`}
+                                                    startContent={damageClassIcons[selectedMove.damage_class.name]}
+                                                >
+                                                    {selectedMove.damage_class.name}
+                                                </Chip>
+                                            </div>
+
+                                            {/* Power */}
+                                            <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
+                                                <p className="text-xs text-zinc-500 not-dark:text-zinc-400 mb-1">
+                                                    {t('power') || 'Power'}
+                                                </p>
+                                                <p className="text-lg font-bold text-zinc-800 not-dark:text-white">
+                                                    {selectedMove.power ?? 'N/A'}
+                                                </p>
+                                            </div>
+
+                                            {/* Accuracy */}
+                                            <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
+                                                <p className="text-xs text-zinc-500 not-dark:text-zinc-400 mb-1">
+                                                    {t('accuracy') || 'Accuracy'}
+                                                </p>
+                                                <p className="text-lg font-bold text-zinc-800 not-dark:text-white">
+                                                    {selectedMove.accuracy ? `${selectedMove.accuracy}%` : 'N/A'}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* PP */}
+                                        <div className="rounded-lg bg-zinc-100 p-3 mb-4 not-dark:bg-zinc-700">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-sm text-zinc-500 not-dark:text-zinc-400">
+                                                    PP (Power Points)
+                                                </span>
+                                                <span className="font-bold text-zinc-800 not-dark:text-white">
+                                                    {selectedMove.pp}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <Divider className="my-4" />
+
+                                        {/* Effect Description */}
+                                        <div>
+                                            <h3 className="font-semibold text-zinc-800 not-dark:text-white mb-2">
+                                                {t('effect') || 'Effect'}
+                                            </h3>
+                                            <p className="text-sm text-zinc-600 not-dark:text-zinc-300">
+                                                {getEnglishEffect(selectedMove)}
+                                            </p>
+                                        </div>
+
+                                        {/* Flavor Text */}
+                                        {getEnglishFlavorText(selectedMove) && (
+                                            <div className="mt-4">
+                                                <h3 className="font-semibold text-zinc-800 not-dark:text-white mb-2">
+                                                    {t('description') || 'Description'}
+                                                </h3>
+                                                <p className="text-sm text-zinc-500 not-dark:text-zinc-400 italic">
+                                                    "{getEnglishFlavorText(selectedMove)}"
+                                                </p>
+                                            </div>
+                                        )}
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button
+                                            color="primary"
+                                            variant="light"
+                                            onPress={onClose}
+                                        >
+                                            {t('close') || 'Close'}
+                                        </Button>
+                                    </ModalFooter>
+                                </>
+                            )}
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </>
     )
 }

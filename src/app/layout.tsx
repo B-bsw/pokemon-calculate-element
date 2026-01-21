@@ -41,7 +41,7 @@ export default function RootLayout({
                     <Providers>
                         <div>
                             <MainHeader />
-                            <div className=" not-dark:bg-zinc-800">
+                            <div className="not-dark:bg-zinc-800">
                                 {children}
                             </div>
                         </div>
