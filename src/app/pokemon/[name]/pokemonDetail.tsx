@@ -171,6 +171,20 @@ type EvolutionMember = {
     minLevel?: number | null
     trigger?: string
     item?: string
+    heldItem?: string
+    knownMove?: string
+    knownMoveType?: string
+    location?: string
+    minHappiness?: number | null
+    minBeauty?: number | null
+    minAffection?: number | null
+    needsOverworldRain?: boolean
+    partySpecies?: string
+    partyType?: string
+    relativePhysicalStats?: number | null
+    timeOfDay?: string
+    tradeSpecies?: string
+    turnUpsideDown?: boolean
 }
 
 const statColors: Record<string, string> = {
@@ -364,7 +378,21 @@ export default function PokemonDetail({
                         types: pokeRes.data.types.map((t: any) => t.type.name),
                         minLevel: details?.min_level,
                         trigger: details?.trigger?.name,
-                        item: details?.item?.name
+                        item: details?.item?.name,
+                        heldItem: details?.held_item?.name,
+                        knownMove: details?.known_move?.name,
+                        knownMoveType: details?.known_move_type?.name,
+                        location: details?.location?.name,
+                        minHappiness: details?.min_happiness,
+                        minBeauty: details?.min_beauty,
+                        minAffection: details?.min_affection,
+                        needsOverworldRain: details?.needs_overworld_rain,
+                        partySpecies: details?.party_species?.name,
+                        partyType: details?.party_type?.name,
+                        relativePhysicalStats: details?.relative_physical_stats,
+                        timeOfDay: details?.time_of_day,
+                        tradeSpecies: details?.trade_species?.name,
+                        turnUpsideDown: details?.turn_upside_down,
                     })
 
                     if (evoData.evolves_to && evoData.evolves_to.length > 0) {
@@ -413,6 +441,38 @@ export default function PokemonDetail({
             fetchEvolutionChain(pokemonData.species.url)
         }
     }, [pokemonData])
+
+    const formatEvolutionDetail = (member: EvolutionMember) => {
+        const details = []
+        if (member.trigger === 'level-up') {
+            if (member.minLevel) details.push(`Lv. ${member.minLevel}`)
+            if (member.minHappiness) details.push(`${t('happiness') || 'Happiness'} ${member.minHappiness}`)
+            if (member.minAffection) details.push(`${t('affection') || 'Affection'} ${member.minAffection}`)
+            if (member.minBeauty) details.push(`${t('beauty') || 'Beauty'} ${member.minBeauty}`)
+            if (member.heldItem) details.push(`${t('hold') || 'Hold'} ${member.heldItem.replace(/-/g, ' ')}`)
+            if (member.knownMove) details.push(`${t('know') || 'Know'} ${member.knownMove.replace(/-/g, ' ')}`)
+            if (member.knownMoveType) details.push(`${t('know') || 'Know'} ${member.knownMoveType} ${t('type') || 'type'}`)
+            if (member.location) details.push(`${t('at') || 'At'} ${member.location.replace(/-/g, ' ')}`)
+            if (member.timeOfDay) details.push(`${member.timeOfDay}`)
+            if (member.needsOverworldRain) details.push(t('rain') || 'Rain')
+            if (member.turnUpsideDown) details.push(t('upsideDown') || 'Upside down')
+            if (member.relativePhysicalStats !== null && member.relativePhysicalStats !== undefined) {
+                if (member.relativePhysicalStats === 1) details.push('Atk > Def')
+                else if (member.relativePhysicalStats === -1) details.push('Atk < Def')
+                else if (member.relativePhysicalStats === 0) details.push('Atk = Def')
+            }
+        } else if (member.trigger === 'use-item') {
+            if (member.item) details.push(member.item.replace(/-/g, ' '))
+        } else if (member.trigger === 'trade') {
+            details.push(t('trade') || 'Trade')
+            if (member.tradeSpecies) details.push(`${t('with') || 'with'} ${member.tradeSpecies}`)
+            if (member.heldItem) details.push(`${t('holding') || 'holding'} ${member.heldItem.replace(/-/g, ' ')}`)
+        } else if (member.trigger === 'shed') {
+            details.push(t('shed') || 'Shed')
+        }
+
+        return details.length > 0 ? details.join(' + ') : member.trigger?.replace(/-/g, ' ')
+    }
 
     const formatPokemonId = (id: number) => {
         return `#${id.toString().padStart(4, '0')}`
@@ -712,16 +772,9 @@ export default function PokemonDetail({
                                                                                 {nextMember && (
                                                                                     <div className="flex flex-col items-center text-zinc-400">
                                                                                         <ArrowRight size={16} />
-                                                                                        {nextMember.minLevel && (
-                                                                                            <span className="text-[9px] font-bold mt-1">
-                                                                                                {t('level') || 'Lv.'} {nextMember.minLevel}
-                                                                                            </span>
-                                                                                        )}
-                                                                                        {nextMember.item && (
-                                                                                            <span className="text-[9px] font-bold mt-1 max-w-[50px] text-center truncate">
-                                                                                                {nextMember.item.replace(/-/g, ' ')}
-                                                                                            </span>
-                                                                                        )}
+                                                                                        <span className="text-[9px] font-bold mt-1 max-w-[80px] text-center capitalize">
+                                                                                            {formatEvolutionDetail(nextMember)}
+                                                                                        </span>
                                                                                     </div>
                                                                                 )}
                                                                             </div>
@@ -730,7 +783,7 @@ export default function PokemonDetail({
                                                                 </div>
                                                             </div>
                                                         )}
-                            
+
                                                         {isLoadingEvolutions && (
                                                             <div className="mb-8">
                                                                 <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
