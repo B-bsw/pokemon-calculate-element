@@ -35,11 +35,11 @@ type PokemonList = PokemonItem[]
 export default function Pokemon() {
     const router = useRouter()
     const searchParams = useSearchParams()
-    
+
     // Initialize from URL params
     const initialSearch = searchParams.get('q') || ''
     const initialPage = parseInt(searchParams.get('page') || '1', 10)
-    
+
     const [dataPokemon, setDataPokemon] = useState<PokemonList>([])
     const [page, setPage] = useState<number>(initialPage)
     const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -49,13 +49,18 @@ export default function Pokemon() {
     const { t } = useTranslate()
 
     // Update URL when search or page changes
-    const updateURL = useCallback((newSearch: string, newPage: number) => {
-        const params = new URLSearchParams()
-        if (newSearch) params.set('q', newSearch)
-        if (newPage > 1) params.set('page', newPage.toString())
-        const queryString = params.toString()
-        router.replace(`/pokemon${queryString ? `?${queryString}` : ''}`, { scroll: false })
-    }, [router])
+    const updateURL = useCallback(
+        (newSearch: string, newPage: number) => {
+            const params = new URLSearchParams()
+            if (newSearch) params.set('q', newSearch)
+            if (newPage > 1) params.set('page', newPage.toString())
+            const queryString = params.toString()
+            router.replace(`/pokemon${queryString ? `?${queryString}` : ''}`, {
+                scroll: false,
+            })
+        },
+        [router]
+    )
 
     // Initial loading - get list of all Pokemon
     const loading = async () => {
@@ -76,10 +81,7 @@ export default function Pokemon() {
                 })
             )
             setDataPokemon(dataWithIndex)
-            // Page is already initialized from URL params, only set to 1 if no page param
-            if (!searchParams.get('page')) {
-                setPage(1)
-            }
+            setPage(1)
             setIsLoading(false)
         } catch (err) {
             console.log(err)
@@ -174,17 +176,23 @@ export default function Pokemon() {
     }, [items])
 
     // Handle search change with callback to prevent input freezing
-    const handleSearchChange = useCallback((value: string) => {
-        setSearch(value)
-        setPage(1)
-        updateURL(value, 1)
-    }, [updateURL])
+    const handleSearchChange = useCallback(
+        (value: string) => {
+            setSearch(value)
+            setPage(1)
+            updateURL(value, 1)
+        },
+        [updateURL]
+    )
 
     // Handle page change
-    const handlePageChange = useCallback((newPage: number) => {
-        setPage(newPage)
-        updateURL(search, newPage)
-    }, [search, updateURL])
+    const handlePageChange = useCallback(
+        (newPage: number) => {
+            setPage(newPage)
+            updateURL(search, newPage)
+        },
+        [search, updateURL]
+    )
 
     return (
         <>
@@ -236,13 +244,20 @@ export default function Pokemon() {
                             loadingContent={<Spinner />}
                         >
                             {(item) => (
-                                <TableRow key={item.name}>
+                                <TableRow
+                                    key={item.id}
+                                    className="cursor-pointer transition-colors hover:bg-zinc-300/50 not-dark:hover:bg-zinc-800/50"
+                                    onClick={() =>
+                                        router.push(`/pokemon/${item.name}`)
+                                    }
+                                >
                                     {(key) => (
                                         <TableCell>
                                             {key === 'name' ? (
                                                 <div className="flex items-center justify-center gap-2">
                                                     <div className="relative h-8 w-8">
-                                                        {!item.img || !item.isLoaded ? (
+                                                        {!item.img ||
+                                                        !item.isLoaded ? (
                                                             <Skeleton className="h-8 w-8 rounded-full" />
                                                         ) : null}
 
@@ -259,9 +274,13 @@ export default function Pokemon() {
                                                                 }
                                                                 onLoad={() => {
                                                                     setDataPokemon(
-                                                                        (prev) =>
+                                                                        (
+                                                                            prev
+                                                                        ) =>
                                                                             prev.map(
-                                                                                (p) =>
+                                                                                (
+                                                                                    p
+                                                                                ) =>
                                                                                     p.id ===
                                                                                     item.id
                                                                                         ? {
@@ -275,12 +294,9 @@ export default function Pokemon() {
                                                             />
                                                         )}
                                                     </div>
-                                                    <Link
-                                                        href={`/pokemon/${item.name}`}
-                                                        className="capitalize"
-                                                    >
+                                                    <span className="capitalize">
                                                         {item.name}
-                                                    </Link>
+                                                    </span>
                                                 </div>
                                             ) : (
                                                 getKeyValue(item, key)

@@ -44,11 +44,16 @@ const MainHeader = () => {
         },
         {
             id: 2,
+            nameTrans: 'movelist',
+            path: '/moves',
+        },
+        {
+            id: 3,
             nameTrans: 'calem',
             path: '/pokemon/calculate',
         },
         {
-            id: 3,
+            id: 4,
             nameTrans: 'tableem',
             path: '/pokemon/elements',
         },
