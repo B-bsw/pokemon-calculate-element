@@ -25,6 +25,8 @@
     "language.english": "English",
     "language.thai": "Thai",
     "strong": "Strong",
+    "weakness": "Weakness",
+    "resistant": "Resistant",
     "elemental": "Elemental",
     "SelectPokeElemental": "Select Elemental of Pokemon",
     "searchNameOrNumber": "Search name or number of Pokemon...",
