@@ -63,12 +63,12 @@ const CalculateType = () => {
         const result: Record<string, number> = {}
         const allStrong = new Set<string>()
 
-        selectedTypes.forEach(t => {
-            t.strongAgainst.forEach(s => allStrong.add(s))
+        selectedTypes.forEach((t) => {
+            t.strongAgainst.forEach((s) => allStrong.add(s))
         })
 
         // Map to count 1 for the renderer (implies x2 in the generic renderer, but we will customize label)
-        allStrong.forEach(type => {
+        allStrong.forEach((type) => {
             result[type] = 1
         })
 
@@ -80,7 +80,7 @@ const CalculateType = () => {
         const effectiveness: Record<string, number> = {}
 
         // Initialize all types with 1x multiplier
-        poke.forEach(type => {
+        poke.forEach((type) => {
             effectiveness[type.name] = 1
         })
 
@@ -98,7 +98,9 @@ const CalculateType = () => {
                     multiplier *= 0.5
                 }
                 // Check immunity (x0)
-                else if (defendingType.noEffectFrom.includes(attackingType.name)) {
+                else if (
+                    defendingType.noEffectFrom.includes(attackingType.name)
+                ) {
                     multiplier *= 0
                 }
             })
@@ -133,7 +135,9 @@ const CalculateType = () => {
 
     // Get types that have no effect on us
     const noEffectTypes = useMemo(() => {
-        return Object.keys(defensiveEffectiveness).filter(type => defensiveEffectiveness[type] === 0)
+        return Object.keys(defensiveEffectiveness).filter(
+            (type) => defensiveEffectiveness[type] === 0
+        )
     }, [defensiveEffectiveness])
 
     // Render multiplier text with colors
@@ -180,14 +184,20 @@ const CalculateType = () => {
                     }
 
                     return (
-                        <div key={typeName} className={`flex items-center gap-1 rounded-full border px-2 py-1 text-sm ${colorClass} border-current bg-opacity-10 bg-current`}>
+                        <div
+                            key={typeName}
+                            className={`flex items-center gap-1 rounded-full border px-2 py-1 text-sm ${colorClass} bg-opacity-10 border-current bg-current`}
+                        >
                             <Image
                                 src={iconElements(typeName)}
                                 alt={typeName}
                                 width={16}
                                 height={16}
                             />
-                            <span>{t(typeName)}{multiplierText}</span>
+                            <span>
+                                {t(typeName)}
+                                {multiplierText}
+                            </span>
                         </div>
                     )
                 })}
@@ -196,7 +206,7 @@ const CalculateType = () => {
     }
 
     return (
-        <div className="flex min-h-screen w-full flex-col justify-center items-center gap-6 p-4 pt-20">
+        <div className="flex min-h-screen w-full flex-col items-center justify-center gap-6 p-4 pt-20">
             {/* Input Section */}
             <div className="w-full max-w-md">
                 <div className="flex flex-col gap-4 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm not-dark:border-zinc-700 not-dark:bg-zinc-800">
@@ -237,7 +247,11 @@ const CalculateType = () => {
                                 <Plus size={16} />
                             </Button>
                         </Tooltip>
-                        <Tooltip content={t('delete')} color="danger" delay={500}>
+                        <Tooltip
+                            content={t('delete')}
+                            color="danger"
+                            delay={500}
+                        >
                             <Button
                                 isIconOnly
                                 isDisabled={count.length <= 1}
@@ -249,7 +263,11 @@ const CalculateType = () => {
                                 <Minus size={16} />
                             </Button>
                         </Tooltip>
-                        <Tooltip content={t('reset')} color="primary" delay={500}>
+                        <Tooltip
+                            content={t('reset')}
+                            color="primary"
+                            delay={500}
+                        >
                             <Button
                                 isIconOnly
                                 color="primary"
@@ -268,13 +286,17 @@ const CalculateType = () => {
             {dataInput[0].length > 1 && (
                 <div className="grid w-full max-w-5xl gap-6 md:grid-cols-2">
                     {/* Attacking Card */}
-                    <div className="flex flex-col gap-4 rounded-lg border border-zinc-200 bg-white p-6 shadow-sm not-dark:border-zinc-700 not-dark:bg-zinc-900">
+                    <div className="flex flex-col gap-4 rounded-lg border border-zinc-200 bg-white p-6 shadow-sm not-dark:border-zinc-700 not-dark:bg-zinc-900/10">
                         <div className="flex items-center gap-2 border-b border-zinc-100 pb-2 not-dark:border-zinc-800">
-                            <h2 className="text-lg font-bold text-red-500">{t('attacking')}</h2>
+                            <h2 className="text-lg font-bold text-red-500">
+                                {t('attacking')}
+                            </h2>
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <span className="text-sm font-medium text-zinc-500">{t('strong')} (x2)</span>
+                            <span className="text-sm font-medium text-zinc-500">
+                                {t('strong')} (x2)
+                            </span>
                             {renderMultiplierList(
                                 strongAgainstTypes,
                                 2,
@@ -286,24 +308,30 @@ const CalculateType = () => {
                     </div>
 
                     {/* Defending Card */}
-                    <div className="flex flex-col gap-4 rounded-lg border border-zinc-200 bg-white p-6 shadow-sm not-dark:border-zinc-700 not-dark:bg-zinc-900">
+                    <div className="flex flex-col gap-4 rounded-lg border border-zinc-200 bg-white p-6 shadow-sm not-dark:border-zinc-700 not-dark:bg-zinc-900/10">
                         <div className="flex items-center gap-2 border-b border-zinc-100 pb-2 not-dark:border-zinc-800">
-                            <h2 className="text-lg font-bold text-blue-500">{t('defending')}</h2>
+                            <h2 className="text-lg font-bold text-blue-500">
+                                {t('defending')}
+                            </h2>
                         </div>
 
                         <div className="space-y-4">
                             <div className="flex flex-col gap-2">
-                                <span className="text-sm font-medium text-zinc-500">{t('weak')} (x2, x4)</span>
+                                <span className="text-sm font-medium text-zinc-500">
+                                    {t('weak')} (x2, x4)
+                                </span>
                                 {renderMultiplierList(
                                     weakToTypes,
                                     2,
-                                    'text-white bg-yellow-500/90 not-dark:bg-yellow-500 border-0',
-                                    'text-white bg-red-500 not-dark:bg-red-500/80 border-0'
+                                    'text-white bg-yellow-500/90 not-dark:bg-yellow-500 border-0 ',
+                                    'text-white bg-red-500 not-dark:bg-red-500/80 border-0 '
                                 )}
                             </div>
 
                             <div className="flex flex-col gap-2">
-                                <span className="text-sm font-medium text-zinc-500">{t('resistant')} (x0.5, x0.25)</span>
+                                <span className="text-sm font-medium text-zinc-500">
+                                    {t('resistant')} (x0.5, x0.25)
+                                </span>
                                 {renderMultiplierList(
                                     resistantToTypes,
                                     0.5,
@@ -313,11 +341,16 @@ const CalculateType = () => {
                             </div>
 
                             <div className="flex flex-col gap-2">
-                                <span className="text-sm font-medium text-zinc-500">{t('noEffectFrom')} (x0)</span>
+                                <span className="text-sm font-medium text-zinc-500">
+                                    {t('noEffectFrom')} (x0)
+                                </span>
                                 {noEffectTypes.length > 0 ? (
                                     <div className="flex flex-wrap gap-2">
                                         {noEffectTypes.map((e) => (
-                                            <div key={e} className="flex items-center gap-1 rounded-full bg-purple-500 px-2 py-1 text-sm dark:text-white border-0">
+                                            <div
+                                                key={e}
+                                                className="flex items-center gap-1 rounded-full border-0 bg-purple-500 px-2 py-1 text-sm dark:text-white"
+                                            >
                                                 <Image
                                                     src={iconElements(e)}
                                                     alt={e}

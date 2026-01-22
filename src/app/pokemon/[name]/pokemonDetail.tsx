@@ -54,14 +54,26 @@ type MoveDetail = {
     power: number | null
     accuracy: number | null
     pp: number
-    effect_entries: { effect: string; short_effect: string; language: { name: string } }[]
+    effect_entries: {
+        effect: string
+        short_effect: string
+        language: { name: string }
+    }[]
     flavor_text_entries: { flavor_text: string; language: { name: string } }[]
 }
 
 type AbilityDetail = {
     name: string
-    effect_entries: { effect: string; short_effect: string; language: { name: string } }[]
-    flavor_text_entries: { flavor_text: string; language: { name: string }; version_group: { name: string } }[]
+    effect_entries: {
+        effect: string
+        short_effect: string
+        language: { name: string }
+    }[]
+    flavor_text_entries: {
+        flavor_text: string
+        language: { name: string }
+        version_group: { name: string }
+    }[]
     generation: { name: string }
     pokemon: { is_hidden: boolean; pokemon: { name: string } }[]
 }
@@ -212,8 +224,10 @@ const damageClassIcons: Record<string, React.ReactNode> = {
 }
 
 const damageClassColors: Record<string, string> = {
-    physical: 'bg-orange-100 text-orange-700 not-dark:bg-orange-900/50 not-dark:text-orange-300',
-    special: 'bg-purple-100 text-purple-700 not-dark:bg-purple-900/50 not-dark:text-purple-300',
+    physical:
+        'bg-orange-100 text-orange-700 not-dark:bg-orange-900/50 not-dark:text-orange-300',
+    special:
+        'bg-purple-100 text-purple-700 not-dark:bg-purple-900/50 not-dark:text-purple-300',
     status: 'bg-gray-100 text-gray-700 not-dark:bg-gray-700 not-dark:text-gray-300',
 }
 
@@ -225,7 +239,9 @@ export default function PokemonDetail({
     const [pokemonData, setPokemonData] = useState<PokemonData | null>(null)
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
-    const [movesWithDetails, setMovesWithDetails] = useState<MoveWithDetails[]>([])
+    const [movesWithDetails, setMovesWithDetails] = useState<MoveWithDetails[]>(
+        []
+    )
     const [isLoadingMoves, setIsLoadingMoves] = useState(false)
     const [selectedMove, setSelectedMove] = useState<MoveDetail | null>(null)
     const [isLoadingMoveDetail, setIsLoadingMoveDetail] = useState(false)
@@ -234,16 +250,25 @@ export default function PokemonDetail({
     const [isLoadingEvolutions, setIsLoadingEvolutions] = useState(false)
 
     // Ability modal state
-    const [selectedAbility, setSelectedAbility] = useState<AbilityDetail | null>(null)
+    const [selectedAbility, setSelectedAbility] =
+        useState<AbilityDetail | null>(null)
     const [isLoadingAbility, setIsLoadingAbility] = useState(false)
 
     const { t } = useTranslate()
     const router = useRouter()
 
     // Move modal disclosure
-    const { isOpen: isMoveModalOpen, onOpen: onMoveModalOpen, onOpenChange: onMoveModalOpenChange } = useDisclosure()
+    const {
+        isOpen: isMoveModalOpen,
+        onOpen: onMoveModalOpen,
+        onOpenChange: onMoveModalOpenChange,
+    } = useDisclosure()
     // Ability modal disclosure
-    const { isOpen: isAbilityModalOpen, onOpen: onAbilityModalOpen, onOpenChange: onAbilityModalOpenChange } = useDisclosure()
+    const {
+        isOpen: isAbilityModalOpen,
+        onOpen: onAbilityModalOpen,
+        onOpenChange: onAbilityModalOpenChange,
+    } = useDisclosure()
 
     const fetchPokeData = async () => {
         try {
@@ -265,26 +290,30 @@ export default function PokemonDetail({
     // Get learn method info from version_group_details (prefer latest version)
     const getLearnMethodInfo = (details: VersionGroupDetail[]) => {
         // Find level-up method first
-        const levelUp = details.find(d => d.move_learn_method.name === 'level-up')
+        const levelUp = details.find(
+            (d) => d.move_learn_method.name === 'level-up'
+        )
         if (levelUp) {
             return {
                 method: 'level-up',
-                level: levelUp.level_learned_at
+                level: levelUp.level_learned_at,
             }
         }
         // Then machine/TM
-        const machine = details.find(d => d.move_learn_method.name === 'machine')
+        const machine = details.find(
+            (d) => d.move_learn_method.name === 'machine'
+        )
         if (machine) {
             return {
                 method: 'machine',
-                level: 0
+                level: 0,
             }
         }
         // Other methods (egg, tutor, etc.)
         const other = details[0]
         return {
             method: other?.move_learn_method.name || 'other',
-            level: other?.level_learned_at || 0
+            level: other?.level_learned_at || 0,
         }
     }
 
@@ -295,19 +324,24 @@ export default function PokemonDetail({
             const moveDetailsPromises = moves.map(async (move) => {
                 try {
                     const response = await axios.get(move.move.url)
-                    const learnInfo = getLearnMethodInfo(move.version_group_details)
+                    const learnInfo = getLearnMethodInfo(
+                        move.version_group_details
+                    )
                     return {
                         name: move.move.name,
                         url: move.move.url,
                         type: response.data.type?.name || 'normal',
-                        damageClass: response.data.damage_class?.name || 'status',
+                        damageClass:
+                            response.data.damage_class?.name || 'status',
                         power: response.data.power,
                         accuracy: response.data.accuracy,
                         learnMethod: learnInfo.method,
                         levelLearnedAt: learnInfo.level,
                     }
                 } catch {
-                    const learnInfo = getLearnMethodInfo(move.version_group_details)
+                    const learnInfo = getLearnMethodInfo(
+                        move.version_group_details
+                    )
                     return {
                         name: move.move.name,
                         url: move.move.url,
@@ -368,13 +402,18 @@ export default function PokemonDetail({
 
             const processChain = async (evoData: any) => {
                 try {
-                    const pokeRes = await axios.get(`https://pokeapi.co/api/v2/pokemon/${evoData.species.name}`)
+                    const pokeRes = await axios.get(
+                        `https://pokeapi.co/api/v2/pokemon/${evoData.species.name}`
+                    )
                     const details = evoData.evolution_details[0]
 
                     chain.push({
                         name: evoData.species.name,
                         id: pokeRes.data.id,
-                        image: pokeRes.data.sprites.other?.['official-artwork']?.front_default || pokeRes.data.sprites.front_default,
+                        image:
+                            pokeRes.data.sprites.other?.['official-artwork']
+                                ?.front_default ||
+                            pokeRes.data.sprites.front_default,
                         types: pokeRes.data.types.map((t: any) => t.type.name),
                         minLevel: details?.min_level,
                         trigger: details?.trigger?.name,
@@ -402,7 +441,10 @@ export default function PokemonDetail({
                         }
                     }
                 } catch (err) {
-                    console.error(`Error fetching pokemon data for ${evoData.species.name}:`, err)
+                    console.error(
+                        `Error fetching pokemon data for ${evoData.species.name}:`,
+                        err
+                    )
                 }
             }
 
@@ -417,13 +459,19 @@ export default function PokemonDetail({
 
     // Get English effect text for ability
     const getAbilityEnglishEffect = (ability: AbilityDetail) => {
-        const entry = ability.effect_entries?.find((e) => e.language.name === 'en')
-        return entry?.short_effect || entry?.effect || 'No description available.'
+        const entry = ability.effect_entries?.find(
+            (e) => e.language.name === 'en'
+        )
+        return (
+            entry?.short_effect || entry?.effect || 'No description available.'
+        )
     }
 
     // Get English flavor text for ability
     const getAbilityFlavorText = (ability: AbilityDetail) => {
-        const entry = ability.flavor_text_entries?.find((e) => e.language.name === 'en')
+        const entry = ability.flavor_text_entries?.find(
+            (e) => e.language.name === 'en'
+        )
         return entry?.flavor_text?.replace(/\n/g, ' ') || ''
     }
 
@@ -446,32 +494,64 @@ export default function PokemonDetail({
         const details = []
         if (member.trigger === 'level-up') {
             if (member.minLevel) details.push(`Lv. ${member.minLevel}`)
-            if (member.minHappiness) details.push(`${t('happiness') || 'Happiness'} ${member.minHappiness}`)
-            if (member.minAffection) details.push(`${t('affection') || 'Affection'} ${member.minAffection}`)
-            if (member.minBeauty) details.push(`${t('beauty') || 'Beauty'} ${member.minBeauty}`)
-            if (member.heldItem) details.push(`${t('hold') || 'Hold'} ${member.heldItem.replace(/-/g, ' ')}`)
-            if (member.knownMove) details.push(`${t('know') || 'Know'} ${member.knownMove.replace(/-/g, ' ')}`)
-            if (member.knownMoveType) details.push(`${t('know') || 'Know'} ${member.knownMoveType} ${t('type') || 'type'}`)
-            if (member.location) details.push(`${t('at') || 'At'} ${member.location.replace(/-/g, ' ')}`)
+            if (member.minHappiness)
+                details.push(
+                    `${t('happiness') || 'Happiness'} ${member.minHappiness}`
+                )
+            if (member.minAffection)
+                details.push(
+                    `${t('affection') || 'Affection'} ${member.minAffection}`
+                )
+            if (member.minBeauty)
+                details.push(`${t('beauty') || 'Beauty'} ${member.minBeauty}`)
+            if (member.heldItem)
+                details.push(
+                    `${t('hold') || 'Hold'} ${member.heldItem.replace(/-/g, ' ')}`
+                )
+            if (member.knownMove)
+                details.push(
+                    `${t('know') || 'Know'} ${member.knownMove.replace(/-/g, ' ')}`
+                )
+            if (member.knownMoveType)
+                details.push(
+                    `${t('know') || 'Know'} ${member.knownMoveType} ${t('type') || 'type'}`
+                )
+            if (member.location)
+                details.push(
+                    `${t('at') || 'At'} ${member.location.replace(/-/g, ' ')}`
+                )
             if (member.timeOfDay) details.push(`${member.timeOfDay}`)
             if (member.needsOverworldRain) details.push(t('rain') || 'Rain')
-            if (member.turnUpsideDown) details.push(t('upsideDown') || 'Upside down')
-            if (member.relativePhysicalStats !== null && member.relativePhysicalStats !== undefined) {
-                if (member.relativePhysicalStats === 1) details.push('Atk > Def')
-                else if (member.relativePhysicalStats === -1) details.push('Atk < Def')
-                else if (member.relativePhysicalStats === 0) details.push('Atk = Def')
+            if (member.turnUpsideDown)
+                details.push(t('upsideDown') || 'Upside down')
+            if (
+                member.relativePhysicalStats !== null &&
+                member.relativePhysicalStats !== undefined
+            ) {
+                if (member.relativePhysicalStats === 1)
+                    details.push('Atk > Def')
+                else if (member.relativePhysicalStats === -1)
+                    details.push('Atk < Def')
+                else if (member.relativePhysicalStats === 0)
+                    details.push('Atk = Def')
             }
         } else if (member.trigger === 'use-item') {
             if (member.item) details.push(member.item.replace(/-/g, ' '))
         } else if (member.trigger === 'trade') {
             details.push(t('trade') || 'Trade')
-            if (member.tradeSpecies) details.push(`${t('with') || 'with'} ${member.tradeSpecies}`)
-            if (member.heldItem) details.push(`${t('holding') || 'holding'} ${member.heldItem.replace(/-/g, ' ')}`)
+            if (member.tradeSpecies)
+                details.push(`${t('with') || 'with'} ${member.tradeSpecies}`)
+            if (member.heldItem)
+                details.push(
+                    `${t('holding') || 'holding'} ${member.heldItem.replace(/-/g, ' ')}`
+                )
         } else if (member.trigger === 'shed') {
             details.push(t('shed') || 'Shed')
         }
 
-        return details.length > 0 ? details.join(' + ') : member.trigger?.replace(/-/g, ' ')
+        return details.length > 0
+            ? details.join(' + ')
+            : member.trigger?.replace(/-/g, ' ')
     }
 
     const formatPokemonId = (id: number) => {
@@ -516,26 +596,35 @@ export default function PokemonDetail({
     // Get English effect text
     const getEnglishEffect = (move: MoveDetail) => {
         const entry = move.effect_entries?.find((e) => e.language.name === 'en')
-        return entry?.short_effect || entry?.effect || 'No description available.'
+        return (
+            entry?.short_effect || entry?.effect || 'No description available.'
+        )
     }
 
     // Get English flavor text
     const getEnglishFlavorText = (move: MoveDetail) => {
-        const entry = move.flavor_text_entries?.find((e) => e.language.name === 'en')
+        const entry = move.flavor_text_entries?.find(
+            (e) => e.language.name === 'en'
+        )
         return entry?.flavor_text?.replace(/\n/g, ' ') || ''
     }
 
     // Render move item
-    const renderMoveItem = (move: MoveWithDetails, showLevel: boolean = false) => (
+    const renderMoveItem = (
+        move: MoveWithDetails,
+        showLevel: boolean = false
+    ) => (
         <button
             key={move.name}
             onClick={() => fetchMoveDetail(move.url)}
-            className="flex items-center gap-2 p-3 rounded-lg bg-zinc-50 hover:bg-zinc-100 not-dark:bg-zinc-700 not-dark:hover:bg-zinc-600 transition-colors cursor-pointer text-left w-full"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-lg bg-zinc-50 p-3 text-left transition-colors not-dark:bg-zinc-700 hover:bg-zinc-100 not-dark:hover:bg-zinc-600"
         >
             {/* Level (for level-up moves) */}
             {showLevel && (
-                <div className="w-12 text-center shrink-0">
-                    <span className="text-xs text-zinc-500 not-dark:text-zinc-400 block">Lv.</span>
+                <div className="w-12 shrink-0 text-center">
+                    <span className="block text-xs text-zinc-500 not-dark:text-zinc-400">
+                        Lv.
+                    </span>
                     <span className="font-bold text-zinc-800 not-dark:text-white">
                         {move.levelLearnedAt || '-'}
                     </span>
@@ -543,7 +632,7 @@ export default function PokemonDetail({
             )}
 
             {/* Type Icon */}
-            <div className={`p-1.5 rounded-lg shrink-0 ${move.type}`}>
+            <div className={`shrink-0 rounded-lg p-1.5 ${move.type}`}>
                 {VALID_TYPES.includes(move.type.toLowerCase()) && (
                     <Image
                         src={iconElements(move.type)}
@@ -555,7 +644,7 @@ export default function PokemonDetail({
             </div>
 
             {/* Move Name */}
-            <span className="flex-1 font-medium text-zinc-800 not-dark:text-white capitalize min-w-0 truncate">
+            <span className="min-w-0 flex-1 truncate font-medium text-zinc-800 capitalize not-dark:text-white">
                 {move.name.replace(/-/g, ' ')}
             </span>
 
@@ -563,24 +652,28 @@ export default function PokemonDetail({
             <Chip
                 size="sm"
                 variant="flat"
-                className={`${damageClassColors[move.damageClass]} capitalize shrink-0`}
+                className={`${damageClassColors[move.damageClass]} shrink-0 capitalize`}
                 startContent={damageClassIcons[move.damageClass]}
             >
                 <span className="hidden sm:inline">{move.damageClass}</span>
             </Chip>
 
             {/* Power */}
-            <div className="w-12 text-center shrink-0">
-                <span className="text-xs text-zinc-500 not-dark:text-zinc-400 block">PWR</span>
-                <span className="font-bold text-zinc-800 not-dark:text-white text-sm">
+            <div className="w-12 shrink-0 text-center">
+                <span className="block text-xs text-zinc-500 not-dark:text-zinc-400">
+                    PWR
+                </span>
+                <span className="text-sm font-bold text-zinc-800 not-dark:text-white">
                     {move.power ?? '-'}
                 </span>
             </div>
 
             {/* Accuracy */}
-            <div className="w-12 text-center shrink-0">
-                <span className="text-xs text-zinc-500 not-dark:text-zinc-400 block">ACC</span>
-                <span className="font-bold text-zinc-800 not-dark:text-white text-sm">
+            <div className="w-12 shrink-0 text-center">
+                <span className="block text-xs text-zinc-500 not-dark:text-zinc-400">
+                    ACC
+                </span>
+                <span className="text-sm font-bold text-zinc-800 not-dark:text-white">
                     {move.accuracy ? `${move.accuracy}` : '-'}
                 </span>
             </div>
@@ -624,17 +717,19 @@ export default function PokemonDetail({
         <>
             <div className="w-full max-w-4xl px-4 py-6 pt-20">
                 {/* Main Card */}
-                <Card className="bg-white shadow-xl not-dark:bg-zinc-800 not-dark:border not-dark:border-zinc-700">
+                <Card className="bg-white shadow-xl not-dark:border not-dark:border-zinc-700 not-dark:bg-zinc-800">
                     <CardBody className="p-0">
                         {/* Header with gradient background based on type colors */}
                         <div
                             className="relative overflow-hidden rounded-t-xl p-6"
                             style={{
                                 minHeight: '200px',
-                                background: validTypes.length > 1
-                                    ? `linear-gradient(135deg, ${TYPE_COLORS[validTypes[0]?.type.name] || TYPE_COLORS.normal} 0%, ${TYPE_COLORS[validTypes[1]?.type.name] || TYPE_COLORS.normal} 100%)`
-                                    : TYPE_COLORS[mainType] || TYPE_COLORS.normal,
-                                boxShadow: `0 0 30px ${TYPE_COLORS[mainType] || TYPE_COLORS.normal}50`
+                                background:
+                                    validTypes.length > 1
+                                        ? `linear-gradient(135deg, ${TYPE_COLORS[validTypes[0]?.type.name] || TYPE_COLORS.normal} 0%, ${TYPE_COLORS[validTypes[1]?.type.name] || TYPE_COLORS.normal} 100%)`
+                                        : TYPE_COLORS[mainType] ||
+                                          TYPE_COLORS.normal,
+                                boxShadow: `0 0 30px ${TYPE_COLORS[mainType] || TYPE_COLORS.normal}50`,
                             }}
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" />
@@ -645,7 +740,7 @@ export default function PokemonDetail({
                                     <p className="text-lg font-bold text-white/80">
                                         {formatPokemonId(pokemonData.id)}
                                     </p>
-                                    <h1 className="text-3xl font-bold capitalize text-white md:text-4xl">
+                                    <h1 className="text-3xl font-bold text-white capitalize md:text-4xl">
                                         {pokemonData.name}
                                     </h1>
 
@@ -697,103 +792,167 @@ export default function PokemonDetail({
                                     {t('abilities') || 'Abilities'}
                                 </p>
                                 <div className="flex flex-wrap gap-2">
-                                    {pokemonData.abilities.map((abilityInfo) => (
-                                        <Chip
-                                            key={abilityInfo.ability.name}
-                                            size="sm"
-                                            variant={
-                                                abilityInfo.is_hidden
-                                                    ? 'bordered'
-                                                    : 'solid'
-                                            }
-                                            color="primary"
-                                            className="capitalize cursor-pointer hover:scale-105 transition-transform"
-                                            onClick={() => fetchAbilityDetail(abilityInfo.ability.url)}
-                                        >
-                                            {isLoadingAbility ? (
-                                                <Spinner size="sm" color="current" />
-                                            ) : (
-                                                <>
-                                                    {abilityInfo.ability.name.replace(
-                                                        /-/g,
-                                                        ' '
-                                                    )}
-                                                    {abilityInfo.is_hidden && ' (Hidden)'}
-                                                </>
-                                            )}
-                                        </Chip>
-                                    ))}
+                                    {pokemonData.abilities.map(
+                                        (abilityInfo) => (
+                                            <Chip
+                                                key={abilityInfo.ability.name}
+                                                size="sm"
+                                                variant={
+                                                    abilityInfo.is_hidden
+                                                        ? 'bordered'
+                                                        : 'solid'
+                                                }
+                                                color="primary"
+                                                className="cursor-pointer capitalize transition-transform hover:scale-105"
+                                                onClick={() =>
+                                                    fetchAbilityDetail(
+                                                        abilityInfo.ability.url
+                                                    )
+                                                }
+                                            >
+                                                {isLoadingAbility ? (
+                                                    <Spinner
+                                                        size="sm"
+                                                        color="current"
+                                                    />
+                                                ) : (
+                                                    <>
+                                                        {abilityInfo.ability.name.replace(
+                                                            /-/g,
+                                                            ' '
+                                                        )}
+                                                        {abilityInfo.is_hidden &&
+                                                            ' (Hidden)'}
+                                                    </>
+                                                )}
+                                            </Chip>
+                                        )
+                                    )}
                                 </div>
                             </div>
 
-                                                        {/* Evolution Chain Section */}
-                                                        {!isLoadingEvolutions && evolutionChain.length > 1 && (
-                                                            <div className="mb-8">
-                                                                <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
-                                                                    {t('evolutionChain') || 'Evolution Chain'}
-                                                                </h2>
-                                                                <div className="flex flex-wrap items-center justify-center gap-y-8 gap-x-4 rounded-xl bg-zinc-50 p-6 not-dark:bg-zinc-700/30">
-                                                                    {evolutionChain.map((member, index) => {
-                                                                        const nextMember = evolutionChain[index + 1];
-                                                                        return (
-                                                                            <div key={`${member.id}-${index}`} className="flex items-center gap-4">
-                                                                                <div
-                                                                                    className={`flex flex-col items-center cursor-pointer hover:scale-105 transition-transform p-2 rounded-xl ${member.name === pokemonData.name ? 'bg-primary/10 ring-2 ring-primary/30' : ''}`}
-                                                                                    onClick={() => {
-                                                                                        if (member.name !== pokemonData.name) {
-                                                                                            router.push(`/pokemon/${member.name}`)
-                                                                                        }
-                                                                                    }}
-                                                                                >
-                                                                                    <div className="relative h-20 w-20 mb-2">
-                                                                                        <Image
-                                                                                            src={member.image}
-                                                                                            alt={member.name}
-                                                                                            fill
-                                                                                            className="object-contain"
-                                                                                        />
-                                                                                    </div>
-                                                                                    <span className="text-xs font-bold capitalize text-zinc-800 not-dark:text-white max-w-[80px] truncate">
-                                                                                        {member.name}
-                                                                                    </span>
-                                                                                    <div className="flex gap-1 mt-1">
-                                                                                        {member.types.filter(type => VALID_TYPES.includes(type)).map(type => (
-                                                                                            <div key={type} className={`p-0.5 rounded-md ${type}`}>
-                                                                                                <Image
-                                                                                                    src={iconElements(type)}
-                                                                                                    alt={type}
-                                                                                                    width={10}
-                                                                                                    height={10}
-                                                                                                />
-                                                                                            </div>
-                                                                                        ))}
-                                                                                    </div>
-                                                                                </div>
-                                                                                {nextMember && (
-                                                                                    <div className="flex flex-col items-center text-zinc-400">
-                                                                                        <ArrowRight size={16} />
-                                                                                        <span className="text-[9px] font-bold mt-1 max-w-[80px] text-center capitalize">
-                                                                                            {formatEvolutionDetail(nextMember)}
-                                                                                        </span>
-                                                                                    </div>
-                                                                                )}
-                                                                            </div>
+                            {/* Evolution Chain Section */}
+                            {!isLoadingEvolutions &&
+                                evolutionChain.length > 1 && (
+                                    <div className="mb-8">
+                                        <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
+                                            {t('evolutionChain') ||
+                                                'Evolution Chain'}
+                                        </h2>
+                                        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-8 rounded-xl bg-zinc-50 p-6 not-dark:bg-zinc-700/30">
+                                            {evolutionChain.map(
+                                                (member, index) => {
+                                                    const nextMember =
+                                                        evolutionChain[
+                                                            index + 1
+                                                        ]
+                                                    return (
+                                                        <div
+                                                            key={`${member.id}-${index}`}
+                                                            className="flex items-center gap-4"
+                                                        >
+                                                            <div
+                                                                className={`flex cursor-pointer flex-col items-center rounded-xl p-2 transition-transform hover:scale-105 ${member.name === pokemonData.name ? 'bg-primary/10 ring-primary/30 ring-2' : ''}`}
+                                                                onClick={() => {
+                                                                    if (
+                                                                        member.name !==
+                                                                        pokemonData.name
+                                                                    ) {
+                                                                        router.push(
+                                                                            `/pokemon/${member.name}`
                                                                         )
-                                                                    })}
+                                                                    }
+                                                                }}
+                                                            >
+                                                                <div className="relative mb-2 h-20 w-20">
+                                                                    <Image
+                                                                        src={
+                                                                            member.image
+                                                                        }
+                                                                        alt={
+                                                                            member.name
+                                                                        }
+                                                                        fill
+                                                                        className="object-contain"
+                                                                    />
+                                                                </div>
+                                                                <span className="max-w-[80px] truncate text-xs font-bold text-zinc-800 capitalize not-dark:text-white">
+                                                                    {
+                                                                        member.name
+                                                                    }
+                                                                </span>
+                                                                <div className="mt-1 flex gap-1">
+                                                                    {member.types
+                                                                        .filter(
+                                                                            (
+                                                                                type
+                                                                            ) =>
+                                                                                VALID_TYPES.includes(
+                                                                                    type
+                                                                                )
+                                                                        )
+                                                                        .map(
+                                                                            (
+                                                                                type
+                                                                            ) => (
+                                                                                <div
+                                                                                    key={
+                                                                                        type
+                                                                                    }
+                                                                                    className={`rounded-md p-0.5 ${type}`}
+                                                                                >
+                                                                                    <Image
+                                                                                        src={iconElements(
+                                                                                            type
+                                                                                        )}
+                                                                                        alt={
+                                                                                            type
+                                                                                        }
+                                                                                        width={
+                                                                                            10
+                                                                                        }
+                                                                                        height={
+                                                                                            10
+                                                                                        }
+                                                                                    />
+                                                                                </div>
+                                                                            )
+                                                                        )}
                                                                 </div>
                                                             </div>
-                                                        )}
+                                                            {nextMember && (
+                                                                <div className="flex flex-col items-center text-zinc-400">
+                                                                    <ArrowRight
+                                                                        size={
+                                                                            16
+                                                                        }
+                                                                    />
+                                                                    <span className="mt-1 max-w-[80px] text-center text-[9px] font-bold capitalize">
+                                                                        {formatEvolutionDetail(
+                                                                            nextMember
+                                                                        )}
+                                                                    </span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )
+                                                }
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
 
-                                                        {isLoadingEvolutions && (
-                                                            <div className="mb-8">
-                                                                <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
-                                                                    {t('evolutionChain') || 'Evolution Chain'}
-                                                                </h2>
-                                                                <div className="flex justify-center py-8">
-                                                                    <Spinner size="md" color="primary" />
-                                                                </div>
-                                                            </div>
-                                                        )}
+                            {isLoadingEvolutions && (
+                                <div className="mb-8">
+                                    <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
+                                        {t('evolutionChain') ||
+                                            'Evolution Chain'}
+                                    </h2>
+                                    <div className="flex justify-center py-8">
+                                        <Spinner size="md" color="primary" />
+                                    </div>
+                                </div>
+                            )}
                             {/* Stats Section */}
                             <div className="mb-6">
                                 <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
@@ -806,8 +965,9 @@ export default function PokemonDetail({
                                             className="flex items-center gap-3"
                                         >
                                             <span className="w-16 text-sm font-medium text-zinc-600 not-dark:text-zinc-300">
-                                                {statNames[statInfo.stat.name] ||
-                                                    statInfo.stat.name}
+                                                {statNames[
+                                                    statInfo.stat.name
+                                                ] || statInfo.stat.name}
                                             </span>
                                             <span className="w-10 text-right text-sm font-bold text-zinc-800 not-dark:text-white">
                                                 {statInfo.base_stat}
@@ -842,7 +1002,8 @@ export default function PokemonDetail({
                             {/* Moves Section */}
                             <div>
                                 <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
-                                    {t('moves') || 'Moves'} ({pokemonData.moves.length})
+                                    {t('moves') || 'Moves'} (
+                                    {pokemonData.moves.length})
                                 </h2>
 
                                 {isLoadingMoves ? (
@@ -852,7 +1013,9 @@ export default function PokemonDetail({
                                 ) : (
                                     <Tabs
                                         selectedKey={selectedTab}
-                                        onSelectionChange={(key) => setSelectedTab(key as string)}
+                                        onSelectionChange={(key) =>
+                                            setSelectedTab(key as string)
+                                        }
                                         variant="underlined"
                                         color="primary"
                                         classNames={{
@@ -865,19 +1028,25 @@ export default function PokemonDetail({
                                             title={
                                                 <div className="flex items-center gap-2">
                                                     <span>Level Up</span>
-                                                    <Chip size="sm" variant="flat">
+                                                    <Chip
+                                                        size="sm"
+                                                        variant="flat"
+                                                    >
                                                         {levelUpMoves.length}
                                                     </Chip>
                                                 </div>
                                             }
                                         >
-                                            <div className="space-y-2 max-h-[400px] overflow-y-auto scll pr-2 mt-4">
+                                            <div className="scll mt-4 max-h-[400px] space-y-2 overflow-y-auto pr-2">
                                                 {levelUpMoves.length > 0 ? (
                                                     levelUpMoves.map((move) =>
-                                                        renderMoveItem(move, true)
+                                                        renderMoveItem(
+                                                            move,
+                                                            true
+                                                        )
                                                     )
                                                 ) : (
-                                                    <p className="text-center text-zinc-500 py-4">
+                                                    <p className="py-4 text-center text-zinc-500">
                                                         No level-up moves
                                                     </p>
                                                 )}
@@ -888,19 +1057,25 @@ export default function PokemonDetail({
                                             title={
                                                 <div className="flex items-center gap-2">
                                                     <span>TM/HM</span>
-                                                    <Chip size="sm" variant="flat">
+                                                    <Chip
+                                                        size="sm"
+                                                        variant="flat"
+                                                    >
                                                         {tmMoves.length}
                                                     </Chip>
                                                 </div>
                                             }
                                         >
-                                            <div className="space-y-2 max-h-[400px] overflow-y-auto scll pr-2 mt-4">
+                                            <div className="scll mt-4 max-h-[400px] space-y-2 overflow-y-auto pr-2">
                                                 {tmMoves.length > 0 ? (
                                                     tmMoves.map((move) =>
-                                                        renderMoveItem(move, false)
+                                                        renderMoveItem(
+                                                            move,
+                                                            false
+                                                        )
                                                     )
                                                 ) : (
-                                                    <p className="text-center text-zinc-500 py-4">
+                                                    <p className="py-4 text-center text-zinc-500">
                                                         No TM/HM moves
                                                     </p>
                                                 )}
@@ -910,20 +1085,28 @@ export default function PokemonDetail({
                                             key="other"
                                             title={
                                                 <div className="flex items-center gap-2">
-                                                    <span>{t('other') || 'Other'}</span>
-                                                    <Chip size="sm" variant="flat">
+                                                    <span>
+                                                        {t('other') || 'Other'}
+                                                    </span>
+                                                    <Chip
+                                                        size="sm"
+                                                        variant="flat"
+                                                    >
                                                         {otherMoves.length}
                                                     </Chip>
                                                 </div>
                                             }
                                         >
-                                            <div className="space-y-2 max-h-[400px] overflow-y-auto scll pr-2 mt-4">
+                                            <div className="scll mt-4 max-h-[400px] space-y-2 overflow-y-auto pr-2">
                                                 {otherMoves.length > 0 ? (
                                                     otherMoves.map((move) =>
-                                                        renderMoveItem(move, false)
+                                                        renderMoveItem(
+                                                            move,
+                                                            false
+                                                        )
                                                     )
                                                 ) : (
-                                                    <p className="text-center text-zinc-500 py-4">
+                                                    <p className="py-4 text-center text-zinc-500">
                                                         No other moves
                                                     </p>
                                                 )}
@@ -962,76 +1145,105 @@ export default function PokemonDetail({
                                 <>
                                     <ModalHeader className="flex flex-col gap-1">
                                         <div className="flex items-center gap-3">
-                                            <div className={`p-2 rounded-lg ${selectedMove.type.name}`}>
-                                                {VALID_TYPES.includes(selectedMove.type.name) && (
+                                            <div
+                                                className={`rounded-lg p-2 ${selectedMove.type.name}`}
+                                            >
+                                                {VALID_TYPES.includes(
+                                                    selectedMove.type.name
+                                                ) && (
                                                     <Image
-                                                        src={iconElements(selectedMove.type.name)}
-                                                        alt={selectedMove.type.name}
+                                                        src={iconElements(
+                                                            selectedMove.type
+                                                                .name
+                                                        )}
+                                                        alt={
+                                                            selectedMove.type
+                                                                .name
+                                                        }
                                                         width={24}
                                                         height={24}
                                                     />
                                                 )}
                                             </div>
-                                            <span className="text-xl font-bold text-zinc-800 not-dark:text-white capitalize">
-                                                {selectedMove.name.replace(/-/g, ' ')}
+                                            <span className="text-xl font-bold text-zinc-800 capitalize not-dark:text-white">
+                                                {selectedMove.name.replace(
+                                                    /-/g,
+                                                    ' '
+                                                )}
                                             </span>
                                         </div>
                                     </ModalHeader>
                                     <ModalBody>
                                         {/* Move Info Grid */}
-                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                                        <div className="mb-4 grid grid-cols-2 gap-4 md:grid-cols-4">
                                             {/* Type */}
                                             <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
-                                                <p className="text-xs text-zinc-500 not-dark:text-zinc-400 mb-1">
+                                                <p className="mb-1 text-xs text-zinc-500 not-dark:text-zinc-400">
                                                     {t('type') || 'Type'}
                                                 </p>
                                                 <Chip
                                                     size="sm"
                                                     className={`${selectedMove.type.name} text-white capitalize`}
                                                 >
-                                                    {t(selectedMove.type.name) || selectedMove.type.name}
+                                                    {t(
+                                                        selectedMove.type.name
+                                                    ) || selectedMove.type.name}
                                                 </Chip>
                                             </div>
 
                                             {/* Category */}
                                             <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
-                                                <p className="text-xs text-zinc-500 not-dark:text-zinc-400 mb-1">
-                                                    {t('category') || 'Category'}
+                                                <p className="mb-1 text-xs text-zinc-500 not-dark:text-zinc-400">
+                                                    {t('category') ||
+                                                        'Category'}
                                                 </p>
                                                 <Chip
                                                     size="sm"
                                                     variant="flat"
                                                     className={`${damageClassColors[selectedMove.damage_class.name]} capitalize`}
-                                                    startContent={damageClassIcons[selectedMove.damage_class.name]}
+                                                    startContent={
+                                                        damageClassIcons[
+                                                            selectedMove
+                                                                .damage_class
+                                                                .name
+                                                        ]
+                                                    }
                                                 >
-                                                    {selectedMove.damage_class.name}
+                                                    {
+                                                        selectedMove
+                                                            .damage_class.name
+                                                    }
                                                 </Chip>
                                             </div>
 
                                             {/* Power */}
                                             <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
-                                                <p className="text-xs text-zinc-500 not-dark:text-zinc-400 mb-1">
+                                                <p className="mb-1 text-xs text-zinc-500 not-dark:text-zinc-400">
                                                     {t('power') || 'Power'}
                                                 </p>
                                                 <p className="text-lg font-bold text-zinc-800 not-dark:text-white">
-                                                    {selectedMove.power ?? 'N/A'}
+                                                    {selectedMove.power ??
+                                                        'N/A'}
                                                 </p>
                                             </div>
 
                                             {/* Accuracy */}
                                             <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
-                                                <p className="text-xs text-zinc-500 not-dark:text-zinc-400 mb-1">
-                                                    {t('accuracy') || 'Accuracy'}
+                                                <p className="mb-1 text-xs text-zinc-500 not-dark:text-zinc-400">
+                                                    {t('accuracy') ||
+                                                        'Accuracy'}
                                                 </p>
                                                 <p className="text-lg font-bold text-zinc-800 not-dark:text-white">
-                                                    {selectedMove.accuracy ? `${selectedMove.accuracy}%` : 'N/A'}
+                                                    {selectedMove.accuracy
+                                                        ? `${selectedMove.accuracy}%`
+                                                        : 'N/A'}
                                                 </p>
                                             </div>
                                         </div>
 
                                         {/* PP */}
-                                        <div className="rounded-lg bg-zinc-100 p-3 mb-4 not-dark:bg-zinc-700">
-                                            <div className="flex justify-between items-center">
+                                        <div className="mb-4 rounded-lg bg-zinc-100 p-3 not-dark:bg-zinc-700">
+                                            <div className="flex items-center justify-between">
                                                 <span className="text-sm text-zinc-500 not-dark:text-zinc-400">
                                                     PP (Power Points)
                                                 </span>
@@ -1045,7 +1257,7 @@ export default function PokemonDetail({
 
                                         {/* Effect Description */}
                                         <div>
-                                            <h3 className="font-semibold text-zinc-800 not-dark:text-white mb-2">
+                                            <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
                                                 {t('effect') || 'Effect'}
                                             </h3>
                                             <p className="text-sm text-zinc-600 not-dark:text-zinc-300">
@@ -1056,11 +1268,16 @@ export default function PokemonDetail({
                                         {/* Flavor Text */}
                                         {getEnglishFlavorText(selectedMove) && (
                                             <div className="mt-4">
-                                                <h3 className="font-semibold text-zinc-800 not-dark:text-white mb-2">
-                                                    {t('description') || 'Description'}
+                                                <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                                    {t('description') ||
+                                                        'Description'}
                                                 </h3>
-                                                <p className="text-sm text-zinc-500 not-dark:text-zinc-400 italic">
-                                                    "{getEnglishFlavorText(selectedMove)}"
+                                                <p className="text-sm text-zinc-500 italic not-dark:text-zinc-400">
+                                                    "
+                                                    {getEnglishFlavorText(
+                                                        selectedMove
+                                                    )}
+                                                    "
                                                 </p>
                                             </div>
                                         )}
@@ -1107,25 +1324,34 @@ export default function PokemonDetail({
                                     <ModalHeader className="flex flex-col gap-1">
                                         <div className="flex items-center gap-3">
                                             <div
-                                                className="p-2 rounded-lg"
+                                                className="rounded-lg p-2"
                                                 style={{
-                                                    background: TYPE_COLORS[mainType] || TYPE_COLORS.normal,
-                                                    boxShadow: `0 0 10px ${TYPE_COLORS[mainType] || TYPE_COLORS.normal}50`
+                                                    background:
+                                                        TYPE_COLORS[mainType] ||
+                                                        TYPE_COLORS.normal,
+                                                    boxShadow: `0 0 10px ${TYPE_COLORS[mainType] || TYPE_COLORS.normal}50`,
                                                 }}
                                             >
-                                                <Zap size={24} className="text-white" />
+                                                <Zap
+                                                    size={24}
+                                                    className="text-white"
+                                                />
                                             </div>
-                                            <span className="text-xl font-bold text-zinc-800 not-dark:text-white capitalize">
-                                                {selectedAbility.name.replace(/-/g, ' ')}
+                                            <span className="text-xl font-bold text-zinc-800 capitalize not-dark:text-white">
+                                                {selectedAbility.name.replace(
+                                                    /-/g,
+                                                    ' '
+                                                )}
                                             </span>
                                         </div>
                                     </ModalHeader>
                                     <ModalBody>
                                         {/* Generation Info */}
-                                        <div className="rounded-lg bg-zinc-100 p-3 mb-4 not-dark:bg-zinc-700">
-                                            <div className="flex justify-between items-center">
+                                        <div className="mb-4 rounded-lg bg-zinc-100 p-3 not-dark:bg-zinc-700">
+                                            <div className="flex items-center justify-between">
                                                 <span className="text-sm text-zinc-500 not-dark:text-zinc-400">
-                                                    {t('generation') || 'Generation'}
+                                                    {t('generation') ||
+                                                        'Generation'}
                                                 </span>
                                                 <Chip
                                                     size="sm"
@@ -1133,7 +1359,10 @@ export default function PokemonDetail({
                                                     color="primary"
                                                     className="capitalize"
                                                 >
-                                                    {selectedAbility.generation?.name?.replace(/-/g, ' ') || 'Unknown'}
+                                                    {selectedAbility.generation?.name?.replace(
+                                                        /-/g,
+                                                        ' '
+                                                    ) || 'Unknown'}
                                                 </Chip>
                                             </div>
                                         </div>
@@ -1142,55 +1371,99 @@ export default function PokemonDetail({
 
                                         {/* Effect Description */}
                                         <div>
-                                            <h3 className="font-semibold text-zinc-800 not-dark:text-white mb-2">
+                                            <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
                                                 {t('effect') || 'Effect'}
                                             </h3>
                                             <p className="text-sm text-zinc-600 not-dark:text-zinc-300">
-                                                {getAbilityEnglishEffect(selectedAbility)}
+                                                {getAbilityEnglishEffect(
+                                                    selectedAbility
+                                                )}
                                             </p>
                                         </div>
 
                                         {/* Flavor Text */}
-                                        {getAbilityFlavorText(selectedAbility) && (
+                                        {getAbilityFlavorText(
+                                            selectedAbility
+                                        ) && (
                                             <div className="mt-4">
-                                                <h3 className="font-semibold text-zinc-800 not-dark:text-white mb-2">
-                                                    {t('description') || 'Description'}
+                                                <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                                    {t('description') ||
+                                                        'Description'}
                                                 </h3>
-                                                <p className="text-sm text-zinc-500 not-dark:text-zinc-400 italic">
-                                                    "{getAbilityFlavorText(selectedAbility)}"
+                                                <p className="text-sm text-zinc-500 italic not-dark:text-zinc-400">
+                                                    "
+                                                    {getAbilityFlavorText(
+                                                        selectedAbility
+                                                    )}
+                                                    "
                                                 </p>
                                             </div>
                                         )}
 
                                         {/* Pokemon with this ability */}
-                                        {selectedAbility.pokemon && selectedAbility.pokemon.length > 0 && (
-                                            <div className="mt-4">
-                                                <h3 className="font-semibold text-zinc-800 not-dark:text-white mb-2">
-                                                    {t('pokemonWithAbility') || 'Pokémon with this ability'} ({selectedAbility.pokemon.length})
-                                                </h3>
-                                                <div className="flex flex-wrap gap-1 max-h-32 overflow-y-auto scll">
-                                                    {selectedAbility.pokemon.slice(0, 20).map((p) => (
-                                                        <Chip
-                                                            key={p.pokemon.name}
-                                                            size="sm"
-                                                            variant={p.is_hidden ? 'bordered' : 'flat'}
-                                                            className="capitalize text-xs"
-                                                        >
-                                                            {p.pokemon.name.replace(/-/g, ' ')}
-                                                            {p.is_hidden && ' ★'}
-                                                        </Chip>
-                                                    ))}
-                                                    {selectedAbility.pokemon.length > 20 && (
-                                                        <Chip size="sm" variant="flat" className="text-xs">
-                                                            +{selectedAbility.pokemon.length - 20} more
-                                                        </Chip>
-                                                    )}
+                                        {selectedAbility.pokemon &&
+                                            selectedAbility.pokemon.length >
+                                                0 && (
+                                                <div className="mt-4">
+                                                    <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                                        {t(
+                                                            'pokemonWithAbility'
+                                                        ) ||
+                                                            'Pokémon with this ability'}{' '}
+                                                        (
+                                                        {
+                                                            selectedAbility
+                                                                .pokemon.length
+                                                        }
+                                                        )
+                                                    </h3>
+                                                    <div className="scll flex max-h-32 flex-wrap gap-1 overflow-y-auto">
+                                                        {selectedAbility.pokemon
+                                                            .slice(0, 20)
+                                                            .map((p) => (
+                                                                <Chip
+                                                                    key={
+                                                                        p
+                                                                            .pokemon
+                                                                            .name
+                                                                    }
+                                                                    size="sm"
+                                                                    variant={
+                                                                        p.is_hidden
+                                                                            ? 'bordered'
+                                                                            : 'flat'
+                                                                    }
+                                                                    className="text-xs capitalize"
+                                                                >
+                                                                    {p.pokemon.name.replace(
+                                                                        /-/g,
+                                                                        ' '
+                                                                    )}
+                                                                    {p.is_hidden &&
+                                                                        ' ★'}
+                                                                </Chip>
+                                                            ))}
+                                                        {selectedAbility.pokemon
+                                                            .length > 20 && (
+                                                            <Chip
+                                                                size="sm"
+                                                                variant="flat"
+                                                                className="text-xs"
+                                                            >
+                                                                +
+                                                                {selectedAbility
+                                                                    .pokemon
+                                                                    .length -
+                                                                    20}{' '}
+                                                                more
+                                                            </Chip>
+                                                        )}
+                                                    </div>
+                                                    <p className="mt-1 text-xs text-zinc-400">
+                                                        ★ = Hidden Ability
+                                                    </p>
                                                 </div>
-                                                <p className="text-xs text-zinc-400 mt-1">
-                                                    ★ = Hidden Ability
-                                                </p>
-                                            </div>
-                                        )}
+                                            )}
                                     </ModalBody>
                                     <ModalFooter>
                                         <Button
