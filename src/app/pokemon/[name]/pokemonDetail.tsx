@@ -23,7 +23,7 @@ import {
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import iconElements from '@/components/icons'
-import { ArrowLeft, Swords, Target, Zap } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Swords, Target, Zap } from 'lucide-react'
 
 // Valid Pokemon types that exist in the project
 const VALID_TYPES = [
@@ -120,6 +120,10 @@ type PokemonData = {
     id: number
     name: string
     moves: PokemonMove[]
+    species: {
+        name: string
+        url: string
+    }
     sprites: {
         front_default: string
         other: {
@@ -157,6 +161,16 @@ type MoveWithDetails = {
     accuracy: number | null
     learnMethod: string
     levelLearnedAt: number
+}
+
+type EvolutionMember = {
+    name: string
+    image: string
+    types: string[]
+    id: number
+    minLevel?: number | null
+    trigger?: string
+    item?: string
 }
 
 const statColors: Record<string, string> = {
@@ -202,6 +216,8 @@ export default function PokemonDetail({
     const [selectedMove, setSelectedMove] = useState<MoveDetail | null>(null)
     const [isLoadingMoveDetail, setIsLoadingMoveDetail] = useState(false)
     const [selectedTab, setSelectedTab] = useState<string>('level-up')
+    const [evolutionChain, setEvolutionChain] = useState<EvolutionMember[]>([])
+    const [isLoadingEvolutions, setIsLoadingEvolutions] = useState(false)
 
     // Ability modal state
     const [selectedAbility, setSelectedAbility] = useState<AbilityDetail | null>(null)
@@ -219,6 +235,7 @@ export default function PokemonDetail({
         try {
             setIsLoading(true)
             setError(null)
+            setEvolutionChain([]) // Clear old evolution chain
             const response = await axios.get(
                 `https://pokeapi.co/api/v2/pokemon/${pokeName.toLowerCase()}`
             )
@@ -326,6 +343,50 @@ export default function PokemonDetail({
         }
     }
 
+    const fetchEvolutionChain = async (speciesUrl: string) => {
+        setIsLoadingEvolutions(true)
+        try {
+            const speciesRes = await axios.get(speciesUrl)
+            const chainUrl = speciesRes.data.evolution_chain.url
+            const chainRes = await axios.get(chainUrl)
+
+            const chain: EvolutionMember[] = []
+
+            const processChain = async (evoData: any) => {
+                try {
+                    const pokeRes = await axios.get(`https://pokeapi.co/api/v2/pokemon/${evoData.species.name}`)
+                    const details = evoData.evolution_details[0]
+
+                    chain.push({
+                        name: evoData.species.name,
+                        id: pokeRes.data.id,
+                        image: pokeRes.data.sprites.other?.['official-artwork']?.front_default || pokeRes.data.sprites.front_default,
+                        types: pokeRes.data.types.map((t: any) => t.type.name),
+                        minLevel: details?.min_level,
+                        trigger: details?.trigger?.name,
+                        item: details?.item?.name
+                    })
+
+                    if (evoData.evolves_to && evoData.evolves_to.length > 0) {
+                        // We process all branches
+                        for (const nextEvo of evoData.evolves_to) {
+                            await processChain(nextEvo)
+                        }
+                    }
+                } catch (err) {
+                    console.error(`Error fetching pokemon data for ${evoData.species.name}:`, err)
+                }
+            }
+
+            await processChain(chainRes.data.chain)
+            setEvolutionChain(chain)
+        } catch (err) {
+            console.error('Error fetching evolution chain:', err)
+        } finally {
+            setIsLoadingEvolutions(false)
+        }
+    }
+
     // Get English effect text for ability
     const getAbilityEnglishEffect = (ability: AbilityDetail) => {
         const entry = ability.effect_entries?.find((e) => e.language.name === 'en')
@@ -347,6 +408,9 @@ export default function PokemonDetail({
     useEffect(() => {
         if (pokemonData?.moves) {
             fetchMovesDetails(pokemonData.moves)
+        }
+        if (pokemonData?.species?.url) {
+            fetchEvolutionChain(pokemonData.species.url)
         }
     }, [pokemonData])
 
@@ -602,6 +666,81 @@ export default function PokemonDetail({
                                 </div>
                             </div>
 
+                                                        {/* Evolution Chain Section */}
+                                                        {!isLoadingEvolutions && evolutionChain.length > 1 && (
+                                                            <div className="mb-8">
+                                                                <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
+                                                                    {t('evolutionChain') || 'Evolution Chain'}
+                                                                </h2>
+                                                                <div className="flex flex-wrap items-center justify-center gap-y-8 gap-x-4 rounded-xl bg-zinc-50 p-6 not-dark:bg-zinc-700/30">
+                                                                    {evolutionChain.map((member, index) => {
+                                                                        const nextMember = evolutionChain[index + 1];
+                                                                        return (
+                                                                            <div key={`${member.id}-${index}`} className="flex items-center gap-4">
+                                                                                <div
+                                                                                    className={`flex flex-col items-center cursor-pointer hover:scale-105 transition-transform p-2 rounded-xl ${member.name === pokemonData.name ? 'bg-primary/10 ring-2 ring-primary/30' : ''}`}
+                                                                                    onClick={() => {
+                                                                                        if (member.name !== pokemonData.name) {
+                                                                                            router.push(`/pokemon/${member.name}`)
+                                                                                        }
+                                                                                    }}
+                                                                                >
+                                                                                    <div className="relative h-20 w-20 mb-2">
+                                                                                        <Image
+                                                                                            src={member.image}
+                                                                                            alt={member.name}
+                                                                                            fill
+                                                                                            className="object-contain"
+                                                                                        />
+                                                                                    </div>
+                                                                                    <span className="text-xs font-bold capitalize text-zinc-800 not-dark:text-white max-w-[80px] truncate">
+                                                                                        {member.name}
+                                                                                    </span>
+                                                                                    <div className="flex gap-1 mt-1">
+                                                                                        {member.types.filter(type => VALID_TYPES.includes(type)).map(type => (
+                                                                                            <div key={type} className={`p-0.5 rounded-md ${type}`}>
+                                                                                                <Image
+                                                                                                    src={iconElements(type)}
+                                                                                                    alt={type}
+                                                                                                    width={10}
+                                                                                                    height={10}
+                                                                                                />
+                                                                                            </div>
+                                                                                        ))}
+                                                                                    </div>
+                                                                                </div>
+                                                                                {nextMember && (
+                                                                                    <div className="flex flex-col items-center text-zinc-400">
+                                                                                        <ArrowRight size={16} />
+                                                                                        {nextMember.minLevel && (
+                                                                                            <span className="text-[9px] font-bold mt-1">
+                                                                                                {t('level') || 'Lv.'} {nextMember.minLevel}
+                                                                                            </span>
+                                                                                        )}
+                                                                                        {nextMember.item && (
+                                                                                            <span className="text-[9px] font-bold mt-1 max-w-[50px] text-center truncate">
+                                                                                                {nextMember.item.replace(/-/g, ' ')}
+                                                                                            </span>
+                                                                                        )}
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                        )
+                                                                    })}
+                                                                </div>
+                                                            </div>
+                                                        )}
+                            
+                                                        {isLoadingEvolutions && (
+                                                            <div className="mb-8">
+                                                                <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
+                                                                    {t('evolutionChain') || 'Evolution Chain'}
+                                                                </h2>
+                                                                <div className="flex justify-center py-8">
+                                                                    <Spinner size="md" color="primary" />
+                                                                </div>
+                                                            </div>
+                                                        )}
                             {/* Stats Section */}
                             <div className="mb-6">
                                 <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
