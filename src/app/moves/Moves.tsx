@@ -360,7 +360,7 @@ export default function Moves() {
 
     return (
         <>
-            <div className="flex min-h-screen w-full items-center justify-center p-4">
+            <div className="flex min-h-screen w-full items-center justify-center p-4 pt-20">
                 <section className="flex w-full max-w-4xl flex-col gap-4">
                     <Input
                         type="text"

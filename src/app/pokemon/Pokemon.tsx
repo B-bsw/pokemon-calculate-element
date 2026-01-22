@@ -98,8 +98,8 @@ export default function Pokemon() {
             const response = await axios.get(pokemon.url)
             const sprites = response.data.sprites
             const imgUrl =
-                sprites.other?.dream_world?.front_default ||
                 sprites.other?.['official-artwork']?.front_default ||
+                sprites.other?.dream_world?.front_default ||
                 sprites.front_default ||
                 ''
 
@@ -196,7 +196,7 @@ export default function Pokemon() {
 
     return (
         <>
-            <div className="flex h-screen w-full items-center justify-center p-4">
+            <div className="flex h-screen w-full items-center justify-center p-4 pt-20">
                 <section className="flex w-full max-w-xl flex-col gap-4">
                     <Input
                         type="text"
