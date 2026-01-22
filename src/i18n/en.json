@@ -28,6 +28,8 @@
     "weakness": "Weakness",
     "resistant": "Resistant",
     "elemental": "Elemental",
+    "attacking": "Attacking",
+    "defending": "Defending",
     "SelectPokeElemental": "Select Elemental of Pokemon",
     "searchNameOrNumber": "Search name or number of Pokemon...",
     "index": "index",

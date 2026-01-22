@@ -28,6 +28,8 @@
     "weakness": "แพ้ทาง",
     "resistant": "ต้านทาน",
     "elemental": "ธาตุ",
+    "attacking": "ฝ่ายโจมตี",
+    "defending": "ฝ่ายรับ",
     "SelectPokeElemental": "เลือกธาตุของโปเกม่อน",
     "searchNameOrNumber": "ค้นหาชื่อหรือเลขของโปรเกม่อน...",
     "index": "อันดับ",
