@@ -101,5 +101,8 @@
     "with": "with",
     "holding": "holding",
     "shed": "Shed",
-    "level": "Level"
+    "level": "Level",
+    "heldItems": "Held Items",
+    "searchItem": "Search item name...",
+    "noItems": "No items found."
 }

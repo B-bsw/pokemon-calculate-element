@@ -49,11 +49,16 @@ const MainHeader = () => {
         },
         {
             id: 3,
+            nameTrans: 'heldItems',
+            path: '/items',
+        },
+        {
+            id: 4,
             nameTrans: 'calem',
             path: '/pokemon/calculate',
         },
         {
-            id: 4,
+            id: 5,
             nameTrans: 'tableem',
             path: '/pokemon/elements',
         },
