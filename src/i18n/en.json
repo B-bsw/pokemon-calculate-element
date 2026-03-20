@@ -104,5 +104,11 @@
     "level": "Level",
     "heldItems": "Held Items",
     "searchItem": "Search item name...",
-    "noItems": "No items found."
+    "noItems": "No items found.",
+    "nature": "Nature",
+    "stat.attack": "Attack",
+    "stat.defense": "Defense",
+    "stat.spAtk": "Sp. Atk",
+    "stat.spDef": "Sp. Def",
+    "stat.speed": "Speed"
 }

@@ -62,6 +62,11 @@ const MainHeader = () => {
             nameTrans: 'tableem',
             path: '/pokemon/elements',
         },
+        {
+            id: 6,
+            nameTrans: 'nature',
+            path: '/nature',
+        },
     ]
 
     return (

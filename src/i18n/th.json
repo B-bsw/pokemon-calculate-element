@@ -108,5 +108,11 @@
     "shed": "ลอกคราบ",
     "heldItems": "ไอเทมถือ",
     "searchItem": "ค้นหาชื่อไอเท็ม...",
-    "noItems": "ไม่พบไอเท็ม"
+    "noItems": "ไม่พบไอเท็ม",
+    "nature": "นิสัย (Nature)",
+    "stat.attack": "โจมตี",
+    "stat.defense": "ป้องกัน",
+    "stat.spAtk": "โจมตีพิเศษ",
+    "stat.spDef": "ป้องกันพิเศษ",
+    "stat.speed": "ความเร็ว"
 }
