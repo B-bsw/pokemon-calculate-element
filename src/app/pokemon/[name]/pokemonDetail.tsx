@@ -617,7 +617,7 @@ export default function PokemonDetail({
         <button
             key={move.name}
             onClick={() => fetchMoveDetail(move.url)}
-            className="flex w-full cursor-pointer items-center gap-2 rounded-lg bg-zinc-50 p-3 text-left transition-colors not-dark:bg-zinc-700 hover:bg-zinc-100 not-dark:hover:bg-zinc-600"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-2xl bg-zinc-50 p-3 text-left transition-colors not-dark:bg-zinc-700 hover:bg-zinc-100 not-dark:hover:bg-zinc-600"
         >
             {/* Level (for level-up moves) */}
             {showLevel && (
@@ -632,7 +632,7 @@ export default function PokemonDetail({
             )}
 
             {/* Type Icon */}
-            <div className={`shrink-0 rounded-lg p-1.5 ${move.type}`}>
+            <div className={`shrink-0 rounded-full p-1.5 ${move.type}`}>
                 {VALID_TYPES.includes(move.type.toLowerCase()) && (
                     <Image
                         src={iconElements(move.type)}
@@ -899,7 +899,7 @@ export default function PokemonDetail({
                                                                                     key={
                                                                                         type
                                                                                     }
-                                                                                    className={`rounded-md p-0.5 ${type}`}
+                                                                                    className={`rounded-full p-0.5 ${type}`}
                                                                                 >
                                                                                     <Image
                                                                                         src={iconElements(

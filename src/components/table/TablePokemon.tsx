@@ -17,7 +17,7 @@ const TablePokemon = () => {
 
     return (
         <div className="w-full max-w-4xl overflow-auto">
-            <Table 
+            <Table
                 aria-label="Pokemon element table"
                 classNames={{
                     base: 'max-h-[calc(100vh-8rem)]',
@@ -37,7 +37,7 @@ const TablePokemon = () => {
                         <TableRow key={e.name}>
                             <TableCell>
                                 <div className="flex items-center gap-2">
-                                    <div className={`shrink-0 rounded p-1 ${e.name.toLowerCase()}`}>
+                                    <div className={`shrink-0 rounded-full p-1 ${e.name.toLowerCase()}`}>
                                         <Image
                                             src={iconElements(e.name)}
                                             alt={e.name}
@@ -63,7 +63,7 @@ const TablePokemon = () => {
 
                             <TableCell>
                                 <span className="text-zinc-600 not-dark:text-zinc-400">
-                                    {e.noEffectFrom.length > 0 
+                                    {e.noEffectFrom.length > 0
                                         ? e.noEffectFrom.map((no) => t(no)).join(', ')
                                         : '-'
                                     }

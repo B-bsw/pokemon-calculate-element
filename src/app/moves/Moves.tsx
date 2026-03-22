@@ -302,7 +302,7 @@ export default function Moves() {
                 }
                 return VALID_TYPES.includes(item.type) ? (
                     <div className="flex items-center justify-center gap-1">
-                        <div className={`rounded p-1 ${item.type}`}>
+                        <div className={`rounded-full p-1 ${item.type}`}>
                             <Image
                                 src={iconElements(item.type)}
                                 alt={item.type}
@@ -458,7 +458,7 @@ export default function Moves() {
                                     <ModalHeader className="flex flex-col gap-1">
                                         <div className="flex items-center gap-3">
                                             <div
-                                                className={`rounded-lg p-2 ${selectedMove.type.name}`}
+                                                className={`rounded-full p-2 ${selectedMove.type.name}`}
                                             >
                                                 {VALID_TYPES.includes(
                                                     selectedMove.type.name
