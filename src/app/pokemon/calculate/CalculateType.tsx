@@ -209,7 +209,7 @@ const CalculateType = () => {
         <div className="flex min-h-screen w-full flex-col items-center justify-center gap-6 p-4 pt-20">
             {/* Input Section */}
             <div className="w-full max-w-md">
-                <div className="flex flex-col gap-4 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm not-dark:border-zinc-700 not-dark:bg-zinc-800">
+                <div className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-md not-dark:border-zinc-900 not-dark:bg-zinc-900">
                     {count.map((_, index) => (
                         <Autocomplete
                             key={index}
@@ -286,7 +286,7 @@ const CalculateType = () => {
             {dataInput[0].length > 1 && (
                 <div className="grid w-full max-w-5xl gap-6 md:grid-cols-2">
                     {/* Attacking Card */}
-                    <div className="flex flex-col gap-4 rounded-lg border border-zinc-200 bg-white p-6 shadow-sm not-dark:border-zinc-700 not-dark:bg-zinc-900/10">
+                    <div className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-6 shadow-md not-dark:border-zinc-900 not-dark:bg-zinc-900">
                         <div className="flex items-center gap-2 border-b border-zinc-100 pb-2 not-dark:border-zinc-800">
                             <h2 className="text-lg font-bold text-red-500">
                                 {t('attacking')}
@@ -308,7 +308,7 @@ const CalculateType = () => {
                     </div>
 
                     {/* Defending Card */}
-                    <div className="flex flex-col gap-4 rounded-lg border border-zinc-200 bg-white p-6 shadow-sm not-dark:border-zinc-700 not-dark:bg-zinc-900/10">
+                    <div className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-6 shadow-md not-dark:border-zinc-900 not-dark:bg-zinc-900">
                         <div className="flex items-center gap-2 border-b border-zinc-100 pb-2 not-dark:border-zinc-800">
                             <h2 className="text-lg font-bold text-blue-500">
                                 {t('defending')}

@@ -105,9 +105,7 @@ export default function Items() {
                     m.id === item.id
                         ? {
                               ...m,
-                              sprite:
-                                  data.sprites?.default ||
-                                  null,
+                              sprite: data.sprites?.default || null,
                               effect: effect,
                               isLoaded: true,
                           }
@@ -215,8 +213,8 @@ export default function Items() {
                                     onPress={() =>
                                         fetchItemFullDetail(item.url)
                                     }
-                                    className="border border-zinc-200 bg-white transition-transform not-dark:border-zinc-700 not-dark:bg-zinc-800 hover:scale-[1.02]"
-                                    shadow="sm"
+                                    className="border border-zinc-200 bg-white transition-transform not-dark:border-zinc-900 not-dark:bg-zinc-900 hover:scale-[1.02]"
+                                    shadow="md"
                                 >
                                     <CardBody className="flex flex-row items-center gap-4 p-4">
                                         <div className="shrink-0">
