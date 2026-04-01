@@ -16,7 +16,6 @@ import {
 } from '@heroui/react'
 import axios from 'axios'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useMemo, useState, useRef, useCallback } from 'react'
 

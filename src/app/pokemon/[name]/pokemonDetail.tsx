@@ -732,7 +732,7 @@ export default function PokemonDetail({
                                 boxShadow: `0 0 30px ${TYPE_COLORS[mainType] || TYPE_COLORS.normal}50`,
                             }}
                         >
-                            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" />
+                            <div className="absolute inset-0 bg-linear-to-br from-white/20 to-transparent" />
 
                             {/* Pokemon ID and Name */}
                             <div className="relative z-10 flex flex-col items-center text-center md:flex-row md:items-start md:text-left">
@@ -876,7 +876,7 @@ export default function PokemonDetail({
                                                                         className="object-contain"
                                                                     />
                                                                 </div>
-                                                                <span className="max-w-[80px] truncate text-xs font-bold text-zinc-800 capitalize not-dark:text-white">
+                                                                <span className="max-w-20 truncate text-xs font-bold text-zinc-800 capitalize not-dark:text-white">
                                                                     {
                                                                         member.name
                                                                     }
@@ -927,7 +927,7 @@ export default function PokemonDetail({
                                                                             16
                                                                         }
                                                                     />
-                                                                    <span className="mt-1 max-w-[80px] text-center text-[9px] font-bold capitalize">
+                                                                    <span className="mt-1 max-w-20 text-center text-[9px] font-bold capitalize">
                                                                         {formatEvolutionDetail(
                                                                             nextMember
                                                                         )}
