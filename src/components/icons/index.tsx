@@ -21,41 +21,41 @@ import water from './water.svg'
 import Image from 'next/image'
 
 const icons: Record<string, string> = {
-  bug,
-  dark,
-  dragon,
-  electric,
-  fairy,
-  fighting,
-  fire,
-  flying,
-  ghost,
-  grass,
-  ground,
-  ice,
-  normal,
-  poison,
-  psychic,
-  rock,
-  steel,
-  water,
+    bug,
+    dark,
+    dragon,
+    electric,
+    fairy,
+    fighting,
+    fire,
+    flying,
+    ghost,
+    grass,
+    ground,
+    ice,
+    normal,
+    poison,
+    psychic,
+    rock,
+    steel,
+    water,
 }
 
 export default function iconElements(element: string = 'bug') {
-  return icons[element.toLowerCase()] ?? null
+    return icons[element.toLowerCase()] ?? null
 }
 
 export const icon2TagSvg = (element: string = 'bug', size: number = 24) => {
-  const src = icons[element.toLowerCase()]
-  if (!src) return null
+    const src = icons[element.toLowerCase()]
+    if (!src) return null
 
-  return (
-    <Image
-      src={src}
-      alt={element}
-      width={size}
-      height={size}
-      className={`inline-block align-middle icon ${element.toLocaleLowerCase()}`}
-    />
-  )
+    return (
+        <Image
+            src={src}
+            alt={element}
+            width={size}
+            height={size}
+            className={`icon inline-block align-middle ${element.toLocaleLowerCase()}`}
+        />
+    )
 }

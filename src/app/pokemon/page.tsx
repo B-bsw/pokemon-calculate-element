@@ -7,22 +7,23 @@ const Pokemon = dynamic(() => import('./Pokemon'), {
     ssr: false,
     loading: () => (
         <div className="flex h-screen w-full items-center justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+            <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-500"></div>
         </div>
     ),
 })
 
 const Page = () => {
     return (
-        <Suspense fallback={
-            <div className="flex h-screen w-full items-center justify-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-            </div>
-        }>
+        <Suspense
+            fallback={
+                <div className="flex h-screen w-full items-center justify-center">
+                    <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-500"></div>
+                </div>
+            }
+        >
             <Pokemon />
         </Suspense>
     )
 }
 
 export default Page
-

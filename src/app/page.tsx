@@ -29,7 +29,9 @@ export default function Home() {
         <div className="flex min-h-screen w-full items-center justify-center p-6 pt-24">
             <div className="w-full max-w-4xl">
                 <div className="mb-10 flex items-center justify-center">
-                    <div className='sm:text-4xl text-2xl'>POKEMON INFORMATION</div>
+                    <div className="text-2xl sm:text-4xl">
+                        POKEMON INFORMATION
+                    </div>
                 </div>
                 <div className="grid grid-cols-2 gap-2 md:grid-cols-3 md:gap-4">
                     {itemList.map((item) => {

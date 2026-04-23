@@ -119,11 +119,10 @@ const MainHeader = () => {
                         onValueChange={(value) =>
                             setTheme(value ? 'dark' : 'light')
                         }
-                    >
-                    </Switch>
+                    ></Switch>
                 </div>
                 <Tabs
-                    variant='solid'
+                    variant="solid"
                     color="primary"
                     selectedKey={lang}
                     size="sm"

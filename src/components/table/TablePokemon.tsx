@@ -37,7 +37,9 @@ const TablePokemon = () => {
                         <TableRow key={e.name}>
                             <TableCell>
                                 <div className="flex items-center gap-2">
-                                    <div className={`shrink-0 rounded-full p-1 ${e.name.toLowerCase()}`}>
+                                    <div
+                                        className={`shrink-0 rounded-full p-1 ${e.name.toLowerCase()}`}
+                                    >
                                         <Image
                                             src={iconElements(e.name)}
                                             alt={e.name}
@@ -45,28 +47,35 @@ const TablePokemon = () => {
                                             height={20}
                                         />
                                     </div>
-                                    <span className="font-medium">{t(e.name)}</span>
+                                    <span className="font-medium">
+                                        {t(e.name)}
+                                    </span>
                                 </div>
                             </TableCell>
 
                             <TableCell>
                                 <span className="text-zinc-600 not-dark:text-zinc-400">
-                                    {e.strongAgainst.map((st) => t(st)).join(', ')}
+                                    {e.strongAgainst
+                                        .map((st) => t(st))
+                                        .join(', ')}
                                 </span>
                             </TableCell>
 
                             <TableCell>
                                 <span className="text-zinc-600 not-dark:text-zinc-400">
-                                    {e.weakAgainst.map((wk) => t(wk)).join(', ')}
+                                    {e.weakAgainst
+                                        .map((wk) => t(wk))
+                                        .join(', ')}
                                 </span>
                             </TableCell>
 
                             <TableCell>
                                 <span className="text-zinc-600 not-dark:text-zinc-400">
                                     {e.noEffectFrom.length > 0
-                                        ? e.noEffectFrom.map((no) => t(no)).join(', ')
-                                        : '-'
-                                    }
+                                        ? e.noEffectFrom
+                                              .map((no) => t(no))
+                                              .join(', ')
+                                        : '-'}
                                 </span>
                             </TableCell>
                         </TableRow>
