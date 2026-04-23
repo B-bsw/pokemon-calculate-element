@@ -1,29 +1,10 @@
 'use client'
 import { useTranslate } from '@/i18n/i18nContext'
+import { items } from '@/utils/itemIconList'
 import Link from 'next/link'
-import { List, Calculator, Table2, Swords, Backpack, Leaf } from 'lucide-react'
 
 export default function Home() {
     const { t } = useTranslate()
-
-    const itemList = [
-        { id: 1, nameTrans: 'pokelist', path: '/pokemon', icon: List },
-        { id: 2, nameTrans: 'movelist', path: '/moves', icon: Swords },
-        { id: 3, nameTrans: 'heldItems', path: '/items', icon: Backpack },
-        {
-            id: 4,
-            nameTrans: 'calem',
-            path: '/pokemon/calculate',
-            icon: Calculator,
-        },
-        {
-            id: 5,
-            nameTrans: 'tableem',
-            path: '/pokemon/elements',
-            icon: Table2,
-        },
-        { id: 6, nameTrans: 'nature', path: '/nature', icon: Leaf },
-    ]
 
     return (
         <div className="flex min-h-screen w-full items-center justify-center p-6 pt-24">
@@ -34,7 +15,7 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="grid grid-cols-2 gap-2 md:grid-cols-3 md:gap-4">
-                    {itemList.map((item) => {
+                    {items.map((item) => {
                         const Icon = item.icon
                         return (
                             <Link

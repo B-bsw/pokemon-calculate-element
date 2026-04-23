@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useTranslate } from '@/i18n/i18nContext'
 import {
+    Button,
     Link,
     Navbar,
     NavbarBrand,
@@ -19,6 +20,7 @@ import { MoonIcon } from '@/components/icons/MoonIcon'
 import { SunIcon } from '@/components/icons/SunIcon'
 import logo from '@/app/favicon.ico'
 import Image from 'next/image'
+import { items } from '@/utils/itemIconList'
 
 const MainHeader = () => {
     const router = useRouter()
@@ -35,39 +37,6 @@ const MainHeader = () => {
     }, [path])
 
     const isDarkMode: boolean = theme === 'dark'
-
-    const itemNavbar = [
-        {
-            id: 1,
-            nameTrans: 'pokelist',
-            path: '/pokemon',
-        },
-        {
-            id: 2,
-            nameTrans: 'movelist',
-            path: '/moves',
-        },
-        {
-            id: 3,
-            nameTrans: 'heldItems',
-            path: '/items',
-        },
-        {
-            id: 4,
-            nameTrans: 'calem',
-            path: '/pokemon/calculate',
-        },
-        {
-            id: 5,
-            nameTrans: 'tableem',
-            path: '/pokemon/elements',
-        },
-        {
-            id: 6,
-            nameTrans: 'nature',
-            path: '/nature',
-        },
-    ]
 
     return (
         <Navbar
@@ -95,7 +64,7 @@ const MainHeader = () => {
                         tabContent: 'dark:text-black',
                     }}
                 >
-                    {itemNavbar.map((item) => (
+                    {items.map((item) => (
                         <Tab
                             key={item.path}
                             title={t(item.nameTrans)}
@@ -104,7 +73,6 @@ const MainHeader = () => {
                     ))}
                 </Tabs>
             </NavbarContent>
-
             <NavbarContent justify="end">
                 <div>
                     <Switch
@@ -127,27 +95,33 @@ const MainHeader = () => {
                     selectedKey={lang}
                     size="sm"
                     onSelectionChange={(key) => setLang(key as 'en' | 'th')}
-                    classNames={{
-                        tabContent: 'dark:text-black',
-                    }}
                 >
                     <Tab title="TH" key="th" />
                     <Tab title="EN" key="en" />
                 </Tabs>
             </NavbarContent>
 
-            <NavbarMenu className="bg-zinc-900 dark:bg-zinc-200">
-                {itemNavbar.map((item) => (
-                    <NavbarItem key={item.id}>
-                        <Link
-                            size="lg"
-                            href={item.path}
-                            className={`my-2 w-full text-white hover:text-zinc-300 dark:text-black dark:hover:text-zinc-700 ${routeOfTabs === item.path && 'text-primary dark:text-primary hover:text-primary-300 dark:hover:text-primary-400'}`}
+            {/*mobile navbar*/}
+            <NavbarMenu className="gap-5 bg-zinc-900 py-10 dark:bg-zinc-200">
+                {items.map((item) => {
+                    const Ic = item.icon
+                    return (
+                        <NavbarItem
+                            key={item.id}
+                            className={`${routeOfTabs === item.path && '**:text-primary **:dark:text-primary **:hover:text-primary-300 **:dark:**:hover:text-primary-400'}`}
                         >
-                            {t(item.nameTrans)}
-                        </Link>
-                    </NavbarItem>
-                ))}
+                            <Button fullWidth startContent={<Ic />}>
+                                <Link
+                                    size="lg"
+                                    href={item.path}
+                                    className={`w-full text-white hover:text-zinc-300 dark:text-black dark:hover:text-zinc-700`}
+                                >
+                                    {t(item.nameTrans)}
+                                </Link>
+                            </Button>
+                        </NavbarItem>
+                    )
+                })}
             </NavbarMenu>
         </Navbar>
     )
