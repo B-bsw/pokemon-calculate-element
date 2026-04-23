@@ -25,6 +25,17 @@
     }
 }
 
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    min-height: 100dvh;
+}
+
 .scll::-webkit-scrollbar {
     width: 6px;
     display: none;

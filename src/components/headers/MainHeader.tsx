@@ -34,29 +34,42 @@ const MainHeader = () => {
 
     useEffect(() => {
         setRouteOfTabs(path)
+        setIsMenuOpen(false)
     }, [path])
 
     const isDarkMode: boolean = theme === 'dark'
 
     return (
         <Navbar
+            isBlurred={false}
             classNames={{
                 base: 'bg-black dark:bg-zinc-400/80 fixed',
             }}
             maxWidth="full"
+            isMenuOpen={isMenuOpen}
         >
+            {/*burger*/}
             <NavbarMenuToggle
                 aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
                 className="md:hidden"
+                onChange={() => {
+                    setIsMenuOpen((e) => !e)
+                }}
             />
+
             <NavbarBrand
                 onClick={() => router.push('/')}
                 className="cursor-pointer"
             >
                 <Image src={logo} alt="img" />
             </NavbarBrand>
-            <NavbarContent justify="start" className="max-md:hidden">
+
+            <NavbarContent
+                justify="start"
+                className="scll min-w-0 overflow-x-auto max-md:hidden"
+            >
                 <Tabs
+                    className="min-w-max"
                     selectedKey={routeOfTabs}
                     variant="underlined"
                     color="primary"
@@ -110,14 +123,16 @@ const MainHeader = () => {
                             key={item.id}
                             className={`${routeOfTabs === item.path && '**:text-primary **:dark:text-primary **:hover:text-primary-300 **:dark:**:hover:text-primary-400'}`}
                         >
-                            <Button fullWidth startContent={<Ic />}>
-                                <Link
-                                    size="lg"
-                                    href={item.path}
-                                    className={`w-full text-white hover:text-zinc-300 dark:text-black dark:hover:text-zinc-700`}
+                            <Button
+                                fullWidth
+                                startContent={<Ic />}
+                                onPress={() => router.push(item.path)}
+                            >
+                                <div
+                                    className={`w-full text-start text-white hover:text-zinc-300 dark:text-black dark:hover:text-zinc-700`}
                                 >
                                     {t(item.nameTrans)}
-                                </Link>
+                                </div>
                             </Button>
                         </NavbarItem>
                     )

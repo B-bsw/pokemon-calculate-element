@@ -38,7 +38,7 @@ export default function RootLayout({
             >
                 <I18nProvider>
                     <Providers>
-                        <div className="">
+                        <div className="min-h-dvh w-full max-w-full overflow-x-hidden">
                             <MainHeader />
                             <div className="not-dark:bg-zinc-800">
                                 {children}
