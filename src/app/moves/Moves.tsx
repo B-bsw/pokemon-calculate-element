@@ -5,6 +5,8 @@ import {
     getKeyValue,
     Pagination,
     Spinner,
+    Card,
+    CardBody,
     Table,
     TableBody,
     TableCell,
@@ -358,6 +360,22 @@ export default function Moves() {
         }
     }
 
+    const paginationControl =
+        page > 0 ? (
+            <div className="flex w-full justify-center">
+                <Pagination
+                    isCompact
+                    variant="flat"
+                    showControls
+                    showShadow
+                    color="primary"
+                    page={page}
+                    total={pages}
+                    onChange={handlePageChange}
+                />
+            </div>
+        ) : null
+
     return (
         <>
             <div className="flex min-h-screen w-full items-center justify-center p-4 pt-20">
@@ -373,62 +391,154 @@ export default function Moves() {
                         onClear={() => handleSearchChange('')}
                     />
 
-                    <Table
-                        classNames={{
-                            th: 'text-center',
-                            td: 'text-center',
-                            tr: 'cursor-pointer hover:bg-zinc-300/50 not-dark:hover:bg-zinc-800/50 transition-colors',
-                        }}
-                        aria-label="table-of-moves"
-                        selectionMode="single"
-                        onRowAction={(key) => {
-                            const move = items.find((m) => m.name === key)
-                            if (move) {
-                                fetchMoveFullDetail(move.url)
-                            }
-                        }}
-                        bottomContent={
-                            page > 0 ? (
-                                <div className="flex w-full justify-center">
-                                    <Pagination
-                                        isCompact
-                                        variant="flat"
-                                        showControls
-                                        showShadow
-                                        color="primary"
-                                        page={page}
-                                        total={pages}
-                                        onChange={handlePageChange}
-                                    />
-                                </div>
-                            ) : null
-                        }
-                    >
-                        <TableHeader columns={columns}>
-                            {(column) => (
-                                <TableColumn key={column.key}>
-                                    {column.label}
-                                </TableColumn>
-                            )}
-                        </TableHeader>
+                    <div className="space-y-3 md:hidden">
+                        {isLoading ? (
+                            <div className="flex justify-center py-8">
+                                <Spinner />
+                            </div>
+                        ) : items.length === 0 ? (
+                            <p className="py-8 text-center text-zinc-500">
+                                {t('noMoves') || 'No moves found.'}
+                            </p>
+                        ) : (
+                            items.map((item) => (
+                                <Card
+                                    key={item.id}
+                                    isPressable
+                                    onPress={() =>
+                                        fetchMoveFullDetail(item.url)
+                                    }
+                                    className="border border-zinc-200 bg-white not-dark:border-zinc-700 not-dark:bg-zinc-900"
+                                    shadow="sm"
+                                    fullWidth
+                                >
+                                    <CardBody className="gap-3">
+                                        <div className="flex items-center justify-between gap-3">
+                                            <span className="text-xs text-zinc-500">
+                                                #{item.id}
+                                            </span>
+                                            <span className="font-semibold text-black capitalize not-dark:text-white">
+                                                {item.name.replace(/-/g, ' ')}
+                                            </span>
+                                            <span></span>
+                                        </div>
 
-                        <TableBody
-                            items={items}
-                            emptyContent={t('noMoves') || 'No moves found.'}
-                            isLoading={isLoading}
-                            loadingContent={<Spinner />}
+                                        <div className="flex flex-wrap items-start flex-col gap-2">
+                                            {item.isLoaded &&
+                                            VALID_TYPES.includes(item.type) ? (
+                                                <div className="flex items-center gap-1">
+                                                    <div
+                                                        className={`rounded-full p-1 ${item.type}`}
+                                                    >
+                                                        <Image
+                                                            src={iconElements(
+                                                                item.type
+                                                            )}
+                                                            alt={item.type}
+                                                            width={16}
+                                                            height={16}
+                                                        />
+                                                    </div>
+                                                    <span className="text-sm text-black capitalize not-dark:text-white">
+                                                        {t(item.type)}
+                                                    </span>
+                                                </div>
+                                            ) : (
+                                                <div className="h-6 w-20 animate-pulse rounded bg-zinc-200 dark:bg-zinc-700" />
+                                            )}
+
+                                            {item.isLoaded &&
+                                            item.damageClass ? (
+                                                <Chip
+                                                    size="sm"
+                                                    variant="flat"
+                                                    className={`${damageClassColors[item.damageClass]} capitalize`}
+                                                    startContent={
+                                                        damageClassIcons[
+                                                            item.damageClass
+                                                        ]
+                                                    }
+                                                >
+                                                    {t(item.damageClass)}
+                                                </Chip>
+                                            ) : (
+                                                <div className="h-6 w-16 animate-pulse rounded bg-zinc-200 dark:bg-zinc-700" />
+                                            )}
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-2 text-sm">
+                                            <div className="rounded-md bg-zinc-100 px-2 py-1 text-zinc-700 not-dark:bg-zinc-800 not-dark:text-zinc-300">
+                                                {t('power')}:&nbsp;
+                                                <span className="font-semibold">
+                                                    {item.isLoaded
+                                                        ? (item.power ?? '-')
+                                                        : '...'}
+                                                </span>
+                                            </div>
+                                            <div className="rounded-md bg-zinc-100 px-2 py-1 text-zinc-700 not-dark:bg-zinc-800 not-dark:text-zinc-300">
+                                                {t('accuracy')}:&nbsp;
+                                                <span className="font-semibold">
+                                                    {item.isLoaded
+                                                        ? item.accuracy
+                                                            ? `${item.accuracy}%`
+                                                            : '-'
+                                                        : '...'}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                            ))
+                        )}
+                    </div>
+
+                    <div className="hidden md:block">
+                        <Table
+                            classNames={{
+                                th: 'text-center',
+                                td: 'text-center',
+                                tr: 'cursor-pointer hover:bg-zinc-300/50 not-dark:hover:bg-zinc-800/50 transition-colors',
+                            }}
+                            aria-label="table-of-moves"
+                            selectionMode="single"
+                            onRowAction={(key) => {
+                                const move = items.find((m) => m.name === key)
+                                if (move) {
+                                    fetchMoveFullDetail(move.url)
+                                }
+                            }}
                         >
-                            {(item) => (
-                                <TableRow key={item.name}>
-                                    {(key) => (
-                                        <TableCell>
-                                            {renderCell(item, key as string)}
-                                        </TableCell>
-                                    )}
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
+                            <TableHeader columns={columns}>
+                                {(column) => (
+                                    <TableColumn key={column.key}>
+                                        {column.label}
+                                    </TableColumn>
+                                )}
+                            </TableHeader>
+
+                            <TableBody
+                                items={items}
+                                emptyContent={t('noMoves') || 'No moves found.'}
+                                isLoading={isLoading}
+                                loadingContent={<Spinner />}
+                            >
+                                {(item) => (
+                                    <TableRow key={item.name}>
+                                        {(key) => (
+                                            <TableCell>
+                                                {renderCell(
+                                                    item,
+                                                    key as string
+                                                )}
+                                            </TableCell>
+                                        )}
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </div>
+
+                    {paginationControl}
                 </section>
             </div>
 
