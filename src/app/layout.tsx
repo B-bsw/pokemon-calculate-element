@@ -23,7 +23,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
     width: 'device-width',
     initialScale: 1,
-    minimumScale: 1,
     maximumScale: 1,
     userScalable: false,
     viewportFit: 'cover',
@@ -39,7 +38,7 @@ export default function RootLayout({
             >
                 <I18nProvider>
                     <Providers>
-                        <div>
+                        <div className="">
                             <MainHeader />
                             <div className="not-dark:bg-zinc-800">
                                 {children}

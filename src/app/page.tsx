@@ -7,13 +7,14 @@ export default function Home() {
     const { t } = useTranslate()
 
     return (
-        <div className="flex min-h-screen w-full items-center justify-center p-6 pt-24">
-            <div className="w-full max-w-4xl">
+        <div className="flex min-h-screen w-full items-center justify-center p-6">
+            <div className="w-full max-w-4xl pt-14">
                 <div className="mb-10 flex items-center justify-center">
                     <div className="text-2xl sm:text-4xl">
                         POKEMON INFORMATION
                     </div>
                 </div>
+
                 <div className="grid grid-cols-2 gap-2 md:grid-cols-3 md:gap-4">
                     {items.map((item) => {
                         const Icon = item.icon
