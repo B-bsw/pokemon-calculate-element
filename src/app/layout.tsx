@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-    title: 'POKEMON CAL TYPE',
-    description: 'make by bbsw',
+    title: 'POKEMON INFORMATION',
+    description: 'ข้อมูลสิ่งต่างกับเกี่ยวกับโปเกม่อน',
 }
 
 export const viewport: Viewport = {
