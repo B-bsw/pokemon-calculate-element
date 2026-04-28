@@ -175,7 +175,7 @@ export default function Items() {
 
     if (isLoading) {
         return (
-            <div className="flex min-h-screen w-full items-center justify-center pt-20">
+            <div className="flex min-h-screen w-full items-center justify-center">
                 <Spinner size="lg" color="primary" />
             </div>
         )
@@ -183,7 +183,7 @@ export default function Items() {
 
     return (
         <>
-            <div className="flex min-h-screen w-full justify-center p-4 pt-20">
+            <div className="flex h-full w-full justify-center overflow-scroll p-4">
                 <section className="flex w-full max-w-2xl flex-col gap-4">
                     <h1 className="text-2xl font-bold text-zinc-800 not-dark:text-white">
                         {t('heldItems') || 'Held Items'}

@@ -7,8 +7,8 @@ export default function Home() {
     const { t } = useTranslate()
 
     return (
-        <div className="flex min-h-screen w-full items-center justify-center p-6">
-            <div className="w-full max-w-4xl pt-14">
+        <div className="flex h-full w-full items-center justify-center p-4">
+            <div className="w-full max-w-4xl">
                 <div className="mb-10 flex items-center justify-center">
                     <div className="text-2xl sm:text-4xl">
                         POKEMON INFORMATION

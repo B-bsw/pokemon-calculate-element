@@ -378,7 +378,7 @@ export default function Moves() {
 
     return (
         <>
-            <div className="flex min-h-screen w-full items-center justify-center p-4 pt-20">
+            <div className="flex h-full w-full items-center justify-center p-4">
                 <section className="flex w-full max-w-4xl flex-col gap-4">
                     <Input
                         type="text"
@@ -423,7 +423,7 @@ export default function Moves() {
                                             <span></span>
                                         </div>
 
-                                        <div className="flex flex-wrap items-start flex-col gap-2">
+                                        <div className="flex flex-col flex-wrap items-start gap-2">
                                             {item.isLoaded &&
                                             VALID_TYPES.includes(item.type) ? (
                                                 <div className="flex items-center gap-1">

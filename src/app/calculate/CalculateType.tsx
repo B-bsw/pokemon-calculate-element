@@ -206,16 +206,16 @@ const CalculateType = () => {
     }
 
     return (
-        <div className="flex min-h-screen w-full flex-col items-center justify-center gap-6 p-4 pt-20">
+        <div className="flex h-full w-full flex-col items-center justify-center gap-6 p-4">
             {/* Input Section */}
             <div className="w-full max-w-md">
-                <div className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-md not-dark:border-zinc-900 not-dark:bg-zinc-900">
+                <div className="flex flex-col w-full gap-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-md not-dark:border-zinc-900 not-dark:bg-zinc-900">
                     {count.map((_, index) => (
                         <Autocomplete
                             key={index}
                             label={t('SelectPokeElemental')}
                             size="sm"
-                            className="w-full"
+                            fullWidth
                             variant="bordered"
                             labelPlacement="outside"
                             color="primary"

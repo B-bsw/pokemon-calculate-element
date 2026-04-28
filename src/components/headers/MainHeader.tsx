@@ -64,10 +64,7 @@ const MainHeader = () => {
                 <Image src={logo} alt="img" />
             </NavbarBrand>
 
-            <NavbarContent
-                justify="start"
-                className="scll min-w-0 overflow-x-auto max-md:hidden"
-            >
+            <NavbarContent justify="start" className="scll max-md:hidden">
                 <Tabs
                     className="min-w-max"
                     selectedKey={routeOfTabs}

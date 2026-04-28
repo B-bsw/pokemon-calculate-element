@@ -45,7 +45,9 @@ const TablePokemon = () => {
                                 {e.strongAgainst.map((st) => t(st)).join(', ')}
                             </p>
                             <p className="text-zinc-600 not-dark:text-zinc-300">
-                                <span className="font-medium">{t('weak')}: </span>
+                                <span className="font-medium">
+                                    {t('weak')}:{' '}
+                                </span>
                                 {e.weakAgainst.map((wk) => t(wk)).join(', ')}
                             </p>
                             <p className="text-zinc-600 not-dark:text-zinc-300">
@@ -53,7 +55,9 @@ const TablePokemon = () => {
                                     {t('noEffectFrom')}:{' '}
                                 </span>
                                 {e.noEffectFrom.length > 0
-                                    ? e.noEffectFrom.map((no) => t(no)).join(', ')
+                                    ? e.noEffectFrom
+                                          .map((no) => t(no))
+                                          .join(', ')
                                     : '-'}
                             </p>
                         </div>
@@ -65,7 +69,7 @@ const TablePokemon = () => {
                 <Table
                     aria-label="Pokemon element table"
                     classNames={{
-                        base: 'max-h-[calc(100vh-8rem)]',
+                        base: 'max-h-[calc(100dvh-8rem)] scrollbar-hide',
                         th: 'text-sm',
                         td: 'text-sm',
                     }}
@@ -100,9 +104,11 @@ const TablePokemon = () => {
 
                                 <TableCell>
                                     <span className="text-zinc-600 not-dark:text-zinc-400">
-                                        {e.strongAgainst
-                                            .map((st) => t(st))
-                                            .join(', ')}
+                                        {e.strongAgainst.length > 0
+                                            ? e.strongAgainst
+                                                  .map((st) => t(st))
+                                                  .join(', ')
+                                            : '-'}
                                     </span>
                                 </TableCell>
 

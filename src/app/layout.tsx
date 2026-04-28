@@ -34,13 +34,13 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                className={`${geistSans.variable} ${geistMono.variable} antialiased **:scrollbar-hide **:scroll-smooth`}
             >
                 <I18nProvider>
                     <Providers>
-                        <div className="min-h-dvh w-full max-w-full overflow-x-hidden">
+                        <div className="min-h-dvh w-full max-w-full overflow-hidden">
                             <MainHeader />
-                            <div className="not-dark:bg-zinc-800">
+                            <div className="h-dvh pt-16 not-dark:bg-zinc-800">
                                 {children}
                             </div>
                         </div>

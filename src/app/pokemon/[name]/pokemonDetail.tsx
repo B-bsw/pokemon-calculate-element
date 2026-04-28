@@ -715,7 +715,7 @@ export default function PokemonDetail({
 
     return (
         <>
-            <div className="w-full max-w-4xl px-4 py-6 pt-20">
+            <div className="h-full w-full max-w-4xl overflow-auto px-4 py-6">
                 {/* Main Card */}
                 <Card className="bg-white shadow-xl not-dark:border not-dark:border-zinc-700 not-dark:bg-zinc-800">
                     <CardBody className="p-0">
@@ -1019,7 +1019,8 @@ export default function PokemonDetail({
                                         variant="underlined"
                                         color="primary"
                                         classNames={{
-                                            tabList: 'gap-4',
+                                            base: 'w-full',
+                                            tabList: 'gap-0  min-w-full',
                                             tab: 'px-0',
                                         }}
                                     >
@@ -1037,7 +1038,7 @@ export default function PokemonDetail({
                                                 </div>
                                             }
                                         >
-                                            <div className="scll mt-4 max-h-[400px] space-y-2 overflow-y-auto pr-2">
+                                            <div className="scll mt-4 max-h-[400px] space-y-2 overflow-x-hidden overflow-y-auto">
                                                 {levelUpMoves.length > 0 ? (
                                                     levelUpMoves.map((move) =>
                                                         renderMoveItem(
@@ -1066,7 +1067,7 @@ export default function PokemonDetail({
                                                 </div>
                                             }
                                         >
-                                            <div className="scll mt-4 max-h-[400px] space-y-2 overflow-y-auto pr-2">
+                                            <div className="scll mt-4 max-h-[400px] space-y-2 overflow-x-hidden overflow-y-auto">
                                                 {tmMoves.length > 0 ? (
                                                     tmMoves.map((move) =>
                                                         renderMoveItem(
@@ -1097,7 +1098,7 @@ export default function PokemonDetail({
                                                 </div>
                                             }
                                         >
-                                            <div className="scll mt-4 max-h-[400px] space-y-2 overflow-y-auto pr-2">
+                                            <div className="scll mt-4 max-h-[400px] space-y-2 overflow-x-hidden overflow-y-auto">
                                                 {otherMoves.length > 0 ? (
                                                     otherMoves.map((move) =>
                                                         renderMoveItem(
