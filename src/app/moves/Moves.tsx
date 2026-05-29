@@ -379,7 +379,7 @@ export default function Moves() {
 
     return (
         <>
-            <div className="flex flex-1 py-8 md:py-4 w-full md:items-center items-start justify-center p-4">
+            <div className="flex w-full flex-1 items-start justify-center p-4 py-8 md:items-center md:py-4">
                 <section className="flex w-full max-w-4xl flex-col gap-4">
                     <Input
                         type="text"

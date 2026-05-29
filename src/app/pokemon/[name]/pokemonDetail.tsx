@@ -682,7 +682,7 @@ export default function PokemonDetail({
 
     if (isLoading) {
         return (
-            <div className="flex flex-1 py-8 md:py-4 w-full md:items-center items-start justify-center">
+            <div className="flex w-full flex-1 items-start justify-center py-8 md:items-center md:py-4">
                 <Spinner size="lg" color="primary" />
             </div>
         )
@@ -690,7 +690,7 @@ export default function PokemonDetail({
 
     if (error || !pokemonData) {
         return (
-            <div className="flex flex-1 py-8 md:py-4 w-full flex-col md:items-center items-start justify-center gap-4">
+            <div className="flex w-full flex-1 flex-col items-start justify-center gap-4 py-8 md:items-center md:py-4">
                 <p className="text-xl text-zinc-500 dark:text-zinc-400">
                     {error || 'Pokemon not found'}
                 </p>
@@ -715,7 +715,7 @@ export default function PokemonDetail({
 
     return (
         <>
-            <div className="flex-1 w-full max-w-4xl px-4 py-8">
+            <div className="w-full max-w-4xl flex-1 px-4 py-8">
                 {/* Main Card */}
                 <Card className="bg-white shadow-xl not-dark:border not-dark:border-zinc-700 not-dark:bg-zinc-800">
                     <CardBody className="p-0">

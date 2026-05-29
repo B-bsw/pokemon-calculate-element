@@ -10,7 +10,7 @@ export default async function Page({
 
     return (
         <Suspense fallback={<>loading</>}>
-            <div className="flex flex-1 py-8 md:py-4 w-full md:items-center items-start justify-center">
+            <div className="flex w-full flex-1 items-start justify-center py-8 md:items-center md:py-4">
                 <PokemonDetail pokeName={name} />
             </div>
         </Suspense>

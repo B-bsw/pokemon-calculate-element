@@ -7,7 +7,7 @@ export default function Home() {
     const { t } = useTranslate()
 
     return (
-        <div className="flex flex-1 w-full items-center justify-center p-4 py-8">
+        <div className="flex w-full flex-1 items-center justify-center p-4 py-8">
             <div className="w-full max-w-4xl">
                 <div className="mb-10 flex items-center justify-center">
                     <div className="text-2xl sm:text-4xl">

@@ -151,10 +151,7 @@ export default function Pokemon() {
         return dataPokemon.filter((p) => {
             const s = search.toLowerCase().replace(/-/g, ' ')
             const name = p.name.toLowerCase().replace(/-/g, ' ')
-            return (
-                name.includes(s) ||
-                p.numberOfPokemon.includes(s)
-            )
+            return name.includes(s) || p.numberOfPokemon.includes(s)
         })
     }, [search, dataPokemon])
 
@@ -196,7 +193,7 @@ export default function Pokemon() {
 
     return (
         <>
-            <div className="flex flex-1 w-full flex-col items-center p-4 py-8 md:justify-center">
+            <div className="flex w-full flex-1 flex-col items-center p-4 py-8 md:justify-center">
                 <section className="flex w-full max-w-xl flex-col gap-4">
                     <Input
                         type="text"
