@@ -149,9 +149,10 @@ export default function Pokemon() {
 
     const filtered = useMemo(() => {
         return dataPokemon.filter((p) => {
-            const s = search.toLowerCase()
+            const s = search.toLowerCase().replace(/-/g, ' ')
+            const name = p.name.toLowerCase().replace(/-/g, ' ')
             return (
-                p.name.toLowerCase().includes(s) ||
+                name.includes(s) ||
                 p.numberOfPokemon.includes(s)
             )
         })
@@ -195,7 +196,7 @@ export default function Pokemon() {
 
     return (
         <>
-            <div className="flex min-h-full w-full items-center justify-center p-4">
+            <div className="flex flex-1 w-full flex-col items-center p-4 py-8 md:justify-center">
                 <section className="flex w-full max-w-xl flex-col gap-4">
                     <Input
                         type="text"

@@ -160,10 +160,11 @@ export default function Items() {
     const filtered = useMemo(() => {
         return dataItems
             .filter((m) => {
-                const s = search.toLowerCase()
+                const s = search.toLowerCase().replace(/-/g, ' ')
+                const name = m.name.toLowerCase().replace(/-/g, ' ')
                 return (
-                    m.name.toLowerCase().includes(s) ||
-                    m.effect.toLowerCase().includes(s)
+                    name.includes(s) ||
+                    m.effect.toLowerCase().includes(search.toLowerCase())
                 )
             })
             .sort((a, b) => a.name.localeCompare(b.name))
@@ -183,7 +184,7 @@ export default function Items() {
 
     return (
         <>
-            <div className="flex h-full w-full justify-center overflow-scroll p-4">
+            <div className="flex flex-1 py-4 w-full justify-center overflow-scroll p-4">
                 <section className="flex w-full max-w-2xl flex-col gap-4">
                     <h1 className="text-2xl font-bold text-zinc-800 not-dark:text-white">
                         {t('heldItems') || 'Held Items'}

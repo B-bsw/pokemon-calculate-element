@@ -245,8 +245,9 @@ export default function Moves() {
 
     const filtered = useMemo(() => {
         return dataMoves.filter((m) => {
-            const s = search.toLowerCase()
-            return m.name.toLowerCase().includes(s)
+            const s = search.toLowerCase().replace(/-/g, ' ')
+            const name = m.name.toLowerCase().replace(/-/g, ' ')
+            return name.includes(s)
         })
     }, [search, dataMoves])
 
@@ -378,7 +379,7 @@ export default function Moves() {
 
     return (
         <>
-            <div className="flex h-full w-full items-center justify-center p-4">
+            <div className="flex flex-1 py-8 md:py-4 w-full md:items-center items-start justify-center p-4">
                 <section className="flex w-full max-w-4xl flex-col gap-4">
                     <Input
                         type="text"

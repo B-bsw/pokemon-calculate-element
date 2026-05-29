@@ -2,7 +2,7 @@ import TablePokemon from '@/components/table/TablePokemon'
 
 const Page = () => {
     return (
-        <div className="flex h-full w-full items-center justify-center px-4">
+        <div className="flex flex-1 py-8 md:py-4 w-full md:items-center items-start justify-center px-4">
             <TablePokemon />
         </div>
     )

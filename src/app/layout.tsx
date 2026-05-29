@@ -38,9 +38,9 @@ export default function RootLayout({
             >
                 <I18nProvider>
                     <Providers>
-                        <div className="min-h-dvh w-full max-w-full overflow-hidden">
+                        <div className="min-h-dvh w-full max-w-full">
                             <MainHeader />
-                            <div className="h-dvh pt-16 not-dark:bg-zinc-800">
+                            <div className="flex min-h-dvh flex-col pt-16 not-dark:bg-zinc-800">
                                 {children}
                             </div>
                         </div>
