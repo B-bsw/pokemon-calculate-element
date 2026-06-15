@@ -186,9 +186,6 @@ export default function Items() {
         <>
             <div className="flex w-full flex-1 justify-center overflow-scroll p-4 py-4">
                 <section className="flex w-full max-w-2xl flex-col gap-4">
-                    <h1 className="text-2xl font-bold text-zinc-800 dark:text-white">
-                        {t('heldItems') || 'Held Items'}
-                    </h1>
 
                     <Input
                         type="text"
