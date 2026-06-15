@@ -3,17 +3,10 @@
 import { useTranslate } from '@/i18n/i18nContext'
 import {
     getKeyValue,
-    Pagination,
-    Spinner,
-    Table,
-    TableBody,
-    TableCell,
-    TableColumn,
-    TableHeader,
-    TableRow,
     Input,
     Skeleton,
 } from '@heroui/react'
+import DataTable from '@/components/table/DataTable'
 import axios from 'axios'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -193,7 +186,7 @@ export default function Pokemon() {
 
     return (
         <>
-            <div className="flex w-full flex-1 flex-col items-center p-4 py-8 md:justify-center">
+            <div className="flex w-full flex-1 flex-col items-center bg-zinc-50 p-4 py-8 md:justify-center dark:bg-zinc-900">
                 <section className="flex w-full max-w-xl flex-col gap-4">
                     <Input
                         type="text"
@@ -206,104 +199,50 @@ export default function Pokemon() {
                         onClear={() => handleSearchChange('')}
                     />
 
-                    <Table
-                        classNames={{ th: 'text-center', td: 'text-center' }}
-                        aria-label="table-of-pokemon"
-                        bottomContent={
-                            page > 0 ? (
-                                <div className="flex w-full justify-center">
-                                    <Pagination
-                                        isCompact
-                                        variant="flat"
-                                        showControls
-                                        showShadow
-                                        color="primary"
-                                        page={page}
-                                        total={pages}
-                                        onChange={handlePageChange}
-                                    />
-                                </div>
-                            ) : null
-                        }
-                    >
-                        <TableHeader columns={columns}>
-                            {(column) => (
-                                <TableColumn key={column.key}>
-                                    {column.label}
-                                </TableColumn>
-                            )}
-                        </TableHeader>
+                    <DataTable
+                        columns={columns}
+                        items={items}
+                        isLoading={isLoading}
+                        emptyContent={'No Pokemon.'}
+                        page={page}
+                        totalPages={pages}
+                        onPageChange={handlePageChange}
+                        getRowKey={(item) => item.id}
+                        onRowClick={(item) => router.push(`/pokemon/${item.name}`)}
+                        ariaLabel="table-of-pokemon"
+                        renderCell={(item, columnKey) => {
+                            if (columnKey === 'name') {
+                                return (
+                                    <div className="flex items-center justify-center gap-2">
+                                        <div className="relative h-8 w-8">
+                                            {!item.img || !item.isLoaded ? (
+                                                <Skeleton className="h-8 w-8 rounded-full" />
+                                            ) : null}
 
-                        <TableBody
-                            items={items}
-                            emptyContent={'No Pokemon.'}
-                            isLoading={isLoading}
-                            loadingContent={<Spinner />}
-                        >
-                            {(item) => (
-                                <TableRow
-                                    key={item.id}
-                                    className="cursor-pointer transition-colors hover:bg-zinc-300/50 dark:hover:bg-zinc-800/50"
-                                    onClick={() =>
-                                        router.push(`/pokemon/${item.name}`)
-                                    }
-                                >
-                                    {(key) => (
-                                        <TableCell>
-                                            {key === 'name' ? (
-                                                <div className="flex items-center justify-center gap-2">
-                                                    <div className="relative h-8 w-8">
-                                                        {!item.img ||
-                                                        !item.isLoaded ? (
-                                                            <Skeleton className="h-8 w-8 rounded-full" />
-                                                        ) : null}
-
-                                                        {item.img && (
-                                                            <Image
-                                                                src={item.img}
-                                                                alt={item.name}
-                                                                width={26}
-                                                                height={26}
-                                                                className={
-                                                                    !item.isLoaded
-                                                                        ? 'invisible absolute'
-                                                                        : ''
-                                                                }
-                                                                onLoad={() => {
-                                                                    setDataPokemon(
-                                                                        (
-                                                                            prev
-                                                                        ) =>
-                                                                            prev.map(
-                                                                                (
-                                                                                    p
-                                                                                ) =>
-                                                                                    p.id ===
-                                                                                    item.id
-                                                                                        ? {
-                                                                                              ...p,
-                                                                                              isLoaded: true,
-                                                                                          }
-                                                                                        : p
-                                                                            )
-                                                                    )
-                                                                }}
-                                                            />
-                                                        )}
-                                                    </div>
-                                                    <span className="capitalize">
-                                                        {item.name}
-                                                    </span>
-                                                </div>
-                                            ) : (
-                                                getKeyValue(item, key)
+                                            {item.img && (
+                                                <Image
+                                                    src={item.img}
+                                                    alt={item.name}
+                                                    width={26}
+                                                    height={26}
+                                                    className={!item.isLoaded ? 'invisible absolute' : ''}
+                                                    onLoad={() => {
+                                                        setDataPokemon((prev) =>
+                                                            prev.map((p) =>
+                                                                p.id === item.id ? { ...p, isLoaded: true } : p
+                                                            )
+                                                        )
+                                                    }}
+                                                />
                                             )}
-                                        </TableCell>
-                                    )}
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
+                                        </div>
+                                        <span className="capitalize">{item.name}</span>
+                                    </div>
+                                )
+                            }
+                            return getKeyValue(item, columnKey)
+                        }}
+                    />
                 </section>
             </div>
         </>

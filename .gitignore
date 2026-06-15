@@ -40,6 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# agent
-.gemini
-.opencode
+# heroui-agents-md
+.heroui-docs/

@@ -70,9 +70,11 @@ const TableNature = () => {
             <Table
                 aria-label="Pokemon nature table"
                 classNames={{
-                    base: 'max-h-[calc(100vh-8rem)]',
-                    th: 'text-sm text-center text-nowrap',
-                    td: 'text-sm text-center text-nowrap',
+                    wrapper:
+                        'border-2 border-zinc-900 dark:border-zinc-50 shadow-none rounded-xl bg-zinc-50 dark:bg-zinc-900',
+                    th: 'text-center bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 font-bold uppercase',
+                    td: 'text-center font-semibold',
+                    tr: 'border-b-2 border-transparent transition-colors',
                 }}
             >
                 <TableHeader>
@@ -97,7 +99,7 @@ const TableNature = () => {
                 <TableBody>
                     {naturesData.map((row, index) => (
                         <TableRow key={index}>
-                            <TableCell className="text-success-500 text-left font-semibold text-nowrap">
+                            <TableCell className="text-left font-bold text-nowrap text-zinc-900 dark:text-zinc-50">
                                 {row.plus
                                     .replace('stat.', '')
                                     .includes('Atk') ||
@@ -114,7 +116,7 @@ const TableNature = () => {
                                     className={
                                         row.natures[0].neutral
                                             ? 'text-zinc-500 dark:text-zinc-400'
-                                            : 'font-medium text-zinc-800 dark:text-zinc-200'
+                                            : 'font-bold text-zinc-900 dark:text-zinc-50'
                                     }
                                 >
                                     {row.natures[0].name}
@@ -125,7 +127,7 @@ const TableNature = () => {
                                     className={
                                         row.natures[1].neutral
                                             ? 'text-zinc-500 dark:text-zinc-400'
-                                            : 'font-medium text-zinc-800 dark:text-zinc-200'
+                                            : 'font-bold text-zinc-900 dark:text-zinc-50'
                                     }
                                 >
                                     {row.natures[1].name}
@@ -136,7 +138,7 @@ const TableNature = () => {
                                     className={
                                         row.natures[2].neutral
                                             ? 'text-zinc-500 dark:text-zinc-400'
-                                            : 'font-medium text-zinc-800 dark:text-zinc-200'
+                                            : 'font-bold text-zinc-900 dark:text-zinc-50'
                                     }
                                 >
                                     {row.natures[2].name}
@@ -147,7 +149,7 @@ const TableNature = () => {
                                     className={
                                         row.natures[3].neutral
                                             ? 'text-zinc-500 dark:text-zinc-400'
-                                            : 'font-medium text-zinc-800 dark:text-zinc-200'
+                                            : 'font-bold text-zinc-900 dark:text-zinc-50'
                                     }
                                 >
                                     {row.natures[3].name}
@@ -158,7 +160,7 @@ const TableNature = () => {
                                     className={
                                         row.natures[4].neutral
                                             ? 'text-zinc-500 dark:text-zinc-400'
-                                            : 'font-medium text-zinc-800 dark:text-zinc-200'
+                                            : 'font-bold text-zinc-900 dark:text-zinc-50'
                                     }
                                 >
                                     {row.natures[4].name}

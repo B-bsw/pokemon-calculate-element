@@ -7,12 +7,6 @@ import {
     Spinner,
     Card,
     CardBody,
-    Table,
-    TableBody,
-    TableCell,
-    TableColumn,
-    TableHeader,
-    TableRow,
     Input,
     Chip,
     Modal,
@@ -24,6 +18,7 @@ import {
     useDisclosure,
     Divider,
 } from '@heroui/react'
+import DataTable from '@/components/table/DataTable'
 import axios from 'axios'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -379,7 +374,7 @@ export default function Moves() {
 
     return (
         <>
-            <div className="flex w-full flex-1 items-start justify-center p-4 py-8 md:items-center md:py-4">
+            <div className="flex w-full flex-1 items-start justify-center bg-zinc-50 p-4 py-8 md:items-center md:py-4 dark:bg-zinc-900">
                 <section className="flex w-full max-w-4xl flex-col gap-4">
                     <Input
                         type="text"
@@ -409,8 +404,7 @@ export default function Moves() {
                                     onPress={() =>
                                         fetchMoveFullDetail(item.url)
                                     }
-                                    className="border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900"
-                                    shadow="sm"
+                                    className="group rounded-xl border-2 border-zinc-900 bg-zinc-50 shadow-none transition-colors hover:bg-zinc-900 hover:text-zinc-50 dark:border-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-50 dark:hover:text-zinc-900"
                                     fullWidth
                                 >
                                     <CardBody className="gap-3">
@@ -418,7 +412,7 @@ export default function Moves() {
                                             <span className="text-xs text-zinc-500">
                                                 #{item.id}
                                             </span>
-                                            <span className="font-semibold text-black capitalize dark:text-white">
+                                            <span className="font-semibold text-zinc-900 capitalize dark:text-zinc-50">
                                                 {item.name.replace(/-/g, ' ')}
                                             </span>
                                             <span></span>
@@ -440,7 +434,7 @@ export default function Moves() {
                                                             height={16}
                                                         />
                                                     </div>
-                                                    <span className="text-sm text-black capitalize dark:text-white">
+                                                    <span className="text-sm text-zinc-900 capitalize dark:text-zinc-50">
                                                         {t(item.type)}
                                                     </span>
                                                 </div>
@@ -494,52 +488,20 @@ export default function Moves() {
                     </div>
 
                     <div className="hidden md:block">
-                        <Table
-                            classNames={{
-                                th: 'text-center',
-                                td: 'text-center',
-                                tr: 'cursor-pointer hover:bg-zinc-300/50 dark:hover:bg-zinc-800/50 transition-colors',
-                            }}
-                            aria-label="table-of-moves"
-                            selectionMode="single"
-                            onRowAction={(key) => {
-                                const move = items.find((m) => m.name === key)
-                                if (move) {
-                                    fetchMoveFullDetail(move.url)
-                                }
-                            }}
-                        >
-                            <TableHeader columns={columns}>
-                                {(column) => (
-                                    <TableColumn key={column.key}>
-                                        {column.label}
-                                    </TableColumn>
-                                )}
-                            </TableHeader>
-
-                            <TableBody
-                                items={items}
-                                emptyContent={t('noMoves') || 'No moves found.'}
-                                isLoading={isLoading}
-                                loadingContent={<Spinner />}
-                            >
-                                {(item) => (
-                                    <TableRow key={item.name}>
-                                        {(key) => (
-                                            <TableCell>
-                                                {renderCell(
-                                                    item,
-                                                    key as string
-                                                )}
-                                            </TableCell>
-                                        )}
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
+                        <DataTable
+                            columns={columns}
+                            items={items}
+                            isLoading={isLoading}
+                            emptyContent={t('noMoves') || 'No moves found.'}
+                            page={page}
+                            totalPages={pages}
+                            onPageChange={handlePageChange}
+                            getRowKey={(item) => item.name}
+                            onRowClick={(item) => fetchMoveFullDetail(item.url)}
+                            ariaLabel="table-of-moves"
+                            renderCell={renderCell}
+                        />
                     </div>
-
-                    {paginationControl}
                 </section>
             </div>
 
@@ -550,9 +512,9 @@ export default function Moves() {
                 scrollBehavior="inside"
                 size="lg"
                 classNames={{
-                    base: 'bg-white dark:bg-zinc-800 dark:border dark:border-zinc-700',
-                    header: 'border-b border-zinc-200 dark:border-zinc-700',
-                    footer: 'border-t border-zinc-200 dark:border-zinc-700',
+                    base: 'bg-zinc-50 dark:bg-zinc-900 border-2 border-zinc-900 dark:border-zinc-50 shadow-none rounded-xl',
+                    header: 'border-b-2 border-zinc-900 dark:border-zinc-50',
+                    footer: 'border-t-2 border-zinc-900 dark:border-zinc-50',
                 }}
             >
                 <ModalContent>
@@ -588,7 +550,7 @@ export default function Moves() {
                                                     />
                                                 )}
                                             </div>
-                                            <span className="text-xl font-bold text-zinc-800 capitalize dark:text-white">
+                                            <span className="text-xl font-bold text-zinc-800 capitalize dark:text-zinc-50">
                                                 {selectedMove.name.replace(
                                                     /-/g,
                                                     ' '
@@ -606,7 +568,7 @@ export default function Moves() {
                                                 </p>
                                                 <Chip
                                                     size="sm"
-                                                    className={`${selectedMove.type.name} text-white capitalize`}
+                                                    className={`${selectedMove.type.name} text-zinc-50 capitalize`}
                                                 >
                                                     {t(
                                                         selectedMove.type.name
@@ -646,7 +608,7 @@ export default function Moves() {
                                                 <p className="mb-1 text-xs text-zinc-500 dark:text-zinc-400">
                                                     {t('power') || 'Power'}
                                                 </p>
-                                                <p className="text-lg font-bold text-zinc-800 dark:text-white">
+                                                <p className="text-lg font-bold text-zinc-800 dark:text-zinc-50">
                                                     {selectedMove.power ?? '-'}
                                                 </p>
                                             </div>
@@ -657,7 +619,7 @@ export default function Moves() {
                                                     {t('accuracy') ||
                                                         'Accuracy'}
                                                 </p>
-                                                <p className="text-lg font-bold text-zinc-800 dark:text-white">
+                                                <p className="text-lg font-bold text-zinc-800 dark:text-zinc-50">
                                                     {selectedMove.accuracy
                                                         ? `${selectedMove.accuracy}%`
                                                         : '-'}
@@ -672,7 +634,7 @@ export default function Moves() {
                                                     <span className="text-sm text-zinc-500 dark:text-zinc-400">
                                                         PP
                                                     </span>
-                                                    <span className="font-bold text-zinc-800 dark:text-white">
+                                                    <span className="font-bold text-zinc-800 dark:text-zinc-50">
                                                         {selectedMove.pp}
                                                     </span>
                                                 </div>
@@ -683,7 +645,7 @@ export default function Moves() {
                                                         {t('priority') ||
                                                             'Priority'}
                                                     </span>
-                                                    <span className="font-bold text-zinc-800 dark:text-white">
+                                                    <span className="font-bold text-zinc-800 dark:text-zinc-50">
                                                         {selectedMove.priority >=
                                                         0
                                                             ? `+${selectedMove.priority}`
@@ -701,7 +663,7 @@ export default function Moves() {
                                                         {t('generation') ||
                                                             'Generation'}
                                                     </span>
-                                                    <span className="text-sm font-bold text-zinc-800 capitalize dark:text-white">
+                                                    <span className="text-sm font-bold text-zinc-800 capitalize dark:text-zinc-50">
                                                         {selectedMove.generation?.name?.replace(
                                                             /-/g,
                                                             ' '
@@ -715,7 +677,7 @@ export default function Moves() {
                                                         {t('target') ||
                                                             'Target'}
                                                     </span>
-                                                    <span className="text-sm font-bold text-zinc-800 capitalize dark:text-white">
+                                                    <span className="text-sm font-bold text-zinc-800 capitalize dark:text-zinc-50">
                                                         {selectedMove.target?.name?.replace(
                                                             /-/g,
                                                             ' '
@@ -729,7 +691,7 @@ export default function Moves() {
 
                                         {/* Effect Description */}
                                         <div>
-                                            <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
+                                            <h3 className="mb-2 font-semibold text-zinc-800 dark:text-zinc-50">
                                                 {t('effect') || 'Effect'}
                                             </h3>
                                             <p className="text-sm text-zinc-600 dark:text-zinc-300">
@@ -740,7 +702,7 @@ export default function Moves() {
                                         {/* Flavor Text */}
                                         {getEnglishFlavorText(selectedMove) && (
                                             <div className="mt-4">
-                                                <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
+                                                <h3 className="mb-2 font-semibold text-zinc-800 dark:text-zinc-50">
                                                     {t('description') ||
                                                         'Description'}
                                                 </h3>
@@ -759,7 +721,7 @@ export default function Moves() {
                                             selectedMove.learned_by_pokemon
                                                 .length > 0 && (
                                                 <div className="mt-4">
-                                                    <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
+                                                    <h3 className="mb-2 font-semibold text-zinc-800 dark:text-zinc-50">
                                                         {t(
                                                             'learnedByPokemon'
                                                         ) ||

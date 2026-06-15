@@ -211,8 +211,8 @@ export default function Items() {
                                     onPress={() =>
                                         fetchItemFullDetail(item.url)
                                     }
-                                    className="border border-zinc-200 bg-white transition-transform hover:scale-[1.02] dark:border-zinc-900 dark:bg-zinc-900"
-                                    shadow="md"
+                                    className="group border-2 border-zinc-900 bg-zinc-50 transition-all hover:bg-zinc-900 hover:text-zinc-50 dark:border-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-50 dark:hover:text-zinc-900 shadow-none rounded-xl"
+                                    shadow="none"
                                 >
                                     <CardBody className="flex flex-row items-center gap-4 p-4">
                                         <div className="shrink-0">
@@ -242,11 +242,11 @@ export default function Items() {
                                         </div>
 
                                         <div className="min-w-0 flex-1">
-                                            <h3 className="font-semibold text-zinc-800 capitalize dark:text-white">
+                                            <h3 className="font-semibold text-zinc-900 capitalize dark:text-zinc-50 group-hover:text-zinc-50 dark:group-hover:text-zinc-900">
                                                 {item.name.replace(/-/g, ' ')}
                                             </h3>
                                             {item.isLoaded ? (
-                                                <p className="line-clamp-2 text-sm text-zinc-500 dark:text-zinc-400">
+                                                <p className="line-clamp-2 text-sm text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-300 dark:group-hover:text-zinc-600">
                                                     {item.effect ||
                                                         t('noDescription') ||
                                                         'No description available.'}
@@ -270,9 +270,9 @@ export default function Items() {
                 scrollBehavior="inside"
                 size="lg"
                 classNames={{
-                    base: 'bg-white dark:bg-zinc-800 dark:border dark:border-zinc-700',
-                    header: 'border-b border-zinc-200 dark:border-zinc-700',
-                    footer: 'border-t border-zinc-200 dark:border-zinc-700',
+                    base: 'bg-zinc-50 dark:bg-zinc-900 border-2 border-zinc-900 dark:border-zinc-50 shadow-none rounded-xl',
+                    header: 'border-b-2 border-zinc-900 dark:border-zinc-50',
+                    footer: 'border-t-2 border-zinc-900 dark:border-zinc-50',
                 }}
             >
                 <ModalContent>
@@ -310,7 +310,7 @@ export default function Items() {
                                                     />
                                                 </div>
                                             )}
-                                            <span className="text-xl font-bold text-zinc-800 capitalize dark:text-white">
+                                            <span className="text-xl font-bold text-zinc-800 capitalize dark:text-zinc-50">
                                                 {selectedItem.name.replace(
                                                     /-/g,
                                                     ' '
@@ -342,7 +342,7 @@ export default function Items() {
                                                     {t('flingPower') ||
                                                         'Fling Power'}
                                                 </p>
-                                                <p className="text-lg font-bold text-zinc-800 dark:text-white">
+                                                <p className="text-lg font-bold text-zinc-800 dark:text-zinc-50">
                                                     {selectedItem.fling_power ??
                                                         '-'}
                                                 </p>
@@ -354,7 +354,7 @@ export default function Items() {
                                             selectedItem.attributes.length >
                                                 0 && (
                                                 <div className="mb-4">
-                                                    <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
+                                                    <h3 className="mb-2 font-semibold text-zinc-800 dark:text-zinc-50">
                                                         {t('attributes') ||
                                                             'Attributes'}
                                                     </h3>
@@ -384,7 +384,7 @@ export default function Items() {
 
                                         {/* Effect */}
                                         <div>
-                                            <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
+                                            <h3 className="mb-2 font-semibold text-zinc-800 dark:text-zinc-50">
                                                 {t('effect') || 'Effect'}
                                             </h3>
                                             <p className="text-sm text-zinc-600 dark:text-zinc-300">
@@ -395,7 +395,7 @@ export default function Items() {
                                         {/* Flavor Text */}
                                         {getEnglishFlavorText(selectedItem) && (
                                             <div className="mt-4">
-                                                <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
+                                                <h3 className="mb-2 font-semibold text-zinc-800 dark:text-zinc-50">
                                                     {t('description') ||
                                                         'Description'}
                                                 </h3>
@@ -414,7 +414,7 @@ export default function Items() {
                                             selectedItem.held_by_pokemon
                                                 .length > 0 && (
                                                 <div className="mt-4">
-                                                    <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
+                                                    <h3 className="mb-2 font-semibold text-zinc-800 dark:text-zinc-50">
                                                         {t('heldByPokemon') ||
                                                             'Held by Pokémon'}{' '}
                                                         (

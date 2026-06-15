@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslate } from '@/i18n/i18nContext'
 import {
     Button,
@@ -43,18 +43,15 @@ const MainHeader = () => {
         <Navbar
             isBlurred={false}
             classNames={{
-                base: 'dark:bg-black bg-zinc-400/80 fixed',
+                base: 'bg-zinc-50 border-b-2 border-zinc-900 dark:bg-zinc-900 dark:border-zinc-50 fixed',
             }}
             maxWidth="full"
             isMenuOpen={isMenuOpen}
         >
-            {/*burger*/}
             <NavbarMenuToggle
                 aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-                className="md:hidden"
-                onChange={() => {
-                    setIsMenuOpen((e) => !e)
-                }}
+                className="text-zinc-900 dark:text-zinc-50 md:hidden"
+                onChange={() => setIsMenuOpen((e) => !e)}
             />
 
             <NavbarBrand
@@ -71,7 +68,8 @@ const MainHeader = () => {
                     variant="underlined"
                     color="primary"
                     classNames={{
-                        tabContent: 'text-black dark:text-zinc-400',
+                        tabContent: 'text-zinc-900 dark:text-zinc-50 font-bold',
+                        cursor: 'bg-zinc-900 dark:bg-zinc-50 h-1',
                     }}
                 >
                     {items.map((item) => (
@@ -97,7 +95,7 @@ const MainHeader = () => {
                         onValueChange={(value) =>
                             setTheme(value ? 'dark' : 'light')
                         }
-                    ></Switch>
+                    />
                 </div>
                 <Tabs
                     variant="solid"
@@ -111,23 +109,22 @@ const MainHeader = () => {
                 </Tabs>
             </NavbarContent>
 
-            {/*mobile navbar*/}
-            <NavbarMenu className="gap-5 bg-zinc-900 py-10 dark:bg-zinc-200">
+            <NavbarMenu className="gap-5 bg-zinc-50 py-10 dark:bg-zinc-900">
                 {items.map((item) => {
                     const Ic = item.icon
                     return (
                         <NavbarItem
                             key={item.id}
-                            className={`${routeOfTabs === item.path && '**:text-primary **:dark:text-primary **:hover:text-primary-300 **:dark:**:hover:text-primary-400'}`}
+                            className={`${routeOfTabs === item.path && '**:text-primary'}`}
                         >
                             <Button
                                 fullWidth
-                                startContent={<Ic />}
+                                variant="light"
+                                startContent={<Ic className="text-zinc-900 dark:text-zinc-50" />}
                                 onPress={() => router.push(item.path)}
+                                className="text-zinc-900 dark:text-zinc-50 font-bold hover:bg-zinc-900 hover:text-zinc-50 dark:hover:bg-zinc-50 dark:hover:text-zinc-900 border-2 border-transparent hover:border-zinc-900 dark:hover:border-zinc-50 rounded-lg transition-colors"
                             >
-                                <div
-                                    className={`w-full text-start text-white hover:text-zinc-300 dark:text-black dark:hover:text-zinc-700`}
-                                >
+                                <div className="w-full text-start">
                                     {t(item.nameTrans)}
                                 </div>
                             </Button>
