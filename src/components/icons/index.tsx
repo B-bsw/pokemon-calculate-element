@@ -55,7 +55,7 @@ export const icon2TagSvg = (element: string = 'bug', size: number = 24) => {
             alt={element}
             width={size}
             height={size}
-            className={`icon inline-block align-middle ${element.toLocaleLowerCase()}`}
+            className={`icon inline-block align-middle type-${element.toLocaleLowerCase()}`}
         />
     )
 }

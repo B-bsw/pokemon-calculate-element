@@ -632,7 +632,7 @@ export default function PokemonDetail({
             )}
 
             {/* Type Icon */}
-            <div className={`shrink-0 rounded-full p-1.5 ${move.type}`}>
+            <div className={`shrink-0 rounded-full p-1.5 type-${move.type}`}>
                 {VALID_TYPES.includes(move.type.toLowerCase()) && (
                     <Image
                         src={iconElements(move.type)}
@@ -891,7 +891,7 @@ export default function PokemonDetail({
                                                                                     key={
                                                                                         type
                                                                                     }
-                                                                                    className={`rounded-full p-0.5 ${type}`}
+                                                                                    className={`rounded-full p-0.5 type-${type}`}
                                                                                 >
                                                                                     <Image
                                                                                         src={iconElements(
@@ -1139,7 +1139,7 @@ export default function PokemonDetail({
                                     <ModalHeader className="flex flex-col gap-1">
                                         <div className="flex items-center gap-3">
                                             <div
-                                                className={`rounded-lg p-2 ${selectedMove.type.name}`}
+                                                className={`rounded-lg p-2 type-${selectedMove.type.name}`}
                                             >
                                                 {VALID_TYPES.includes(
                                                     selectedMove.type.name
@@ -1176,7 +1176,7 @@ export default function PokemonDetail({
                                                 </p>
                                                 <Chip
                                                     size="sm"
-                                                    className={`${selectedMove.type.name} text-zinc-50 capitalize`}
+                                                    className={`type-${selectedMove.type.name} text-zinc-50 capitalize`}
                                                 >
                                                     {t(
                                                         selectedMove.type.name

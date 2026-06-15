@@ -21,11 +21,11 @@ const TablePokemon = () => {
                 {typeChart.map((e) => (
                     <div
                         key={e.name}
-                        className="rounded-xl border-2 border-zinc-900 bg-zinc-50 p-4 shadow-none dark:border-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50"
+                        className="rounded-xl border-2 border-zinc-900 bg-zinc-50 p-4 text-zinc-900 shadow-none dark:border-zinc-50 dark:bg-zinc-900 dark:text-zinc-50"
                     >
                         <div className="mb-3 flex items-center gap-2">
                             <div
-                                className={`shrink-0 rounded-full p-1 ${e.name.toLowerCase()}`}
+                                className={`shrink-0 rounded-full p-1 type-${e.name.toLowerCase()}`}
                             >
                                 <Image
                                     src={iconElements(e.name)}
@@ -69,7 +69,8 @@ const TablePokemon = () => {
                 <Table
                     aria-label="Pokemon element table"
                     classNames={{
-                        wrapper: 'border-2 border-zinc-900 dark:border-zinc-50 shadow-none rounded-xl bg-zinc-50 dark:bg-zinc-900',
+                        wrapper:
+                            'border-2 border-zinc-900 dark:border-zinc-50 shadow-none rounded-xl bg-zinc-50 dark:bg-zinc-900',
                         th: 'bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 font-bold uppercase',
                         td: 'font-semibold',
                         tr: 'border-b-2 border-transparent transition-colors',
@@ -88,7 +89,7 @@ const TablePokemon = () => {
                                 <TableCell>
                                     <div className="flex items-center gap-2">
                                         <div
-                                            className={`shrink-0 rounded-full p-1 ${e.name.toLowerCase()}`}
+                                            className={`shrink-0 rounded-full p-1 type-${e.name.toLowerCase()}`}
                                         >
                                             <Image
                                                 src={iconElements(e.name)}

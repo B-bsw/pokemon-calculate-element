@@ -15,47 +15,24 @@ import {
 } from '@heroui/react'
 import poke from '@/libs/DataElement'
 import iconElements, { icon2TagSvg } from '@/components/icons'
-import { Minus, Plus, RefreshCcw } from 'lucide-react'
+import { RefreshCcw } from 'lucide-react'
 import Image from 'next/image'
 import { useTranslate } from '@/i18n/i18nContext'
 
 const CalculateType = () => {
-    const [count, setCount] = useState<number[]>([0])
-    const [dataInput, setDataInput] = useState<string[]>([''])
+    const [type1, setType1] = useState<string>('')
+    const [type2, setType2] = useState<string>('')
 
     const { t } = useTranslate()
 
-    const handleAdd = () => {
-        if (count.length < 2) {
-            setCount((prev) => [...prev, prev.length])
-            setDataInput((prev) => [...prev, ''])
-        }
-    }
-
-    const handleRemove = () => {
-        if (count.length > 1) {
-            setCount((prev) => prev.slice(0, -1))
-            setDataInput((prev) => prev.slice(0, -1))
-        }
-    }
-
-    const handleSelectChange = (key: Key | null, index: number) => {
-        if (key) {
-            setDataInput((prev) => {
-                const newData = [...prev]
-                newData[index] = key.toString()
-                return newData
-            })
-        }
-    }
-
     const handleReset = () => {
-        setDataInput([''])
-        setCount([0])
+        setType1('')
+        setType2('')
     }
 
-    const selectedTypes = poke.filter((type) => dataInput.includes(type.name))
-    const hasTwoTypes = selectedTypes.length === 2
+    const selectedTypes = poke.filter(
+        (type) => type.name === type1 || (type2 && type.name === type2)
+    )
 
     // Get types we're strong against (Offensive Coverage)
     // For coverage, we just want to know what types we hit Super Effectively with ANY of our types.
@@ -144,8 +121,6 @@ const CalculateType = () => {
     const renderMultiplierList = (
         counts: Record<string, number>,
         multiplierBase: number, // 2 for strong/weak, 0.5 for resistant
-        colorX1: string,
-        colorX2: string,
         isOffensive: boolean = false
     ) => {
         const entries = Object.entries(counts)
@@ -157,28 +132,25 @@ const CalculateType = () => {
         return (
             <div className="flex flex-wrap gap-2">
                 {entries.map(([typeName, count]) => {
-                    let colorClass = colorX1
                     let multiplierText = ''
 
                     if (isOffensive) {
                         // Offensive only has x2 (Effective) in this simplified view
-                        multiplierText = ' (x2)'
+                        multiplierText = 'x2'
                     } else {
                         if (multiplierBase >= 1) {
                             // For damage dealt (2x, 4x)
                             if (count === 2) {
-                                colorClass = colorX2
-                                multiplierText = ' (x4)'
+                                multiplierText = 'x4'
                             } else {
-                                multiplierText = ' (x2)'
+                                multiplierText = 'x2'
                             }
                         } else {
                             // For resistance (0.5x, 0.25x)
                             if (count === 2) {
-                                colorClass = colorX2
-                                multiplierText = ' (x0.25)'
+                                multiplierText = 'x0.25'
                             } else {
-                                multiplierText = ' (x0.5)'
+                                multiplierText = 'x0.5'
                             }
                         }
                     }
@@ -186,16 +158,18 @@ const CalculateType = () => {
                     return (
                         <div
                             key={typeName}
-                            className={`flex items-center gap-1 rounded-full border px-2 py-1 text-sm ${colorClass} bg-opacity-10 border-current bg-current`}
+                            className={`flex items-center gap-2 rounded-xl border-2 border-zinc-900 dark:border-zinc-50 type-${typeName} px-3 py-1.5 text-sm font-bold text-zinc-50 shadow-none not-dark:invert`}
                         >
-                            <Image
-                                src={iconElements(typeName)}
-                                alt={typeName}
-                                width={16}
-                                height={16}
-                            />
-                            <span>
-                                {t(typeName)}
+                            <div className="flex items-center justify-center rounded-full bg-white/20 p-1">
+                                <Image
+                                    src={iconElements(typeName)}
+                                    alt={typeName}
+                                    width={16}
+                                    height={16}
+                                />
+                            </div>
+                            <span className="capitalize">{t(typeName)}</span>
+                            <span className="rounded bg-white/30 px-1.5 py-0.5 text-xs text-white">
                                 {multiplierText}
                             </span>
                         </div>
@@ -208,82 +182,80 @@ const CalculateType = () => {
     return (
         <div className="flex w-full flex-1 flex-col items-start justify-center gap-6 p-4 py-8 md:items-center md:py-4">
             {/* Input Section */}
-            <div className="w-full max-w-md">
-                <div className="flex w-full flex-col gap-4 rounded-xl border-2 border-zinc-900 bg-zinc-50 p-4 shadow-none dark:border-zinc-50 dark:bg-zinc-900">
-                    {count.map((_, index) => (
-                        <Autocomplete
-                            key={index}
-                            label={t('SelectPokeElemental')}
-                            size="sm"
-                            fullWidth
-                            variant="bordered"
-                            labelPlacement="outside"
-                            color="primary"
-                            selectedKey={dataInput[index] || ''}
-                            onSelectionChange={(key) =>
-                                handleSelectChange(key, index)
-                            }
-                        >
-                            {poke.map((e) => (
-                                <AutocompleteItem
-                                    key={e.name}
-                                    startContent={icon2TagSvg(e.name, 20)}
-                                >
-                                    {t(e.name)}
-                                </AutocompleteItem>
-                            ))}
-                        </Autocomplete>
-                    ))}
+            <div className="w-full max-w-3xl">
+                <div className="flex w-full flex-col items-end gap-4 rounded-xl border-2 border-zinc-900 bg-zinc-50 p-6 shadow-none md:flex-row dark:border-zinc-50 dark:bg-zinc-900">
+                    <Autocomplete
+                        label={t('SelectPokeElemental')}
+                        placeholder="Type 1"
+                        size="md"
+                        fullWidth
+                        variant="bordered"
+                        labelPlacement="outside"
+                        color="primary"
+                        selectedKey={type1}
+                        onSelectionChange={(key) =>
+                            setType1(key ? key.toString() : '')
+                        }
+                        inputProps={{
+                            classNames: {
+                                inputWrapper:
+                                    'border-2 border-zinc-900 dark:border-zinc-50 shadow-none bg-zinc-50 dark:bg-zinc-900',
+                            },
+                        }}
+                    >
+                        {poke.map((e) => (
+                            <AutocompleteItem
+                                key={e.name}
+                                startContent={icon2TagSvg(e.name, 20)}
+                            >
+                                {t(e.name)}
+                            </AutocompleteItem>
+                        ))}
+                    </Autocomplete>
 
-                    <div className="flex justify-center gap-2">
-                        <Tooltip content={t('add')} delay={500}>
-                            <Button
-                                isIconOnly
-                                isDisabled={count.length >= 2}
-                                variant="flat"
-                                size="sm"
-                                onPress={handleAdd}
+                    <Autocomplete
+                        label={t('SelectPokeElemental') + ' 2 (Optional)'}
+                        placeholder="Type 2"
+                        size="md"
+                        fullWidth
+                        variant="bordered"
+                        labelPlacement="outside"
+                        color="primary"
+                        selectedKey={type2}
+                        onSelectionChange={(key) =>
+                            setType2(key ? key.toString() : '')
+                        }
+                        inputProps={{
+                            classNames: {
+                                inputWrapper:
+                                    'border-2 border-zinc-900 dark:border-zinc-50 shadow-none bg-zinc-50 dark:bg-zinc-900',
+                            },
+                        }}
+                    >
+                        {poke.map((e) => (
+                            <AutocompleteItem
+                                key={e.name}
+                                startContent={icon2TagSvg(e.name, 20)}
                             >
-                                <Plus size={16} />
-                            </Button>
-                        </Tooltip>
-                        <Tooltip
-                            content={t('delete')}
-                            color="danger"
-                            delay={500}
+                                {t(e.name)}
+                            </AutocompleteItem>
+                        ))}
+                    </Autocomplete>
+
+                    <Tooltip content={t('reset')} color="primary" delay={500}>
+                        <Button
+                            isIconOnly
+                            className="h-14 w-14 shrink-0 rounded-xl border-2 border-zinc-900 bg-zinc-900 text-zinc-50 shadow-none dark:border-zinc-50 dark:bg-zinc-50 dark:text-zinc-900"
+                            onPress={handleReset}
                         >
-                            <Button
-                                isIconOnly
-                                isDisabled={count.length <= 1}
-                                color="danger"
-                                variant="flat"
-                                size="sm"
-                                onPress={handleRemove}
-                            >
-                                <Minus size={16} />
-                            </Button>
-                        </Tooltip>
-                        <Tooltip
-                            content={t('reset')}
-                            color="primary"
-                            delay={500}
-                        >
-                            <Button
-                                isIconOnly
-                                color="primary"
-                                variant="flat"
-                                size="sm"
-                                onPress={handleReset}
-                            >
-                                <RefreshCcw size={16} />
-                            </Button>
-                        </Tooltip>
-                    </div>
+                            <RefreshCcw size={20} />
+                        </Button>
+                    </Tooltip>
                 </div>
             </div>
 
             {/* Results Section */}
-            {dataInput[0].length > 1 && (
+            {type1.length > 1 && (
                 <div className="grid w-full max-w-5xl gap-6 md:grid-cols-2">
                     {/* Attacking Card */}
                     <div className="flex flex-col gap-4 rounded-xl border-2 border-zinc-900 bg-zinc-50 p-6 shadow-none dark:border-zinc-50 dark:bg-zinc-900">
@@ -297,13 +269,7 @@ const CalculateType = () => {
                             <span className="text-sm font-medium text-zinc-500">
                                 {t('strong')} (x2)
                             </span>
-                            {renderMultiplierList(
-                                strongAgainstTypes,
-                                2,
-                                'bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 border-0',
-                                'bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 border-0',
-                                true
-                            )}
+                            {renderMultiplierList(strongAgainstTypes, 2, true)}
                         </div>
                     </div>
 
@@ -320,24 +286,14 @@ const CalculateType = () => {
                                 <span className="text-sm font-medium text-zinc-500">
                                     {t('weak')} (x2, x4)
                                 </span>
-                                {renderMultiplierList(
-                                    weakToTypes,
-                                    2,
-                                    'bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 border-0',
-                                    'bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 border-0'
-                                )}
+                                {renderMultiplierList(weakToTypes, 2)}
                             </div>
 
                             <div className="flex flex-col gap-2">
                                 <span className="text-sm font-medium text-zinc-500">
                                     {t('resistant')} (x0.5, x0.25)
                                 </span>
-                                {renderMultiplierList(
-                                    resistantToTypes,
-                                    0.5,
-                                    'bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 border-0',
-                                    'bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 border-0'
-                                )}
+                                {renderMultiplierList(resistantToTypes, 0.5)}
                             </div>
 
                             <div className="flex flex-col gap-2">
@@ -346,18 +302,27 @@ const CalculateType = () => {
                                 </span>
                                 {noEffectTypes.length > 0 ? (
                                     <div className="flex flex-wrap gap-2">
-                                        {noEffectTypes.map((e) => (
+                                        {noEffectTypes.map((typeName) => (
                                             <div
-                                                key={e}
-                                                className="flex items-center gap-1 rounded-full border-0 bg-zinc-900 text-zinc-50 px-2 py-1 text-sm dark:bg-zinc-50 dark:text-zinc-900"
+                                                key={typeName}
+                                                className={`flex items-center gap-2 rounded-xl border-2 border-zinc-900 dark:border-zinc-50 type-${typeName} px-3 py-1.5 text-sm font-bold text-zinc-50 shadow-none`}
                                             >
-                                                <Image
-                                                    src={iconElements(e)}
-                                                    alt={e}
-                                                    width={16}
-                                                    height={16}
-                                                />
-                                                <span>{t(e)} (x0)</span>
+                                                <div className="flex items-center justify-center rounded-full bg-white/20 p-1">
+                                                    <Image
+                                                        src={iconElements(
+                                                            typeName
+                                                        )}
+                                                        alt={typeName}
+                                                        width={16}
+                                                        height={16}
+                                                    />
+                                                </div>
+                                                <span className="capitalize">
+                                                    {t(typeName)}
+                                                </span>
+                                                <span className="rounded bg-black/30 px-1.5 py-0.5 text-xs text-white">
+                                                    x0
+                                                </span>
                                             </div>
                                         ))}
                                     </div>

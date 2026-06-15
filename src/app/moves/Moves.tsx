@@ -300,7 +300,7 @@ export default function Moves() {
                 }
                 return VALID_TYPES.includes(item.type) ? (
                     <div className="flex items-center justify-center gap-1">
-                        <div className={`rounded-full p-1 ${item.type}`}>
+                        <div className={`rounded-full p-1 type-${item.type}`}>
                             <Image
                                 src={iconElements(item.type)}
                                 alt={item.type}
@@ -411,7 +411,7 @@ export default function Moves() {
                                             VALID_TYPES.includes(item.type) ? (
                                                 <div className="flex items-center gap-1">
                                                     <div
-                                                        className={`rounded-full p-1 ${item.type}`}
+                                                        className={`rounded-full p-1 type-${item.type}`}
                                                     >
                                                         <Image
                                                             src={iconElements(
@@ -540,7 +540,7 @@ export default function Moves() {
                                     <ModalHeader className="flex flex-col gap-1">
                                         <div className="flex items-center gap-3">
                                             <div
-                                                className={`rounded-full p-2 ${selectedMove.type.name}`}
+                                                className={`rounded-full p-2 type-${selectedMove.type.name}`}
                                             >
                                                 {VALID_TYPES.includes(
                                                     selectedMove.type.name
@@ -577,7 +577,7 @@ export default function Moves() {
                                                 </p>
                                                 <Chip
                                                     size="sm"
-                                                    className={`${selectedMove.type.name} text-zinc-50 capitalize`}
+                                                    className={`type-${selectedMove.type.name} text-zinc-50 capitalize`}
                                                 >
                                                     {t(
                                                         selectedMove.type.name
