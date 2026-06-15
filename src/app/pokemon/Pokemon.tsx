@@ -243,7 +243,7 @@ export default function Pokemon() {
                             {(item) => (
                                 <TableRow
                                     key={item.id}
-                                    className="cursor-pointer transition-colors hover:bg-zinc-300/50 not-dark:hover:bg-zinc-800/50"
+                                    className="cursor-pointer transition-colors hover:bg-zinc-300/50 dark:hover:bg-zinc-800/50"
                                     onClick={() =>
                                         router.push(`/pokemon/${item.name}`)
                                     }

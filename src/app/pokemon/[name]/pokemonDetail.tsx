@@ -225,10 +225,10 @@ const damageClassIcons: Record<string, React.ReactNode> = {
 
 const damageClassColors: Record<string, string> = {
     physical:
-        'bg-orange-100 text-orange-700 not-dark:bg-orange-900/50 not-dark:text-orange-300',
+        'bg-orange-100 text-orange-700 dark:bg-orange-900/50 dark:text-orange-300',
     special:
-        'bg-purple-100 text-purple-700 not-dark:bg-purple-900/50 not-dark:text-purple-300',
-    status: 'bg-gray-100 text-gray-700 not-dark:bg-gray-700 not-dark:text-gray-300',
+        'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300',
+        status: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
 }
 
 export default function PokemonDetail({
@@ -617,15 +617,15 @@ export default function PokemonDetail({
         <button
             key={move.name}
             onClick={() => fetchMoveDetail(move.url)}
-            className="flex w-full cursor-pointer items-center gap-2 rounded-2xl bg-zinc-50 p-3 text-left transition-colors not-dark:bg-zinc-700 hover:bg-zinc-100 not-dark:hover:bg-zinc-600"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-2xl bg-zinc-50 p-3 text-left transition-colors dark:bg-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-600"
         >
             {/* Level (for level-up moves) */}
             {showLevel && (
                 <div className="w-12 shrink-0 text-center">
-                    <span className="block text-xs text-zinc-500 not-dark:text-zinc-400">
+                    <span className="block text-xs text-zinc-500 dark:text-zinc-400">
                         Lv.
                     </span>
-                    <span className="font-bold text-zinc-800 not-dark:text-white">
+                    <span className="font-bold text-zinc-800 dark:text-white">
                         {move.levelLearnedAt || '-'}
                     </span>
                 </div>
@@ -644,7 +644,7 @@ export default function PokemonDetail({
             </div>
 
             {/* Move Name */}
-            <span className="min-w-0 flex-1 truncate font-medium text-zinc-800 capitalize not-dark:text-white">
+            <span className="min-w-0 flex-1 truncate font-medium text-zinc-800 capitalize dark:text-white">
                 {move.name.replace(/-/g, ' ')}
             </span>
 
@@ -660,20 +660,20 @@ export default function PokemonDetail({
 
             {/* Power */}
             <div className="w-12 shrink-0 text-center">
-                <span className="block text-xs text-zinc-500 not-dark:text-zinc-400">
+                <span className="block text-xs text-zinc-500 dark:text-zinc-400">
                     PWR
                 </span>
-                <span className="text-sm font-bold text-zinc-800 not-dark:text-white">
+                <span className="text-sm font-bold text-zinc-800 dark:text-white">
                     {move.power ?? '-'}
                 </span>
             </div>
 
             {/* Accuracy */}
             <div className="w-12 shrink-0 text-center">
-                <span className="block text-xs text-zinc-500 not-dark:text-zinc-400">
+                <span className="block text-xs text-zinc-500 dark:text-zinc-400">
                     ACC
                 </span>
-                <span className="text-sm font-bold text-zinc-800 not-dark:text-white">
+                <span className="text-sm font-bold text-zinc-800 dark:text-white">
                     {move.accuracy ? `${move.accuracy}` : '-'}
                 </span>
             </div>
@@ -717,7 +717,7 @@ export default function PokemonDetail({
         <>
             <div className="w-full max-w-4xl flex-1 px-4 py-8">
                 {/* Main Card */}
-                <Card className="bg-white shadow-xl not-dark:border not-dark:border-zinc-700 not-dark:bg-zinc-800">
+                <Card className="bg-white shadow-xl dark:border dark:border-zinc-700 dark:bg-zinc-800">
                     <CardBody className="p-0">
                         {/* Header with gradient background based on type colors */}
                         <div
@@ -787,8 +787,8 @@ export default function PokemonDetail({
                         {/* Content Section */}
                         <div className="p-6">
                             {/* Abilities */}
-                            <div className="mb-6 rounded-xl bg-zinc-100 p-4 not-dark:bg-zinc-700">
-                                <p className="mb-2 text-sm text-zinc-500 not-dark:text-zinc-400">
+                            <div className="mb-6 rounded-xl bg-zinc-100 p-4 dark:bg-zinc-700">
+                                <p className="mb-2 text-sm text-zinc-500 dark:text-zinc-400">
                                     {t('abilities') || 'Abilities'}
                                 </p>
                                 <div className="flex flex-wrap gap-2">
@@ -835,11 +835,11 @@ export default function PokemonDetail({
                             {!isLoadingEvolutions &&
                                 evolutionChain.length > 1 && (
                                     <div className="mb-8">
-                                        <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
+                                        <h2 className="mb-4 text-xl font-bold text-zinc-800 dark:text-white">
                                             {t('evolutionChain') ||
                                                 'Evolution Chain'}
                                         </h2>
-                                        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-8 rounded-xl bg-zinc-50 p-6 not-dark:bg-zinc-700/30">
+                                        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-8 rounded-xl bg-zinc-50 p-6 dark:bg-zinc-700/30">
                                             {evolutionChain.map(
                                                 (member, index) => {
                                                     const nextMember =
@@ -876,7 +876,7 @@ export default function PokemonDetail({
                                                                         className="object-contain"
                                                                     />
                                                                 </div>
-                                                                <span className="max-w-20 truncate text-xs font-bold text-zinc-800 capitalize not-dark:text-white">
+                                                                <span className="max-w-20 truncate text-xs font-bold text-zinc-800 capitalize dark:text-white">
                                                                     {
                                                                         member.name
                                                                     }
@@ -944,7 +944,7 @@ export default function PokemonDetail({
 
                             {isLoadingEvolutions && (
                                 <div className="mb-8">
-                                    <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
+                                    <h2 className="mb-4 text-xl font-bold text-zinc-800 dark:text-white">
                                         {t('evolutionChain') ||
                                             'Evolution Chain'}
                                     </h2>
@@ -955,7 +955,7 @@ export default function PokemonDetail({
                             )}
                             {/* Stats Section */}
                             <div className="mb-6">
-                                <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
+                                <h2 className="mb-4 text-xl font-bold text-zinc-800 dark:text-white">
                                     {t('baseStats') || 'Base Stats'}
                                 </h2>
                                 <div className="space-y-3">
@@ -964,12 +964,12 @@ export default function PokemonDetail({
                                             key={statInfo.stat.name}
                                             className="flex items-center gap-3"
                                         >
-                                            <span className="w-16 text-sm font-medium text-zinc-600 not-dark:text-zinc-300">
+                                            <span className="w-16 text-sm font-medium text-zinc-600 dark:text-zinc-300">
                                                 {statNames[
                                                     statInfo.stat.name
                                                 ] || statInfo.stat.name}
                                             </span>
-                                            <span className="w-10 text-right text-sm font-bold text-zinc-800 not-dark:text-white">
+                                            <span className="w-10 text-right text-sm font-bold text-zinc-800 dark:text-white">
                                                 {statInfo.base_stat}
                                             </span>
                                             <Progress
@@ -986,11 +986,11 @@ export default function PokemonDetail({
                                         </div>
                                     ))}
                                 </div>
-                                <div className="mt-4 flex justify-between border-t border-zinc-200 pt-4 not-dark:border-zinc-600">
-                                    <span className="font-medium text-zinc-600 not-dark:text-zinc-300">
+                                <div className="mt-4 flex justify-between border-t border-zinc-200 pt-4 dark:border-zinc-600">
+                                    <span className="font-medium text-zinc-600 dark:text-zinc-300">
                                         {t('total') || 'Total'}
                                     </span>
-                                    <span className="font-bold text-zinc-800 not-dark:text-white">
+                                    <span className="font-bold text-zinc-800 dark:text-white">
                                         {pokemonData.stats.reduce(
                                             (sum, s) => sum + s.base_stat,
                                             0
@@ -1001,7 +1001,7 @@ export default function PokemonDetail({
 
                             {/* Moves Section */}
                             <div>
-                                <h2 className="mb-4 text-xl font-bold text-zinc-800 not-dark:text-white">
+                                <h2 className="mb-4 text-xl font-bold text-zinc-800 dark:text-white">
                                     {t('moves') || 'Moves'} (
                                     {pokemonData.moves.length})
                                 </h2>
@@ -1128,9 +1128,9 @@ export default function PokemonDetail({
                 scrollBehavior="inside"
                 size="lg"
                 classNames={{
-                    base: 'bg-white not-dark:bg-zinc-800 not-dark:border not-dark:border-zinc-700',
-                    header: 'border-b border-zinc-200 not-dark:border-zinc-700',
-                    footer: 'border-t border-zinc-200 not-dark:border-zinc-700',
+                    base: 'bg-white dark:bg-zinc-800 dark:border dark:border-zinc-700',
+                    header: 'border-b border-zinc-200 dark:border-zinc-700',
+                    footer: 'border-t border-zinc-200 dark:border-zinc-700',
                 }}
             >
                 <ModalContent>
@@ -1166,7 +1166,7 @@ export default function PokemonDetail({
                                                     />
                                                 )}
                                             </div>
-                                            <span className="text-xl font-bold text-zinc-800 capitalize not-dark:text-white">
+                                            <span className="text-xl font-bold text-zinc-800 capitalize dark:text-white">
                                                 {selectedMove.name.replace(
                                                     /-/g,
                                                     ' '
@@ -1178,8 +1178,8 @@ export default function PokemonDetail({
                                         {/* Move Info Grid */}
                                         <div className="mb-4 grid grid-cols-2 gap-4 md:grid-cols-4">
                                             {/* Type */}
-                                            <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
-                                                <p className="mb-1 text-xs text-zinc-500 not-dark:text-zinc-400">
+                                            <div className="rounded-lg bg-zinc-100 p-3 text-center dark:bg-zinc-700">
+                                                <p className="mb-1 text-xs text-zinc-500 dark:text-zinc-400">
                                                     {t('type') || 'Type'}
                                                 </p>
                                                 <Chip
@@ -1193,8 +1193,8 @@ export default function PokemonDetail({
                                             </div>
 
                                             {/* Category */}
-                                            <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
-                                                <p className="mb-1 text-xs text-zinc-500 not-dark:text-zinc-400">
+                                            <div className="rounded-lg bg-zinc-100 p-3 text-center dark:bg-zinc-700">
+                                                <p className="mb-1 text-xs text-zinc-500 dark:text-zinc-400">
                                                     {t('category') ||
                                                         'Category'}
                                                 </p>
@@ -1218,23 +1218,23 @@ export default function PokemonDetail({
                                             </div>
 
                                             {/* Power */}
-                                            <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
-                                                <p className="mb-1 text-xs text-zinc-500 not-dark:text-zinc-400">
+                                            <div className="rounded-lg bg-zinc-100 p-3 text-center dark:bg-zinc-700">
+                                                <p className="mb-1 text-xs text-zinc-500 dark:text-zinc-400">
                                                     {t('power') || 'Power'}
                                                 </p>
-                                                <p className="text-lg font-bold text-zinc-800 not-dark:text-white">
+                                                <p className="text-lg font-bold text-zinc-800 dark:text-white">
                                                     {selectedMove.power ??
                                                         'N/A'}
                                                 </p>
                                             </div>
 
                                             {/* Accuracy */}
-                                            <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
-                                                <p className="mb-1 text-xs text-zinc-500 not-dark:text-zinc-400">
+                                            <div className="rounded-lg bg-zinc-100 p-3 text-center dark:bg-zinc-700">
+                                                <p className="mb-1 text-xs text-zinc-500 dark:text-zinc-400">
                                                     {t('accuracy') ||
                                                         'Accuracy'}
                                                 </p>
-                                                <p className="text-lg font-bold text-zinc-800 not-dark:text-white">
+                                                <p className="text-lg font-bold text-zinc-800 dark:text-white">
                                                     {selectedMove.accuracy
                                                         ? `${selectedMove.accuracy}%`
                                                         : 'N/A'}
@@ -1243,12 +1243,12 @@ export default function PokemonDetail({
                                         </div>
 
                                         {/* PP */}
-                                        <div className="mb-4 rounded-lg bg-zinc-100 p-3 not-dark:bg-zinc-700">
+                                        <div className="mb-4 rounded-lg bg-zinc-100 p-3 dark:bg-zinc-700">
                                             <div className="flex items-center justify-between">
-                                                <span className="text-sm text-zinc-500 not-dark:text-zinc-400">
+                                                <span className="text-sm text-zinc-500 dark:text-zinc-400">
                                                     PP (Power Points)
                                                 </span>
-                                                <span className="font-bold text-zinc-800 not-dark:text-white">
+                                                <span className="font-bold text-zinc-800 dark:text-white">
                                                     {selectedMove.pp}
                                                 </span>
                                             </div>
@@ -1258,10 +1258,10 @@ export default function PokemonDetail({
 
                                         {/* Effect Description */}
                                         <div>
-                                            <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                            <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
                                                 {t('effect') || 'Effect'}
                                             </h3>
-                                            <p className="text-sm text-zinc-600 not-dark:text-zinc-300">
+                                            <p className="text-sm text-zinc-600 dark:text-zinc-300">
                                                 {getEnglishEffect(selectedMove)}
                                             </p>
                                         </div>
@@ -1269,11 +1269,11 @@ export default function PokemonDetail({
                                         {/* Flavor Text */}
                                         {getEnglishFlavorText(selectedMove) && (
                                             <div className="mt-4">
-                                                <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                                <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
                                                     {t('description') ||
                                                         'Description'}
                                                 </h3>
-                                                <p className="text-sm text-zinc-500 italic not-dark:text-zinc-400">
+                                                <p className="text-sm text-zinc-500 italic dark:text-zinc-400">
                                                     "
                                                     {getEnglishFlavorText(
                                                         selectedMove
@@ -1306,9 +1306,9 @@ export default function PokemonDetail({
                 scrollBehavior="inside"
                 size="lg"
                 classNames={{
-                    base: 'bg-white not-dark:bg-zinc-800 not-dark:border not-dark:border-zinc-700',
-                    header: 'border-b border-zinc-200 not-dark:border-zinc-700',
-                    footer: 'border-t border-zinc-200 not-dark:border-zinc-700',
+                    base: 'bg-white dark:bg-zinc-800 dark:border dark:border-zinc-700',
+                    header: 'border-b border-zinc-200 dark:border-zinc-700',
+                    footer: 'border-t border-zinc-200 dark:border-zinc-700',
                 }}
             >
                 <ModalContent>
@@ -1338,7 +1338,7 @@ export default function PokemonDetail({
                                                     className="text-white"
                                                 />
                                             </div>
-                                            <span className="text-xl font-bold text-zinc-800 capitalize not-dark:text-white">
+                                            <span className="text-xl font-bold text-zinc-800 capitalize dark:text-white">
                                                 {selectedAbility.name.replace(
                                                     /-/g,
                                                     ' '
@@ -1348,9 +1348,9 @@ export default function PokemonDetail({
                                     </ModalHeader>
                                     <ModalBody>
                                         {/* Generation Info */}
-                                        <div className="mb-4 rounded-lg bg-zinc-100 p-3 not-dark:bg-zinc-700">
+                                        <div className="mb-4 rounded-lg bg-zinc-100 p-3 dark:bg-zinc-700">
                                             <div className="flex items-center justify-between">
-                                                <span className="text-sm text-zinc-500 not-dark:text-zinc-400">
+                                                <span className="text-sm text-zinc-500 dark:text-zinc-400">
                                                     {t('generation') ||
                                                         'Generation'}
                                                 </span>
@@ -1372,10 +1372,10 @@ export default function PokemonDetail({
 
                                         {/* Effect Description */}
                                         <div>
-                                            <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                            <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
                                                 {t('effect') || 'Effect'}
                                             </h3>
-                                            <p className="text-sm text-zinc-600 not-dark:text-zinc-300">
+                                            <p className="text-sm text-zinc-600 dark:text-zinc-300">
                                                 {getAbilityEnglishEffect(
                                                     selectedAbility
                                                 )}
@@ -1387,11 +1387,11 @@ export default function PokemonDetail({
                                             selectedAbility
                                         ) && (
                                             <div className="mt-4">
-                                                <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                                <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
                                                     {t('description') ||
                                                         'Description'}
                                                 </h3>
-                                                <p className="text-sm text-zinc-500 italic not-dark:text-zinc-400">
+                                                <p className="text-sm text-zinc-500 italic dark:text-zinc-400">
                                                     "
                                                     {getAbilityFlavorText(
                                                         selectedAbility
@@ -1406,7 +1406,7 @@ export default function PokemonDetail({
                                             selectedAbility.pokemon.length >
                                                 0 && (
                                                 <div className="mt-4">
-                                                    <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                                    <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
                                                         {t(
                                                             'pokemonWithAbility'
                                                         ) ||

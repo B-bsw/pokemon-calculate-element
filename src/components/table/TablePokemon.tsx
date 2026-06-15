@@ -21,7 +21,7 @@ const TablePokemon = () => {
                 {typeChart.map((e) => (
                     <div
                         key={e.name}
-                        className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm not-dark:border-zinc-700 not-dark:bg-zinc-900"
+                        className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-900"
                     >
                         <div className="mb-3 flex items-center gap-2">
                             <div
@@ -38,19 +38,19 @@ const TablePokemon = () => {
                         </div>
 
                         <div className="space-y-2 text-sm">
-                            <p className="text-zinc-600 not-dark:text-zinc-300">
+                            <p className="text-zinc-600 dark:text-zinc-300">
                                 <span className="font-medium">
                                     {t('strong')}:{' '}
                                 </span>
                                 {e.strongAgainst.map((st) => t(st)).join(', ')}
                             </p>
-                            <p className="text-zinc-600 not-dark:text-zinc-300">
+                            <p className="text-zinc-600 dark:text-zinc-300">
                                 <span className="font-medium">
                                     {t('weak')}:{' '}
                                 </span>
                                 {e.weakAgainst.map((wk) => t(wk)).join(', ')}
                             </p>
-                            <p className="text-zinc-600 not-dark:text-zinc-300">
+                            <p className="text-zinc-600 dark:text-zinc-300">
                                 <span className="font-medium">
                                     {t('noEffectFrom')}:{' '}
                                 </span>
@@ -103,7 +103,7 @@ const TablePokemon = () => {
                                 </TableCell>
 
                                 <TableCell>
-                                    <span className="text-zinc-600 not-dark:text-zinc-400">
+                                    <span className="text-zinc-600 dark:text-zinc-400">
                                         {e.strongAgainst.length > 0
                                             ? e.strongAgainst
                                                   .map((st) => t(st))
@@ -113,7 +113,7 @@ const TablePokemon = () => {
                                 </TableCell>
 
                                 <TableCell>
-                                    <span className="text-zinc-600 not-dark:text-zinc-400">
+                                    <span className="text-zinc-600 dark:text-zinc-400">
                                         {e.weakAgainst
                                             .map((wk) => t(wk))
                                             .join(', ')}
@@ -121,7 +121,7 @@ const TablePokemon = () => {
                                 </TableCell>
 
                                 <TableCell>
-                                    <span className="text-zinc-600 not-dark:text-zinc-400">
+                                    <span className="text-zinc-600 dark:text-zinc-400">
                                         {e.noEffectFrom.length > 0
                                             ? e.noEffectFrom
                                                   .map((no) => t(no))

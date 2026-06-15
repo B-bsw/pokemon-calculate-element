@@ -43,7 +43,7 @@ const MainHeader = () => {
         <Navbar
             isBlurred={false}
             classNames={{
-                base: 'bg-black dark:bg-zinc-400/80 fixed',
+                base: 'dark:bg-black bg-zinc-400/80 fixed',
             }}
             maxWidth="full"
             isMenuOpen={isMenuOpen}
@@ -71,7 +71,7 @@ const MainHeader = () => {
                     variant="underlined"
                     color="primary"
                     classNames={{
-                        tabContent: 'dark:text-black',
+                        tabContent: 'text-black dark:text-zinc-400',
                     }}
                 >
                     {items.map((item) => (

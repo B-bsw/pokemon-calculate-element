@@ -186,7 +186,7 @@ export default function Items() {
         <>
             <div className="flex w-full flex-1 justify-center overflow-scroll p-4 py-4">
                 <section className="flex w-full max-w-2xl flex-col gap-4">
-                    <h1 className="text-2xl font-bold text-zinc-800 not-dark:text-white">
+                    <h1 className="text-2xl font-bold text-zinc-800 dark:text-white">
                         {t('heldItems') || 'Held Items'}
                     </h1>
 
@@ -214,14 +214,14 @@ export default function Items() {
                                     onPress={() =>
                                         fetchItemFullDetail(item.url)
                                     }
-                                    className="border border-zinc-200 bg-white transition-transform not-dark:border-zinc-900 not-dark:bg-zinc-900 hover:scale-[1.02]"
+                                    className="border border-zinc-200 bg-white transition-transform dark:border-zinc-900 dark:bg-zinc-900 hover:scale-[1.02]"
                                     shadow="md"
                                 >
                                     <CardBody className="flex flex-row items-center gap-4 p-4">
                                         <div className="shrink-0">
                                             {item.isLoaded ? (
                                                 item.sprite ? (
-                                                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-zinc-100 not-dark:bg-zinc-700">
+                                                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-700">
                                                         <Image
                                                             src={item.sprite}
                                                             alt={item.name}
@@ -232,7 +232,7 @@ export default function Items() {
                                                         />
                                                     </div>
                                                 ) : (
-                                                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-zinc-100 not-dark:bg-zinc-700">
+                                                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-700">
                                                         <Package
                                                             size={24}
                                                             className="text-zinc-400"
@@ -240,22 +240,22 @@ export default function Items() {
                                                     </div>
                                                 )
                                             ) : (
-                                                <div className="h-12 w-12 animate-pulse rounded-lg bg-zinc-200 not-dark:bg-zinc-700" />
+                                                <div className="h-12 w-12 animate-pulse rounded-lg bg-zinc-200 dark:bg-zinc-700" />
                                             )}
                                         </div>
 
                                         <div className="min-w-0 flex-1">
-                                            <h3 className="font-semibold text-zinc-800 capitalize not-dark:text-white">
+                                            <h3 className="font-semibold text-zinc-800 capitalize dark:text-white">
                                                 {item.name.replace(/-/g, ' ')}
                                             </h3>
                                             {item.isLoaded ? (
-                                                <p className="line-clamp-2 text-sm text-zinc-500 not-dark:text-zinc-400">
+                                                <p className="line-clamp-2 text-sm text-zinc-500 dark:text-zinc-400">
                                                     {item.effect ||
                                                         t('noDescription') ||
                                                         'No description available.'}
                                                 </p>
                                             ) : (
-                                                <div className="mt-1 h-4 w-full animate-pulse rounded bg-zinc-200 not-dark:bg-zinc-700" />
+                                                <div className="mt-1 h-4 w-full animate-pulse rounded bg-zinc-200 dark:bg-zinc-700" />
                                             )}
                                         </div>
                                     </CardBody>
@@ -273,9 +273,9 @@ export default function Items() {
                 scrollBehavior="inside"
                 size="lg"
                 classNames={{
-                    base: 'bg-white not-dark:bg-zinc-800 not-dark:border not-dark:border-zinc-700',
-                    header: 'border-b border-zinc-200 not-dark:border-zinc-700',
-                    footer: 'border-t border-zinc-200 not-dark:border-zinc-700',
+                    base: 'bg-white dark:bg-zinc-800 dark:border dark:border-zinc-700',
+                    header: 'border-b border-zinc-200 dark:border-zinc-700',
+                    footer: 'border-t border-zinc-200 dark:border-zinc-700',
                 }}
             >
                 <ModalContent>
@@ -292,7 +292,7 @@ export default function Items() {
                                     <ModalHeader className="flex flex-col gap-1">
                                         <div className="flex items-center gap-3">
                                             {selectedItem.sprites?.default ? (
-                                                <div className="rounded-lg bg-zinc-100 p-2 not-dark:bg-zinc-700">
+                                                <div className="rounded-lg bg-zinc-100 p-2 dark:bg-zinc-700">
                                                     <Image
                                                         src={
                                                             selectedItem.sprites
@@ -306,14 +306,14 @@ export default function Items() {
                                                     />
                                                 </div>
                                             ) : (
-                                                <div className="rounded-lg bg-zinc-100 p-3 not-dark:bg-zinc-700">
+                                                <div className="rounded-lg bg-zinc-100 p-3 dark:bg-zinc-700">
                                                     <Package
                                                         size={32}
                                                         className="text-zinc-400"
                                                     />
                                                 </div>
                                             )}
-                                            <span className="text-xl font-bold text-zinc-800 capitalize not-dark:text-white">
+                                            <span className="text-xl font-bold text-zinc-800 capitalize dark:text-white">
                                                 {selectedItem.name.replace(
                                                     /-/g,
                                                     ' '
@@ -324,8 +324,8 @@ export default function Items() {
                                     <ModalBody>
                                         {/* Info Grid */}
                                         <div className="mb-4 grid grid-cols-2 gap-4">
-                                            <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
-                                                <p className="mb-1 text-xs text-zinc-500 not-dark:text-zinc-400">
+                                            <div className="rounded-lg bg-zinc-100 p-3 text-center dark:bg-zinc-700">
+                                              <p className="mb-1 text-xs text-zinc-500 dark:text-zinc-400">
                                                     {t('category') ||
                                                         'Category'}
                                                 </p>
@@ -340,12 +340,12 @@ export default function Items() {
                                                 </Chip>
                                             </div>
 
-                                            <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
-                                                <p className="mb-1 text-xs text-zinc-500 not-dark:text-zinc-400">
+                                            <div className="rounded-lg bg-zinc-100 p-3 text-center dark:bg-zinc-700">
+                                                <p className="mb-1 text-xs text-zinc-500 dark:text-zinc-400">
                                                     {t('flingPower') ||
                                                         'Fling Power'}
                                                 </p>
-                                                <p className="text-lg font-bold text-zinc-800 not-dark:text-white">
+                                                <p className="text-lg font-bold text-zinc-800 dark:text-white">
                                                     {selectedItem.fling_power ??
                                                         '-'}
                                                 </p>
@@ -357,7 +357,7 @@ export default function Items() {
                                             selectedItem.attributes.length >
                                                 0 && (
                                                 <div className="mb-4">
-                                                    <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                                    <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
                                                         {t('attributes') ||
                                                             'Attributes'}
                                                     </h3>
@@ -387,10 +387,10 @@ export default function Items() {
 
                                         {/* Effect */}
                                         <div>
-                                            <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                            <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
                                                 {t('effect') || 'Effect'}
                                             </h3>
-                                            <p className="text-sm text-zinc-600 not-dark:text-zinc-300">
+                                            <p className="text-sm text-zinc-600 dark:text-zinc-300">
                                                 {getEnglishEffect(selectedItem)}
                                             </p>
                                         </div>
@@ -398,11 +398,11 @@ export default function Items() {
                                         {/* Flavor Text */}
                                         {getEnglishFlavorText(selectedItem) && (
                                             <div className="mt-4">
-                                                <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                                <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
                                                     {t('description') ||
                                                         'Description'}
                                                 </h3>
-                                                <p className="text-sm text-zinc-500 italic not-dark:text-zinc-400">
+                                                <p className="text-sm text-zinc-500 italic dark:text-zinc-400">
                                                     "
                                                     {getEnglishFlavorText(
                                                         selectedItem
@@ -417,7 +417,7 @@ export default function Items() {
                                             selectedItem.held_by_pokemon
                                                 .length > 0 && (
                                                 <div className="mt-4">
-                                                    <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                                    <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
                                                         {t('heldByPokemon') ||
                                                             'Held by Pokémon'}{' '}
                                                         (

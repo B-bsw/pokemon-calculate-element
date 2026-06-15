@@ -40,7 +40,7 @@ export default function RootLayout({
                     <Providers>
                         <div className="min-h-dvh w-full max-w-full">
                             <MainHeader />
-                            <div className="flex min-h-dvh flex-col pt-16 not-dark:bg-zinc-800">
+                            <div className="flex min-h-dvh flex-col pt-16 dark:bg-zinc-800">
                                 {children}
                             </div>
                         </div>

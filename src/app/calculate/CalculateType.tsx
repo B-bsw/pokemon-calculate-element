@@ -209,7 +209,7 @@ const CalculateType = () => {
         <div className="flex w-full flex-1 flex-col items-start justify-center gap-6 p-4 py-8 md:items-center md:py-4">
             {/* Input Section */}
             <div className="w-full max-w-md">
-                <div className="flex w-full flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-md not-dark:border-zinc-900 not-dark:bg-zinc-900">
+                <div className="flex w-full flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-md dark:border-zinc-900 dark:bg-zinc-900">
                     {count.map((_, index) => (
                         <Autocomplete
                             key={index}
@@ -286,8 +286,8 @@ const CalculateType = () => {
             {dataInput[0].length > 1 && (
                 <div className="grid w-full max-w-5xl gap-6 md:grid-cols-2">
                     {/* Attacking Card */}
-                    <div className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-6 shadow-md not-dark:border-zinc-900 not-dark:bg-zinc-900">
-                        <div className="flex items-center gap-2 border-b border-zinc-100 pb-2 not-dark:border-zinc-800">
+                    <div className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-6 shadow-md dark:border-zinc-900 dark:bg-zinc-900">
+                        <div className="flex items-center gap-2 border-b border-zinc-100 pb-2 dark:border-zinc-800">
                             <h2 className="text-lg font-bold text-red-500">
                                 {t('attacking')}
                             </h2>
@@ -300,16 +300,16 @@ const CalculateType = () => {
                             {renderMultiplierList(
                                 strongAgainstTypes,
                                 2,
-                                'text-white bg-red-500 not-dark:bg-red-500/80 border-0',
-                                'text-white bg-red-500 not-dark:bg-red-500/80 border-0',
+                                'text-white bg-red-500 dark:bg-red-500/80 border-0',
+                                'text-white bg-red-500 dark:bg-red-500/80 border-0',
                                 true
                             )}
                         </div>
                     </div>
 
                     {/* Defending Card */}
-                    <div className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-6 shadow-md not-dark:border-zinc-900 not-dark:bg-zinc-900">
-                        <div className="flex items-center gap-2 border-b border-zinc-100 pb-2 not-dark:border-zinc-800">
+                    <div className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-6 shadow-md dark:border-zinc-900 dark:bg-zinc-900">
+                        <div className="flex items-center gap-2 border-b border-zinc-100 pb-2 dark:border-zinc-800">
                             <h2 className="text-lg font-bold text-blue-500">
                                 {t('defending')}
                             </h2>
@@ -323,8 +323,8 @@ const CalculateType = () => {
                                 {renderMultiplierList(
                                     weakToTypes,
                                     2,
-                                    'text-white bg-yellow-500/90 not-dark:bg-yellow-500 border-0 ',
-                                    'text-white bg-red-500 not-dark:bg-red-500/80 border-0 '
+                                    'text-white bg-yellow-500/90 dark:bg-yellow-500 border-0 ',
+                                    'text-white bg-red-500 dark:bg-red-500/80 border-0 '
                                 )}
                             </div>
 
@@ -335,8 +335,8 @@ const CalculateType = () => {
                                 {renderMultiplierList(
                                     resistantToTypes,
                                     0.5,
-                                    'text-white bg-green-500 not-dark:bg-green-500/80 border-0',
-                                    'text-white bg-blue-500 not-dark:bg-blue-500/80 border-0'
+                                    'text-white bg-green-500 dark:bg-green-500/80 border-0',
+                                    'text-white bg-blue-500 dark:bg-blue-500/80 border-0'
                                 )}
                             </div>
 

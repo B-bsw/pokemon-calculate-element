@@ -409,7 +409,7 @@ export default function Moves() {
                                     onPress={() =>
                                         fetchMoveFullDetail(item.url)
                                     }
-                                    className="border border-zinc-200 bg-white not-dark:border-zinc-700 not-dark:bg-zinc-900"
+                                    className="border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900"
                                     shadow="sm"
                                     fullWidth
                                 >
@@ -418,7 +418,7 @@ export default function Moves() {
                                             <span className="text-xs text-zinc-500">
                                                 #{item.id}
                                             </span>
-                                            <span className="font-semibold text-black capitalize not-dark:text-white">
+                                            <span className="font-semibold text-black capitalize dark:text-white">
                                                 {item.name.replace(/-/g, ' ')}
                                             </span>
                                             <span></span>
@@ -440,7 +440,7 @@ export default function Moves() {
                                                             height={16}
                                                         />
                                                     </div>
-                                                    <span className="text-sm text-black capitalize not-dark:text-white">
+                                                    <span className="text-sm text-black capitalize dark:text-white">
                                                         {t(item.type)}
                                                     </span>
                                                 </div>
@@ -468,7 +468,7 @@ export default function Moves() {
                                         </div>
 
                                         <div className="grid grid-cols-2 gap-2 text-sm">
-                                            <div className="rounded-md bg-zinc-100 px-2 py-1 text-zinc-700 not-dark:bg-zinc-800 not-dark:text-zinc-300">
+                                            <div className="rounded-md bg-zinc-100 px-2 py-1 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                                                 {t('power')}:&nbsp;
                                                 <span className="font-semibold">
                                                     {item.isLoaded
@@ -476,7 +476,7 @@ export default function Moves() {
                                                         : '...'}
                                                 </span>
                                             </div>
-                                            <div className="rounded-md bg-zinc-100 px-2 py-1 text-zinc-700 not-dark:bg-zinc-800 not-dark:text-zinc-300">
+                                            <div className="rounded-md bg-zinc-100 px-2 py-1 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                                                 {t('accuracy')}:&nbsp;
                                                 <span className="font-semibold">
                                                     {item.isLoaded
@@ -498,7 +498,7 @@ export default function Moves() {
                             classNames={{
                                 th: 'text-center',
                                 td: 'text-center',
-                                tr: 'cursor-pointer hover:bg-zinc-300/50 not-dark:hover:bg-zinc-800/50 transition-colors',
+                                tr: 'cursor-pointer hover:bg-zinc-300/50 dark:hover:bg-zinc-800/50 transition-colors',
                             }}
                             aria-label="table-of-moves"
                             selectionMode="single"
@@ -550,9 +550,9 @@ export default function Moves() {
                 scrollBehavior="inside"
                 size="lg"
                 classNames={{
-                    base: 'bg-white not-dark:bg-zinc-800 not-dark:border not-dark:border-zinc-700',
-                    header: 'border-b border-zinc-200 not-dark:border-zinc-700',
-                    footer: 'border-t border-zinc-200 not-dark:border-zinc-700',
+                    base: 'bg-white dark:bg-zinc-800 dark:border dark:border-zinc-700',
+                    header: 'border-b border-zinc-200 dark:border-zinc-700',
+                    footer: 'border-t border-zinc-200 dark:border-zinc-700',
                 }}
             >
                 <ModalContent>
@@ -588,7 +588,7 @@ export default function Moves() {
                                                     />
                                                 )}
                                             </div>
-                                            <span className="text-xl font-bold text-zinc-800 capitalize not-dark:text-white">
+                                            <span className="text-xl font-bold text-zinc-800 capitalize dark:text-white">
                                                 {selectedMove.name.replace(
                                                     /-/g,
                                                     ' '
@@ -600,8 +600,8 @@ export default function Moves() {
                                         {/* Move Info Grid */}
                                         <div className="mb-4 grid grid-cols-2 gap-4 md:grid-cols-4">
                                             {/* Type */}
-                                            <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
-                                                <p className="mb-1 text-xs text-zinc-500 not-dark:text-zinc-400">
+                                            <div className="rounded-lg bg-zinc-100 p-3 text-center dark:bg-zinc-700">
+                                                <p className="mb-1 text-xs text-zinc-500 dark:text-zinc-400">
                                                     {t('type') || 'Type'}
                                                 </p>
                                                 <Chip
@@ -615,8 +615,8 @@ export default function Moves() {
                                             </div>
 
                                             {/* Category */}
-                                            <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
-                                                <p className="mb-1 text-xs text-zinc-500 not-dark:text-zinc-400">
+                                            <div className="rounded-lg bg-zinc-100 p-3 text-center dark:bg-zinc-700">
+                                                <p className="mb-1 text-xs text-zinc-500 dark:text-zinc-400">
                                                     {t('category') ||
                                                         'Category'}
                                                 </p>
@@ -642,22 +642,22 @@ export default function Moves() {
                                             </div>
 
                                             {/* Power */}
-                                            <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
-                                                <p className="mb-1 text-xs text-zinc-500 not-dark:text-zinc-400">
+                                            <div className="rounded-lg bg-zinc-100 p-3 text-center dark:bg-zinc-700">
+                                                <p className="mb-1 text-xs text-zinc-500 dark:text-zinc-400">
                                                     {t('power') || 'Power'}
                                                 </p>
-                                                <p className="text-lg font-bold text-zinc-800 not-dark:text-white">
+                                                <p className="text-lg font-bold text-zinc-800 dark:text-white">
                                                     {selectedMove.power ?? '-'}
                                                 </p>
                                             </div>
 
                                             {/* Accuracy */}
-                                            <div className="rounded-lg bg-zinc-100 p-3 text-center not-dark:bg-zinc-700">
-                                                <p className="mb-1 text-xs text-zinc-500 not-dark:text-zinc-400">
+                                            <div className="rounded-lg bg-zinc-100 p-3 text-center dark:bg-zinc-700">
+                                                <p className="mb-1 text-xs text-zinc-500 dark:text-zinc-400">
                                                     {t('accuracy') ||
                                                         'Accuracy'}
                                                 </p>
-                                                <p className="text-lg font-bold text-zinc-800 not-dark:text-white">
+                                                <p className="text-lg font-bold text-zinc-800 dark:text-white">
                                                     {selectedMove.accuracy
                                                         ? `${selectedMove.accuracy}%`
                                                         : '-'}
@@ -667,23 +667,23 @@ export default function Moves() {
 
                                         {/* PP and Priority */}
                                         <div className="mb-4 grid grid-cols-2 gap-4">
-                                            <div className="rounded-lg bg-zinc-100 p-3 not-dark:bg-zinc-700">
+                                            <div className="rounded-lg bg-zinc-100 p-3 dark:bg-zinc-700">
                                                 <div className="flex items-center justify-between">
-                                                    <span className="text-sm text-zinc-500 not-dark:text-zinc-400">
+                                                    <span className="text-sm text-zinc-500 dark:text-zinc-400">
                                                         PP
                                                     </span>
-                                                    <span className="font-bold text-zinc-800 not-dark:text-white">
+                                                    <span className="font-bold text-zinc-800 dark:text-white">
                                                         {selectedMove.pp}
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div className="rounded-lg bg-zinc-100 p-3 not-dark:bg-zinc-700">
+                                            <div className="rounded-lg bg-zinc-100 p-3 dark:bg-zinc-700">
                                                 <div className="flex items-center justify-between">
-                                                    <span className="text-sm text-zinc-500 not-dark:text-zinc-400">
+                                                    <span className="text-sm text-zinc-500 dark:text-zinc-400">
                                                         {t('priority') ||
                                                             'Priority'}
                                                     </span>
-                                                    <span className="font-bold text-zinc-800 not-dark:text-white">
+                                                    <span className="font-bold text-zinc-800 dark:text-white">
                                                         {selectedMove.priority >=
                                                         0
                                                             ? `+${selectedMove.priority}`
@@ -695,13 +695,13 @@ export default function Moves() {
 
                                         {/* Generation and Target */}
                                         <div className="mb-4 grid grid-cols-2 gap-4">
-                                            <div className="rounded-lg bg-zinc-100 p-3 not-dark:bg-zinc-700">
+                                            <div className="rounded-lg bg-zinc-100 p-3 dark:bg-zinc-700">
                                                 <div className="flex items-center justify-between">
-                                                    <span className="text-sm text-zinc-500 not-dark:text-zinc-400">
+                                                    <span className="text-sm text-zinc-500 dark:text-zinc-400">
                                                         {t('generation') ||
                                                             'Generation'}
                                                     </span>
-                                                    <span className="text-sm font-bold text-zinc-800 capitalize not-dark:text-white">
+                                                    <span className="text-sm font-bold text-zinc-800 capitalize dark:text-white">
                                                         {selectedMove.generation?.name?.replace(
                                                             /-/g,
                                                             ' '
@@ -709,13 +709,13 @@ export default function Moves() {
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div className="rounded-lg bg-zinc-100 p-3 not-dark:bg-zinc-700">
+                                            <div className="rounded-lg bg-zinc-100 p-3 dark:bg-zinc-700">
                                                 <div className="flex items-center justify-between">
-                                                    <span className="text-sm text-zinc-500 not-dark:text-zinc-400">
+                                                    <span className="text-sm text-zinc-500 dark:text-zinc-400">
                                                         {t('target') ||
                                                             'Target'}
                                                     </span>
-                                                    <span className="text-sm font-bold text-zinc-800 capitalize not-dark:text-white">
+                                                    <span className="text-sm font-bold text-zinc-800 capitalize dark:text-white">
                                                         {selectedMove.target?.name?.replace(
                                                             /-/g,
                                                             ' '
@@ -729,10 +729,10 @@ export default function Moves() {
 
                                         {/* Effect Description */}
                                         <div>
-                                            <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                            <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
                                                 {t('effect') || 'Effect'}
                                             </h3>
-                                            <p className="text-sm text-zinc-600 not-dark:text-zinc-300">
+                                            <p className="text-sm text-zinc-600 dark:text-zinc-300">
                                                 {getEnglishEffect(selectedMove)}
                                             </p>
                                         </div>
@@ -740,11 +740,11 @@ export default function Moves() {
                                         {/* Flavor Text */}
                                         {getEnglishFlavorText(selectedMove) && (
                                             <div className="mt-4">
-                                                <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                                <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
                                                     {t('description') ||
                                                         'Description'}
                                                 </h3>
-                                                <p className="text-sm text-zinc-500 italic not-dark:text-zinc-400">
+                                                <p className="text-sm text-zinc-500 italic dark:text-zinc-400">
                                                     "
                                                     {getEnglishFlavorText(
                                                         selectedMove
@@ -759,7 +759,7 @@ export default function Moves() {
                                             selectedMove.learned_by_pokemon
                                                 .length > 0 && (
                                                 <div className="mt-4">
-                                                    <h3 className="mb-2 font-semibold text-zinc-800 not-dark:text-white">
+                                                    <h3 className="mb-2 font-semibold text-zinc-800 dark:text-white">
                                                         {t(
                                                             'learnedByPokemon'
                                                         ) ||

@@ -113,8 +113,8 @@ const TableNature = () => {
                                 <span
                                     className={
                                         row.natures[0].neutral
-                                            ? 'text-zinc-500 not-dark:text-zinc-400'
-                                            : 'font-medium text-zinc-800 not-dark:text-zinc-200'
+                                            ? 'text-zinc-500 dark:text-zinc-400'
+                                            : 'font-medium text-zinc-800 dark:text-zinc-200'
                                     }
                                 >
                                     {row.natures[0].name}
@@ -124,8 +124,8 @@ const TableNature = () => {
                                 <span
                                     className={
                                         row.natures[1].neutral
-                                            ? 'text-zinc-500 not-dark:text-zinc-400'
-                                            : 'font-medium text-zinc-800 not-dark:text-zinc-200'
+                                            ? 'text-zinc-500 dark:text-zinc-400'
+                                            : 'font-medium text-zinc-800 dark:text-zinc-200'
                                     }
                                 >
                                     {row.natures[1].name}
@@ -135,8 +135,8 @@ const TableNature = () => {
                                 <span
                                     className={
                                         row.natures[2].neutral
-                                            ? 'text-zinc-500 not-dark:text-zinc-400'
-                                            : 'font-medium text-zinc-800 not-dark:text-zinc-200'
+                                            ? 'text-zinc-500 dark:text-zinc-400'
+                                            : 'font-medium text-zinc-800 dark:text-zinc-200'
                                     }
                                 >
                                     {row.natures[2].name}
@@ -146,8 +146,8 @@ const TableNature = () => {
                                 <span
                                     className={
                                         row.natures[3].neutral
-                                            ? 'text-zinc-500 not-dark:text-zinc-400'
-                                            : 'font-medium text-zinc-800 not-dark:text-zinc-200'
+                                            ? 'text-zinc-500 dark:text-zinc-400'
+                                            : 'font-medium text-zinc-800 dark:text-zinc-200'
                                     }
                                 >
                                     {row.natures[3].name}
@@ -157,8 +157,8 @@ const TableNature = () => {
                                 <span
                                     className={
                                         row.natures[4].neutral
-                                            ? 'text-zinc-500 not-dark:text-zinc-400'
-                                            : 'font-medium text-zinc-800 not-dark:text-zinc-200'
+                                            ? 'text-zinc-500 dark:text-zinc-400'
+                                            : 'font-medium text-zinc-800 dark:text-zinc-200'
                                     }
                                 >
                                     {row.natures[4].name}
