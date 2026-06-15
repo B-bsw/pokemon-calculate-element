@@ -22,13 +22,13 @@ export default function Home() {
                             <Link
                                 href={item.path}
                                 key={item.id}
-                                className="group flex flex-col items-center justify-center gap-6 rounded-2xl border border-zinc-600 p-10 transition-all duration-500 hover:border-zinc-200 hover:bg-zinc-50 dark:hover:border-zinc-800 dark:hover:bg-zinc-900/50 md:p-12"
+                                className="group flex flex-col items-center justify-center gap-6 rounded-2xl border border-zinc-600 p-10 transition-all duration-500 hover:border-zinc-200 hover:bg-zinc-50 md:p-12 dark:hover:border-zinc-800 dark:hover:bg-zinc-900/50"
                             >
                                 <Icon
                                     strokeWidth={1}
-                                    className="h-12 w-12 text-zinc-400 transition-all duration-500 dark:text-zinc-500 group-hover:scale-110 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 md:h-16 md:w-16"
+                                    className="h-12 w-12 text-zinc-400 transition-all duration-500 group-hover:scale-110 group-hover:text-zinc-900 md:h-16 md:w-16 dark:text-zinc-500 dark:group-hover:text-zinc-100"
                                 />
-                                <span className="text-center text-sm font-light tracking-widest text-zinc-500 transition-colors dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 md:text-base">
+                                <span className="text-center text-sm font-light tracking-widest text-zinc-500 transition-colors group-hover:text-zinc-900 md:text-base dark:text-zinc-400 dark:group-hover:text-zinc-100">
                                     {t(item.nameTrans).toUpperCase()}
                                 </span>
                             </Link>

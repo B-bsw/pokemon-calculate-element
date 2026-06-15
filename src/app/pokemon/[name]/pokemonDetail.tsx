@@ -228,7 +228,7 @@ const damageClassColors: Record<string, string> = {
         'bg-orange-100 text-orange-700 dark:bg-orange-900/50 dark:text-orange-300',
     special:
         'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300',
-        status: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
+    status: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
 }
 
 export default function PokemonDetail({
@@ -617,7 +617,7 @@ export default function PokemonDetail({
         <button
             key={move.name}
             onClick={() => fetchMoveDetail(move.url)}
-            className="flex w-full cursor-pointer items-center gap-2 rounded-2xl bg-zinc-50 p-3 text-left transition-colors dark:bg-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-600"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-2xl bg-zinc-50 p-3 text-left transition-colors hover:bg-zinc-100 dark:bg-zinc-700 dark:hover:bg-zinc-600"
         >
             {/* Level (for level-up moves) */}
             {showLevel && (

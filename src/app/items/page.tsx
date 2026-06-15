@@ -214,7 +214,7 @@ export default function Items() {
                                     onPress={() =>
                                         fetchItemFullDetail(item.url)
                                     }
-                                    className="border border-zinc-200 bg-white transition-transform dark:border-zinc-900 dark:bg-zinc-900 hover:scale-[1.02]"
+                                    className="border border-zinc-200 bg-white transition-transform hover:scale-[1.02] dark:border-zinc-900 dark:bg-zinc-900"
                                     shadow="md"
                                 >
                                     <CardBody className="flex flex-row items-center gap-4 p-4">
@@ -325,7 +325,7 @@ export default function Items() {
                                         {/* Info Grid */}
                                         <div className="mb-4 grid grid-cols-2 gap-4">
                                             <div className="rounded-lg bg-zinc-100 p-3 text-center dark:bg-zinc-700">
-                                              <p className="mb-1 text-xs text-zinc-500 dark:text-zinc-400">
+                                                <p className="mb-1 text-xs text-zinc-500 dark:text-zinc-400">
                                                     {t('category') ||
                                                         'Category'}
                                                 </p>
