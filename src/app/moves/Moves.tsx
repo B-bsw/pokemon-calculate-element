@@ -356,22 +356,6 @@ export default function Moves() {
         }
     }
 
-    const paginationControl =
-        page > 0 ? (
-            <div className="flex w-full justify-center">
-                <Pagination
-                    isCompact
-                    variant="flat"
-                    showControls
-                    showShadow
-                    color="primary"
-                    page={page}
-                    total={pages}
-                    onChange={handlePageChange}
-                />
-            </div>
-        ) : null
-
     return (
         <>
             <div className="flex w-full flex-1 items-start justify-center bg-zinc-50 p-4 py-8 md:items-center md:py-4 dark:bg-zinc-900">
@@ -381,10 +365,14 @@ export default function Moves() {
                         placeholder={t('searchMove') || 'Search move name...'}
                         value={search}
                         onValueChange={handleSearchChange}
-                        variant="faded"
+                        variant="bordered"
                         color="primary"
                         isClearable
                         onClear={() => handleSearchChange('')}
+                        classNames={{
+                            inputWrapper:
+                                'border-2 border-zinc-900 dark:border-zinc-50 shadow-none rounded-xl bg-zinc-50 dark:bg-zinc-900',
+                        }}
                     />
 
                     <div className="space-y-3 md:hidden">
@@ -502,6 +490,27 @@ export default function Moves() {
                             renderCell={renderCell}
                         />
                     </div>
+
+                    {page > 0 && pages > 0 && (
+                        <div className="flex w-full justify-center mt-4 md:hidden">
+                            <Pagination
+                                isCompact
+                                showControls
+                                color="primary"
+                                page={page}
+                                total={pages}
+                                onChange={handlePageChange}
+                                classNames={{
+                                    base: "gap-2",
+                                    wrapper: "border-2 border-zinc-900 dark:border-zinc-50 shadow-none rounded-xl bg-zinc-50 dark:bg-zinc-900 overflow-hidden",
+                                    item: "bg-transparent text-zinc-900 dark:text-zinc-50 font-bold hover:bg-zinc-200 dark:hover:bg-zinc-800",
+                                    cursor: "bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 font-bold",
+                                    prev: "bg-transparent text-zinc-900 dark:text-zinc-50 hover:bg-zinc-200 dark:hover:bg-zinc-800",
+                                    next: "bg-transparent text-zinc-900 dark:text-zinc-50 hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                                }}
+                            />
+                        </div>
+                    )}
                 </section>
             </div>
 

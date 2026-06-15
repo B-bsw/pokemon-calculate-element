@@ -79,19 +79,19 @@ const TableNature = () => {
             >
                 <TableHeader>
                     <TableColumn> </TableColumn>
-                    <TableColumn className="text-danger-500">
+                    <TableColumn className="text-danger-500 font-prompt font-bold dark:text-red-500">
                         - {t('stat.attack')}
                     </TableColumn>
-                    <TableColumn className="text-danger-500">
+                    <TableColumn className="text-danger-500 font-prompt font-bold dark:text-red-500">
                         - {t('stat.defense')}
                     </TableColumn>
-                    <TableColumn className="text-danger-500">
+                    <TableColumn className="text-danger-500 font-prompt font-bold dark:text-red-500">
                         - {t('stat.spAtk')}
                     </TableColumn>
-                    <TableColumn className="text-danger-500">
+                    <TableColumn className="text-danger-500 font-prompt font-bold dark:text-red-500">
                         - {t('stat.spDef')}
                     </TableColumn>
-                    <TableColumn className="text-danger-500">
+                    <TableColumn className="text-danger-500 font-prompt font-bold dark:text-red-500">
                         - {t('stat.speed')}
                     </TableColumn>
                 </TableHeader>
@@ -99,7 +99,7 @@ const TableNature = () => {
                 <TableBody>
                     {naturesData.map((row, index) => (
                         <TableRow key={index}>
-                            <TableCell className="text-left font-bold text-nowrap text-zinc-900 dark:text-zinc-50">
+                            <TableCell className="font-prompt text-left font-bold text-nowrap text-green-600 dark:text-green-400/90">
                                 {row.plus
                                     .replace('stat.', '')
                                     .includes('Atk') ||

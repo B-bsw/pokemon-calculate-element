@@ -193,10 +193,14 @@ export default function Pokemon() {
                         placeholder={t('searchNameOrNumber')}
                         value={search}
                         onValueChange={handleSearchChange}
-                        variant="faded"
+                        variant="bordered"
                         color="primary"
                         isClearable
                         onClear={() => handleSearchChange('')}
+                        classNames={{
+                            inputWrapper:
+                                'border-2 border-zinc-900 dark:border-zinc-50 shadow-none rounded-xl bg-zinc-50 dark:bg-zinc-900',
+                        }}
                     />
 
                     <DataTable

@@ -46,16 +46,22 @@ export default function DataTable<T>({
 }: DataTableProps<T>) {
     const bottomContent =
         page !== undefined && totalPages !== undefined && totalPages > 0 ? (
-            <div className="flex w-full justify-center">
+            <div className="flex w-full justify-center mt-4">
                 <Pagination
                     isCompact
-                    variant="flat"
                     showControls
-                    showShadow
                     color="primary"
                     page={page}
                     total={totalPages}
                     onChange={onPageChange}
+                    classNames={{
+                        base: "gap-2",
+                        wrapper: "border-2 border-zinc-900 dark:border-zinc-50 shadow-none rounded-xl bg-zinc-50 dark:bg-zinc-900 overflow-hidden",
+                        item: "bg-transparent text-zinc-900 dark:text-zinc-50 font-bold hover:bg-zinc-200 dark:hover:bg-zinc-800",
+                        cursor: "bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 font-bold",
+                        prev: "bg-transparent text-zinc-900 dark:text-zinc-50 hover:bg-zinc-200 dark:hover:bg-zinc-800",
+                        next: "bg-transparent text-zinc-900 dark:text-zinc-50 hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                    }}
                 />
             </div>
         ) : null
