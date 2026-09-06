@@ -1,53 +1,83 @@
 'use client'
+
 import { useTranslate } from '@/i18n/i18nContext'
 import { items } from '@/utils/itemIconList'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowDownRight, Asterisk } from 'lucide-react'
+
+const accents = [
+    'bg-[#ff5b45]',
+    'bg-[#5b7cfa]',
+    'bg-[#b9f227]',
+    'bg-[#ff8ed4]',
+    'bg-[#ffcc33]',
+    'bg-[#67d9e8]',
+]
 
 export default function Home() {
     const { t } = useTranslate()
 
     return (
-        <div className="flex min-h-[calc(100dvh-4rem)] w-full flex-col bg-zinc-50 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-50">
-            {/* Hero */}
-            <div className="flex flex-1 flex-col items-center justify-center px-4 py-16">
-                <div className="mb-3 text-center text-4xl font-extrabold tracking-tight sm:text-5xl uppercase">
-                    POKEMON INFO
-                </div>
-                <div className="mb-14 text-center text-sm font-semibold tracking-widest text-zinc-500 sm:text-base uppercase">
-                    Explore the universe
+        <main className="brutal-grid min-h-[calc(100dvh-5rem)] text-[#151515] dark:text-[#f7f1df]">
+            <section className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+                <div className="mb-8 grid items-end gap-6 border-b-4 border-current pb-8 lg:grid-cols-[1fr_auto]">
+                    <div>
+                        <div className="mb-5 flex items-center gap-2 font-mono text-xs font-black tracking-[0.2em] uppercase sm:text-sm">
+                            <span className="inline-block h-3 w-3 animate-pulse bg-[#ff3b30] ring-2 ring-current" />
+                            Field database / Gen 01—09
+                        </div>
+                        <h1 className="max-w-5xl text-[clamp(4rem,13vw,10rem)] leading-[0.72] font-black tracking-[-0.085em] uppercase">
+                            Poké<span className="text-[#ff3b30]">dex</span>
+                        </h1>
+                    </div>
+                    <div className="brutal-shadow hidden rotate-2 border-4 border-[#151515] bg-[#ffcc33] p-5 text-[#151515] lg:block">
+                        <Asterisk size={52} strokeWidth={3} />
+                        <p className="mt-4 max-w-44 font-mono text-xs leading-tight font-black uppercase">
+                            All the stats. Zero decorative nonsense.
+                        </p>
+                    </div>
                 </div>
 
-                <div className="grid w-full max-w-4xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {items.map((item) => {
+                <div className="mb-4 flex items-center justify-between gap-4 font-mono text-xs font-black tracking-widest uppercase">
+                    <span>Select a dataset</span>
+                    <span>06 modules</span>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {items.map((item, index) => {
                         const Icon = item.icon
                         return (
                             <Link
                                 href={item.path}
                                 key={item.id}
-                                className="group flex items-center justify-between gap-4 rounded-xl border-2 border-zinc-900 bg-zinc-50 p-6 transition-all hover:bg-zinc-900 hover:text-zinc-50 dark:border-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-50 dark:hover:text-zinc-900 sm:p-8"
+                                className={`brutal-card group relative flex min-h-52 flex-col justify-between overflow-hidden border-4 border-[#151515] p-5 text-[#151515] ${accents[index]}`}
                             >
-                                <div className="flex flex-col gap-3">
-                                    <Icon
-                                        strokeWidth={2}
-                                        className="h-10 w-10 text-zinc-900 group-hover:text-zinc-50 dark:text-zinc-50 dark:group-hover:text-zinc-900 transition-colors"
-                                    />
-                                    <span className="text-left text-lg font-bold uppercase">
-                                        {t(item.nameTrans)}
+                                <div className="flex items-start justify-between">
+                                    <span className="font-mono text-sm font-black">
+                                        /0{index + 1}
                                     </span>
+                                    <Icon size={42} strokeWidth={2.5} />
                                 </div>
-                                <div className="rounded-full border-2 border-zinc-900 p-2 group-hover:border-zinc-50 dark:border-zinc-50 dark:group-hover:border-zinc-900 transition-colors">
-                                    <ArrowRight className="h-5 w-5 text-zinc-900 group-hover:text-zinc-50 dark:text-zinc-50 dark:group-hover:text-zinc-900 transition-colors" />
+                                <div className="flex items-end justify-between gap-4">
+                                    <h2 className="max-w-[80%] text-3xl leading-none font-black tracking-[-0.05em] uppercase sm:text-4xl">
+                                        {t(item.nameTrans)}
+                                    </h2>
+                                    <ArrowDownRight
+                                        className="shrink-0 transition-transform group-hover:translate-x-1 group-hover:translate-y-1"
+                                        size={34}
+                                        strokeWidth={3}
+                                    />
                                 </div>
                             </Link>
                         )
                     })}
                 </div>
-            </div>
 
-            <div className="py-6 text-center text-xs font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-50">
-                © 2026 POKEMON INFO
-            </div>
-        </div>
+                <footer className="mt-10 flex flex-wrap justify-between gap-3 border-t-4 border-current pt-4 font-mono text-xs font-black uppercase">
+                    <span>© 2026 Pokémon Info</span>
+                    <span>Built for trainers // Bangkok</span>
+                </footer>
+            </section>
+        </main>
     )
 }

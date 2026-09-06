@@ -1,138 +1,76 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+
 import { useTranslate } from '@/i18n/i18nContext'
-import {
-    Button,
-    Link,
-    Navbar,
-    NavbarBrand,
-    NavbarContent,
-    NavbarItem,
-    NavbarMenu,
-    NavbarMenuToggle,
-    Switch,
-    Tab,
-    Tabs,
-} from '@heroui/react'
-import { useRouter, usePathname } from 'next/navigation'
-import useDarkMode from '@/hooks/useDarkMode'
-import { MoonIcon } from '@/components/icons/MoonIcon'
-import { SunIcon } from '@/components/icons/SunIcon'
-import logo from '@/app/favicon.ico'
-import Image from 'next/image'
 import { items } from '@/utils/itemIconList'
+import useDarkMode from '@/hooks/useDarkMode'
+import { Moon, Sun } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const MainHeader = () => {
-    const router = useRouter()
     const path = usePathname()
-
-    const [routeOfTabs, setRouteOfTabs] = useState<string>(path)
-    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-
     const { theme, setTheme } = useDarkMode()
     const { t, lang, setLang } = useTranslate()
-
-    useEffect(() => {
-        setRouteOfTabs(path)
-        setIsMenuOpen(false)
-    }, [path])
-
-    const isDarkMode: boolean = theme === 'dark'
+    const isDarkMode = theme === 'dark'
 
     return (
-        <Navbar
-            isBlurred={false}
-            classNames={{
-                base: 'bg-zinc-50 border-b-2 border-zinc-900 dark:bg-zinc-900 dark:border-zinc-50 fixed',
-            }}
-            maxWidth="full"
-            isMenuOpen={isMenuOpen}
-        >
-            <NavbarMenuToggle
-                aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-                className="text-zinc-900 dark:text-zinc-50 md:hidden"
-                onChange={() => setIsMenuOpen((e) => !e)}
-            />
-
-            <NavbarBrand
-                onClick={() => router.push('/')}
-                className="cursor-pointer"
-            >
-                <Image src={logo} alt="img" />
-            </NavbarBrand>
-
-            <NavbarContent justify="start" className="scll max-md:hidden">
-                <Tabs
-                    className="min-w-max"
-                    selectedKey={routeOfTabs}
-                    variant="underlined"
-                    color="primary"
-                    classNames={{
-                        tabContent: 'text-zinc-900 dark:text-zinc-50 font-bold',
-                        cursor: 'bg-zinc-900 dark:bg-zinc-50 h-1',
-                    }}
+        <header className="fixed inset-x-0 top-0 z-50 border-b-4 border-[#151515] bg-[#f7f1df] text-[#151515] dark:border-[#f7f1df] dark:bg-[#151515] dark:text-[#f7f1df]">
+            <div className="flex h-20 items-stretch">
+                <Link
+                    href="/"
+                    aria-label="Pokémon Info home"
+                    className="flex shrink-0 items-center border-r-4 border-current bg-[#ff3b30] px-4 text-xl font-black tracking-[-0.06em] text-[#151515] uppercase sm:px-6 sm:text-2xl"
                 >
-                    {items.map((item) => (
-                        <Tab
-                            key={item.path}
-                            title={t(item.nameTrans)}
-                            onClick={() => router.push(item.path)}
-                        />
-                    ))}
-                </Tabs>
-            </NavbarContent>
-            <NavbarContent justify="end">
-                <div>
-                    <Switch
-                        thumbIcon={({ className }) =>
-                            !isDarkMode ? (
-                                <SunIcon className={className} />
-                            ) : (
-                                <MoonIcon className={className} />
-                            )
-                        }
-                        isSelected={isDarkMode}
-                        onValueChange={(value) =>
-                            setTheme(value ? 'dark' : 'light')
-                        }
-                    />
-                </div>
-                <Tabs
-                    variant="solid"
-                    color="primary"
-                    selectedKey={lang}
-                    size="sm"
-                    onSelectionChange={(key) => setLang(key as 'en' | 'th')}
-                >
-                    <Tab title="TH" key="th" />
-                    <Tab title="EN" key="en" />
-                </Tabs>
-            </NavbarContent>
+                    PKMN<span className="hidden sm:inline">.INFO</span>
+                </Link>
 
-            <NavbarMenu className="gap-5 bg-zinc-50 py-10 dark:bg-zinc-900">
-                {items.map((item) => {
-                    const Ic = item.icon
-                    return (
-                        <NavbarItem
-                            key={item.id}
-                            className={`${routeOfTabs === item.path && '**:text-primary'}`}
-                        >
-                            <Button
-                                fullWidth
-                                variant="light"
-                                startContent={<Ic className="text-zinc-900 dark:text-zinc-50" />}
-                                onPress={() => router.push(item.path)}
-                                className="text-zinc-900 dark:text-zinc-50 font-bold hover:bg-zinc-900 hover:text-zinc-50 dark:hover:bg-zinc-50 dark:hover:text-zinc-900 border-2 border-transparent hover:border-zinc-900 dark:hover:border-zinc-50 rounded-lg transition-colors"
+                <nav
+                    className="scll flex min-w-0 flex-1 overflow-x-auto"
+                    aria-label="Main navigation"
+                >
+                    {items.map((item, index) => {
+                        const active =
+                            path === item.path ||
+                            path.startsWith(`${item.path}/`)
+                        return (
+                            <Link
+                                key={item.id}
+                                href={item.path}
+                                className={`flex shrink-0 items-center gap-2 border-r-2 border-current px-4 font-mono text-xs font-black uppercase transition-colors sm:text-sm ${active ? 'bg-[#ffcc33] text-[#151515]' : 'hover:bg-[#b9f227] hover:text-[#151515]'}`}
                             >
-                                <div className="w-full text-start">
-                                    {t(item.nameTrans)}
-                                </div>
-                            </Button>
-                        </NavbarItem>
-                    )
-                })}
-            </NavbarMenu>
-        </Navbar>
+                                <span className="opacity-60">0{index + 1}</span>
+                                {t(item.nameTrans)}
+                            </Link>
+                        )
+                    })}
+                </nav>
+
+                <div className="flex shrink-0 items-stretch border-l-2 border-current">
+                    <button
+                        type="button"
+                        aria-label={
+                            isDarkMode ? 'Use light mode' : 'Use dark mode'
+                        }
+                        onClick={() => setTheme(isDarkMode ? 'light' : 'dark')}
+                        className="grid w-12 place-items-center border-r-2 border-current transition-colors hover:bg-[#5b7cfa] hover:text-[#151515] sm:w-16"
+                    >
+                        {isDarkMode ? (
+                            <Sun size={22} strokeWidth={3} />
+                        ) : (
+                            <Moon size={22} strokeWidth={3} />
+                        )}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setLang(lang === 'th' ? 'en' : 'th')}
+                        className="w-12 font-mono text-xs font-black uppercase transition-colors hover:bg-[#ff8ed4] hover:text-[#151515] sm:w-16 sm:text-sm"
+                        aria-label="Change language"
+                    >
+                        {lang}
+                    </button>
+                </div>
+            </div>
+        </header>
     )
 }
 

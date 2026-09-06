@@ -46,7 +46,7 @@ export default function DataTable<T>({
 }: DataTableProps<T>) {
     const bottomContent =
         page !== undefined && totalPages !== undefined && totalPages > 0 ? (
-            <div className="flex w-full justify-center mt-4">
+            <div className="mt-5 flex w-full justify-center">
                 <Pagination
                     isCompact
                     showControls
@@ -55,12 +55,13 @@ export default function DataTable<T>({
                     total={totalPages}
                     onChange={onPageChange}
                     classNames={{
-                        base: "gap-2",
-                        wrapper: "border-2 border-zinc-900 dark:border-zinc-50 shadow-none rounded-xl bg-zinc-50 dark:bg-zinc-900 overflow-hidden",
-                        item: "bg-transparent text-zinc-900 dark:text-zinc-50 font-bold hover:bg-zinc-200 dark:hover:bg-zinc-800",
-                        cursor: "bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 font-bold",
-                        prev: "bg-transparent text-zinc-900 dark:text-zinc-50 hover:bg-zinc-200 dark:hover:bg-zinc-800",
-                        next: "bg-transparent text-zinc-900 dark:text-zinc-50 hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                        base: 'gap-2',
+                        wrapper:
+                            'border-3 border-zinc-900 dark:border-[#f7f1df] shadow-[4px_4px_0_#151515] dark:shadow-[4px_4px_0_#f7f1df] rounded-none bg-[#f7f1df] dark:bg-[#151515] overflow-hidden',
+                        item: 'bg-transparent text-zinc-900 dark:text-zinc-50 font-bold hover:bg-zinc-200 dark:hover:bg-zinc-800',
+                        cursor: 'bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 font-bold',
+                        prev: 'bg-transparent text-zinc-900 dark:text-zinc-50 hover:bg-zinc-200 dark:hover:bg-zinc-800',
+                        next: 'bg-transparent text-zinc-900 dark:text-zinc-50 hover:bg-zinc-200 dark:hover:bg-zinc-800',
                     }}
                 />
             </div>
@@ -70,9 +71,9 @@ export default function DataTable<T>({
         <Table
             classNames={{
                 wrapper:
-                    'border-2 border-zinc-900 dark:border-zinc-50 shadow-none rounded-xl bg-zinc-50 dark:bg-zinc-900',
-                th: 'text-center bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 font-bold uppercase',
-                td: 'text-center font-semibold',
+                    'border-4 border-zinc-900 dark:border-[#f7f1df] shadow-[7px_7px_0_#151515] dark:shadow-[7px_7px_0_#f7f1df] rounded-none bg-[#f7f1df] dark:bg-[#151515]',
+                th: 'text-center bg-[#ffcc33] text-[#151515] border-b-3 border-[#151515] font-mono font-black uppercase tracking-wider',
+                td: 'text-center font-mono font-bold border-b border-zinc-900/25 dark:border-[#f7f1df]/25',
             }}
             aria-label={ariaLabel}
             bottomContent={bottomContent}
@@ -103,7 +104,7 @@ export default function DataTable<T>({
                 {(item) => (
                     <TableRow
                         key={getRowKey(item)}
-                        className={`border-b-2 border-transparent transition-colors hover:bg-zinc-900 hover:text-zinc-50 dark:hover:bg-zinc-50 dark:hover:text-zinc-900 ${
+                        className={`transition-colors hover:bg-[#b9f227] hover:text-[#151515] ${
                             onRowClick ? 'cursor-pointer' : ''
                         }`}
                     >
